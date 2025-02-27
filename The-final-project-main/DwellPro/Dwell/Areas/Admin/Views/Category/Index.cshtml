@@ -1,0 +1,121 @@
+﻿@model IEnumerable<App.Domain.Core.Home.Entities.Categories.Category>
+
+@{
+    string[] backgroundColors = { "green", "brown", "orange", "blue", "yellow", "red", "darkblue", "violet" };
+    int index = 0;
+}
+
+<h2 class="text-center text-purple">فهرست دسته‌بندی‌ها</h2>
+
+<div class="container mt-4">
+    <div class="text-center mb-4">
+        <a href="@Url.Action("Create", "Category")" class="btn btn-primary">افزودن دسته‌بندی جدید</a>
+    </div>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th style="width: 50px;">ID</th>
+                <th>تصویر و نام</th>
+                <th>عملیات</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var category in Model)
+            {
+                <tr>
+                    <td>@category.Id</td>
+                    <td class="d-flex align-items-center">
+                        <a href="@Url.Action("Details", "Category", new { id = category.Id })" class="category-row d-flex align-items-center">
+                            <img src="@category.ImageUrl" alt="Category Image" class="category-image"
+                                 style="background-color: @backgroundColors[index]; padding: 5px; border-radius: 5px;" />
+                            <span class="ml-2">@category.Name</span>
+                        </a>
+                    </td>
+                    <td class="text-center">
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="@Url.Action("Edit", "Category", new { id = category.Id })">ویرایش</a>
+                                <a class="dropdown-item" href="@Url.Action("DeleteCategory", "Category", new { id = category.Id })" onclick="return confirm('آیا مطمئن هستید؟')">حذف</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                index = (index + 1) % backgroundColors.Length;
+            }
+        </tbody>
+    </table>
+
+    <div class="mt-4 text-center">
+        <a href="@Url.Action("Index", "Dashboard")" class="btn btn-secondary">بازگشت به داشبورد</a>
+    </div>
+</div>
+
+<style>
+    .text-purple {
+        color: #6a1b9a;
+    }
+
+    .category-row {
+        text-decoration: none;
+        color: black;
+        transition: background-color 0.3s ease;
+    }
+
+    .category-image {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .category-row:hover .category-image {
+        opacity: 0.5;
+        transform: scale(1.1);
+    }
+
+    .btn-secondary {
+        background-color: #9e9e9e;
+        border-color: #9e9e9e;
+    }
+
+        .btn-secondary:hover {
+            background-color: #757575;
+            border-color: #757575;
+        }
+
+    .table th, .table td {
+        vertical-align: middle;
+    }
+
+    .dropdown-toggle::after {
+        display: none; 
+    }
+
+    .dropdown-menu {
+        min-width: 150px;
+    }
+
+    .d-flex {
+        display: flex;
+    }
+
+    .ml-2 {
+        margin-left: 0.5rem;
+    }
+
+    .dropdown-item {
+        cursor: pointer;
+    }
+
+    .table th:nth-child(1), .table td:nth-child(1) {
+        width: 50px;
+        text-align: center;
+    }
+</style>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>

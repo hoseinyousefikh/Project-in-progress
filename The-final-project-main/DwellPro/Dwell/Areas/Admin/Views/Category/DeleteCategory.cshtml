@@ -1,0 +1,109 @@
+﻿@model App.Domain.Core.Home.Entities.Categories.Category
+
+@{
+    ViewData["Title"] = "حذف دسته‌بندی";
+}
+
+<h2 class="text-center text-purple mb-4">حذف دسته‌بندی</h2>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="alert alert-danger">
+                <strong>آیا مطمئن هستید؟</strong> با حذف این دسته‌بندی، تمامی اطلاعات مربوط به آن از سیستم حذف خواهد شد.
+            </div>
+
+            <div class="card">
+                <div class="card-header bg-purple text-white">
+                    <h5 class="card-title mb-0">اطلاعات دسته‌بندی</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">نام دسته‌بندی</dt>
+                        <dd class="col-sm-8">@Model.Name</dd>
+
+                        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                        {
+                            <dt class="col-sm-4">تصویر دسته‌بندی</dt>
+                            <dd class="col-sm-8">
+                                <img src="@Model.ImageUrl" alt="Category Image" class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;" />
+                            </dd>
+                        }
+                    </dl>
+
+                    <form asp-action="DeleteCategory" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <input type="hidden" name="id" value="@Model.Id" />
+
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-danger btn-lg">حذف دسته‌بندی</button>
+                        </div>
+                    </form>
+
+                        <a href="@Url.Action("Index", "Category")" class="btn btn-secondary btn-lg">بازگشت به لیست دسته‌بندی‌ها</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <style>
+        .text-purple {
+            color: #6a1b9a;
+        }
+
+        .bg-purple {
+            background-color: #6a1b9a !important;
+        }
+
+        .btn-purple {
+            background-color: #6a1b9a;
+            border-color: #6a1b9a;
+        }
+
+            .btn-purple:hover {
+                background-color: #512a72;
+                border-color: #512a72;
+            }
+
+        .btn-danger {
+            background-color: #e74c3c;
+            border-color: #e74c3c;
+        }
+
+            .btn-danger:hover {
+                background-color: #c0392b;
+                border-color: #c0392b;
+            }
+
+        .btn-secondary {
+            background-color: #9e9e9e;
+            border-color: #9e9e9e;
+        }
+
+            .btn-secondary:hover {
+                background-color: #757575;
+                border-color: #757575;
+            }
+
+        .card {
+            border-radius: 10px;
+        }
+
+        .alert-danger {
+            font-size: 1.2rem;
+        }
+
+        .img-thumbnail {
+            border-radius: 5px;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+    </style>
+
+
+

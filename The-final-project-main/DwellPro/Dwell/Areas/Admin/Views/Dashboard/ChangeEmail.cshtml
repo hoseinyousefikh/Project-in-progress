@@ -1,0 +1,147 @@
+﻿@{
+    ViewData["Title"] = "تغییر ایمیل";
+}
+
+<h2>تغییر ایمیل</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<form asp-action="ChangeEmail" method="post">
+    <div class="form-group">
+        <label for="newEmail">ایمیل جدید</label>
+        <input type="email" id="newEmail" name="newEmail" class="form-control" required />
+        <span class="text-danger" id="newEmailError"></span>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-success">تغییر ایمیل</button>
+    </div>
+</form>
+
+<a href="@Url.Action("Profile", "Dashboard")" class="btn btn-secondary">بازگشت به پروفایل</a>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    h2 {
+        color: #6a1b9a;
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .email-change-container {
+        background-color: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin: 30px auto;
+        max-width: 500px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        font-weight: bold;
+        color: #6a1b9a;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1rem;
+    }
+
+    .btn-success {
+        background-color: #6a1b9a;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        width: 100%;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-success:hover {
+            background-color: #9c4dcc;
+        }
+
+    .btn-secondary {
+        display: block;
+        background-color: #6c757d;
+        color: white;
+        text-align: center;
+        padding: 10px;
+        border-radius: 5px;
+        text-decoration: none;
+        margin-top: 10px;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+    .alert {
+        margin: 10px auto;
+        padding: 10px;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    .alert-success {
+        background-color: #4caf50;
+        color: white;
+    }
+
+    .alert-danger {
+        background-color: #f44336;
+        color: white;
+    }
+
+    .logout-button {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background-color: #ff3b3b;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.3s ease;
+    }
+
+        .logout-button a {
+            color: white;
+            font-size: 20px;
+            text-decoration: none;
+        }
+
+        .logout-button:hover {
+            background-color: #cc0000;
+        }
+</style>
+

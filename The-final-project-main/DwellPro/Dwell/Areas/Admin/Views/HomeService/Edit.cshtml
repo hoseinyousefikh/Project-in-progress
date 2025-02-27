@@ -1,0 +1,79 @@
+﻿@model DwellMVC.Areas.Admin.Models.HomeServiceEditViewModel
+
+@{
+    ViewData["Title"] = "ویرایش هوم سرویس";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="form-container">
+    <form asp-action="Edit" method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="form-group">
+            <label for="Name">نام سرویس</label>
+            <input type="text" class="form-control" id="Name" name="Name" value="@Model.Name" required />
+        </div>
+
+        <div class="form-group">
+            <label for="Description">توضیحات</label>
+            <textarea class="form-control" id="Description" name="Description" required>@Model.Description</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="BasePrice">قیمت پایه</label>
+            <input type="number" class="form-control" id="BasePrice" name="BasePrice" value="@Model.BasePrice" required />
+        </div>
+
+        <div class="form-group">
+            <label for="SubCategoryId">دسته‌بندی فرعی</label>
+            <select class="form-control" id="SubCategoryId" name="SubCategoryId" required>
+                <option value="">انتخاب دسته‌بندی فرعی</option>
+                @foreach (var subCategory in Model.SubCategories)
+                {
+                    <option value="@subCategory.Id">@subCategory.Name</option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="ImageFile">تصویر</label>
+            <input type="file" class="form-control" id="ImageFile" name="ImageFile" />
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <div>
+                    <img src="@Model.ImageUrl" alt="Current Image" style="width:100px; height:auto;" />
+                </div>
+            }
+        </div>
+
+        <div class="form-group">
+            <label for="IsDeleted">حذف شده</label>
+            <input type="checkbox" id="IsDeleted" name="IsDeleted" @(Model.IsDeleted ? "checked" : "") />
+        </div>
+
+        <button type="submit" class="btn btn-primary">ویرایش</button>
+        <a href="@Url.Action("Index")" class="btn btn-secondary">بازگشت</a>
+    </form>
+</div>
+
+<style>
+    .form-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 30px;
+        border: 2px solid #6f42c1;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+    }
+
+    .btn-primary {
+        background-color: #6f42c1;
+        border-color: #6f42c1;
+    }
+
+    .btn-secondary {
+        background-color: #ccc;
+        border-color: #ccc;
+    }
+</style>

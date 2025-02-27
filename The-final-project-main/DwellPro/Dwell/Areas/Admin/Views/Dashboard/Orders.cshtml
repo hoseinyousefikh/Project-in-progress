@@ -1,0 +1,95 @@
+﻿<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f7fc;
+        color: #333;
+        padding: 20px;
+    }
+
+    h2 {
+        text-align: center;
+        color: #8A2BE2;
+        margin-bottom: 20px;
+    }
+
+    table {
+        width: 80%;
+        margin: 0 auto;
+        border-collapse: collapse;
+        border-radius: 10px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+    }
+
+    thead {
+        background-color: #8A2BE2;
+        color: #fff;
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: center;
+        border: 1px solid #ddd;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    td {
+        font-size: 14px;
+    }
+
+    th {
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    td:nth-child(4) {
+        font-weight: bold;
+    }
+
+        td:nth-child(4):contains('فعال') {
+            color: #8A2BE2; 
+        }
+
+        td:nth-child(4):contains('غیر فعال') {
+            color: #f44336; 
+        }
+</style>
+
+@model List<App.Domain.Core.Home.Entities.ListOrder.Orders>
+
+<h2>لیست سفارش‌ها</h2>
+<table>
+    <thead>
+        <tr>
+            <th>مشتری</th>
+            <th>تاریخ درخواست</th>
+            <th>تاریخ اجرا</th>
+            <th>وضعیت</th>
+            <th>قیمت پایه</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>
+                    @(order.Customer?.User?.FirstName ?? "نام کاربر یافت نشد")
+                    @(order.Customer?.User?.LastName ?? "نام خانوادگی یافت نشد")
+                </td>
+                <td>@order.RequestDate</td>
+                <td>@order.ExecutionDate</td>
+                <td>
+                    @order.OrderStatus
+                </td>
+                <td>@order.BasePrice</td>
+            </tr>
+        }
+    </tbody>
+</table>

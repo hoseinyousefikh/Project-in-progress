@@ -1,0 +1,49 @@
+﻿@model App.Domain.Core.Home.Entities.Other.Comments
+
+@{
+    ViewData["Title"] = "جزئیات کامنت";
+}
+
+<div class="container mt-5">
+    <h2>جزئیات کامنت</h2>
+
+    <div class="mb-4">
+        <strong>نام اکسپرت:</strong> @Model.Experts.User.FirstName @Model.Experts.User.LastName
+    </div>
+
+    <div class="mb-4">
+        <strong>توضیحات:</strong> @Model.Text
+    </div>
+
+    <div class="mb-4">
+        <strong>امتیاز:</strong>
+        @for (int i = 1; i <= 5; i++)
+        {
+            <span class="star @(Model.Rating >= i ? "filled" : (Model.Rating >= i - 0.5 ? "half" : ""))"></span>
+        }
+    </div>
+
+    <div class="mb-4">
+        <strong>وضعیت:</strong> @(Model.IsApproved ? "تایید شده" : "رد شده")
+    </div>
+
+    <a href="@Url.Action("Index", "AdminComments")" class="btn btn-primary">بازگشت</a>
+</div>
+
+<style>
+    .star {
+        font-size: 20px;
+        color: lightgray;
+        margin-right: 5px;
+    }
+
+        .star.filled {
+            color: gold;
+        }
+
+        .star.half {
+            background: linear-gradient(90deg, gold 50%, lightgray 50%);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+</style>

@@ -1,0 +1,111 @@
+﻿<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جدول پیشنهادات</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            direction: rtl;
+            text-align: right;
+            background-color: #f4f4f4;
+        }
+
+        .table-container {
+            width: 60%;
+            margin: 20px auto;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: right;
+        }
+
+        th {
+            background-color: #d3d3d3; /* خاکستری کمرنگ برای تی‌هد */
+            color: black;
+        }
+
+        tr {
+            background-color: white; /* ردیف‌های جدول سفید */
+        }
+
+            tr:nth-child(even) {
+                background-color: #f9f9f9; /* رنگ پس‌زمینه خاکستری روشن برای ردیف‌های زوج */
+            }
+
+            tr:nth-child(odd) {
+                background-color: white; /* رنگ پس‌زمینه سفید برای ردیف‌های فرد */
+            }
+
+            tr:hover {
+                font-weight: bold; /* بولد شدن متن ردیف در هاور */
+                background-color: #e0e0e0; /* تغییر رنگ پس‌زمینه هنگام هاور */
+            }
+
+        .accepted {
+            background-color: green;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .rejected {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="table-container">
+        <h2 style="text-align: center;">جدول پیشنهادات</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>شناسه</th>
+                    <th>نام کارشناس</th>
+                    <th>قیمت پیشنهادی</th>
+                    <th>تاریخ پیشنهاد</th>
+                    <th>تاریخ اتمام کار</th>
+                    <th>وضعیت</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>علی رضایی</td>
+                    <td>500,000 تومان</td>
+                    <td>1402/12/01</td>
+                    <td>1402/12/10</td>
+                    <td><button class="accepted">پذیرفته شده</button></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>مینا احمدی</td>
+                    <td>450,000 تومان</td>
+                    <td>1402/12/02</td>
+                    <td>1402/12/12</td>
+                    <td><button class="rejected">درخواست رد شده</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

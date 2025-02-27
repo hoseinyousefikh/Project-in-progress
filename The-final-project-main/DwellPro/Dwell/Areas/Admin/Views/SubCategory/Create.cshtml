@@ -1,0 +1,85 @@
+﻿@model DwellMVC.Areas.Admin.Models.SubCategoryViewModel
+
+@{
+    ViewData["Title"] = "افزودن زیرمجموعه جدید";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+
+<div class="container mt-4">
+    <div class="card shadow-lg rounded p-4 border-0" style="background-color: #f3e5f5;">
+        <h2 class="text-center text-purple mb-4">افزودن زیرمجموعه جدید</h2>
+
+        <form method="post" enctype="multipart/form-data" class="row g-3">
+            <div class="col-md-6">
+                <label for="Name" class="form-label">نام زیرمجموعه</label>
+                <input type="text" asp-for="Name" class="form-control" placeholder="نام را وارد کنید">
+                <span class="text-danger" asp-validation-for="Name"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label for="ImageUrl" class="form-label">لینک تصویر (یا آپلود)</label>
+                <input type="file" id="ImageFile" name="ImageFile" class="form-control">
+                <span class="text-danger" asp-validation-for="ImageFile"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label for="CategoryId" class="form-label">انتخاب دسته‌بندی</label>
+                <select asp-for="CategoryId" class="form-select">
+                    <option value="">یک دسته‌بندی انتخاب کنید</option>
+                    @foreach (var category in ViewBag.Categories)
+                    {
+                        <option value="@category.Id">@category.Name</option>
+                    }
+                </select>
+                <span class="text-danger" asp-validation-for="CategoryId"></span>
+            </div>
+
+            <div class="col-md-6 text-center">
+                <label class="form-label d-block">پیش‌نمایش تصویر</label>
+                <img id="imagePreview" src="" class="img-fluid rounded shadow" style="max-width: 150px; display: none;" />
+            </div>
+
+            <div class="col-12 text-center">
+                <button type="submit" class="btn btn-success px-4">ذخیره</button>
+                <a href="/Admin/SubCategory/Index" class="btn btn-outline-dark px-4">بازگشت</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .text-purple {
+        color: purple;
+        font-weight: bold;
+    }
+</style>
+
+<script>
+    function previewImage(input) {
+        let imagePreview = document.getElementById("imagePreview");
+
+        if (input.files && input.files[0]) {
+            let reader = new FileReader();
+            reader.onload = function (e) {
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = "block";
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    document.getElementById("ImageFile").addEventListener("change", function () {
+        previewImage(this);
+    });
+
+    document.getElementById("ImageUrl").addEventListener("input", function () {
+        let imagePreview = document.getElementById("imagePreview");
+        if (this.value) {
+            imagePreview.src = this.value;
+            imagePreview.style.display = "block";
+        } else {
+            imagePreview.style.display = "none";
+        }
+    });
+</script>

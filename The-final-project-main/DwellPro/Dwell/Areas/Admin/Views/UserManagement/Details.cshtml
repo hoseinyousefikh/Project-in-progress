@@ -1,0 +1,85 @@
+﻿@model App.Domain.Core.Home.Entities.Users.User
+@using App.Domain.Core.Home.Enum
+
+
+<div class="details-container">
+    <h2>جزئیات کاربر</h2>
+    <div class="details-box">
+        <p><strong>نام:</strong> @Model.FirstName @Model.LastName</p>
+        <p><strong>ایمیل:</strong> @Model.Email</p>
+
+        <p>
+            <strong>وضعیت:</strong>
+            @{
+                var roleStatus = Model.CustomerDetails?.RoleStatus ?? Model.ExpertDetails?.RoleStatus;
+                string roleStatusInPersian = roleStatus switch
+                {
+                    UserStatus.Active => "فعال",
+                    UserStatus.inActive => "غیرفعال",
+                    _ => "نامشخص"
+                };
+            }
+            @roleStatusInPersian
+        </p>
+
+        <p>
+            <strong>نقش:</strong>
+            @{
+                string roleInPersian = Model.RoleType switch
+                {
+                    RoleEnum.Customer => "مشتری",
+                    RoleEnum.Expert => "کارشناس",
+                    _ => "نامشخص"
+                };
+            }
+            @roleInPersian
+        </p>
+
+
+
+        <p><strong>شهر:</strong> @ViewBag.CityName</p>  
+        <p><strong>آدرس:</strong> @Model.Address</p>
+
+        @if (Model.RoleType == RoleEnum.Expert)
+        {
+            <p><strong>امتیاز:</strong> @Model.ExpertDetails?.Rating</p>
+            <p><strong>بیوگرافی:</strong> @Model.ExpertDetails?.Biography</p>
+        }
+    </div>
+
+    <a href="@Url.Action("Index")" class="back-btn">بازگشت</a>
+</div>
+
+<style>
+    .details-container {
+        max-width: 500px;
+        margin: 30px auto;
+        text-align: center;
+    }
+
+    .details-box {
+        background-color: #6a0dad;
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+        .details-box p {
+            margin: 10px 0;
+        }
+
+    .back-btn {
+        display: inline-block;
+        margin-top: 15px;
+        padding: 10px 20px;
+        background-color: #4b0082;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+        .back-btn:hover {
+            background-color: #370061;
+        }
+</style>

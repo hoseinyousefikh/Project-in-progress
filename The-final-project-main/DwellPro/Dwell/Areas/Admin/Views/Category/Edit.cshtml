@@ -1,0 +1,105 @@
+﻿@model DwellMVC.Areas.Admin.Models.CategoryViewModel
+
+@{
+    ViewData["Title"] = "ویرایش دسته‌بندی";
+}
+
+<h2 class="text-center text-purple mb-4">ویرایش دسته‌بندی</h2>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["SuccessMessage"]
+                </div>
+            }
+
+            <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+
+                <input type="hidden" asp-for="Id" />
+
+                <div class="form-group">
+                    <label for="Name">نام دسته‌بندی</label>
+                    <input type="text" class="form-control" asp-for="Name" placeholder="نام دسته‌بندی را وارد کنید" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="ImageFile">تصویر دسته‌بندی</label>
+
+                    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                    {
+                        <div class="mb-3">
+                            <img src="@Model.ImageUrl" alt="Category Image" class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;" />
+                        </div>
+                    }
+
+                    <input type="file" class="form-control-file" asp-for="ImageFile" />
+                    <span asp-validation-for="ImageFile" class="text-danger"></span>
+                </div>
+
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-purple btn-lg">ویرایش دسته‌بندی</button>
+                </div>
+            </form>
+
+            <div class="text-center mt-4">
+                <a href="@Url.Action("Index", "Category")" class="btn btn-secondary btn-lg">بازگشت به لیست دسته‌بندی‌ها</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+<style>
+    .text-purple {
+        color: #6a1b9a;
+    }
+
+    .btn-purple {
+        background-color: #6a1b9a;
+        border-color: #6a1b9a;
+    }
+
+        .btn-purple:hover {
+            background-color: #512a72;
+            border-color: #512a72;
+        }
+
+    .form-group label {
+        font-weight: bold;
+    }
+
+    .form-control, .form-control-file {
+        border-radius: 5px;
+        padding: 10px;
+    }
+
+    .container {
+        margin-top: 50px;
+    }
+
+    .alert-success {
+        margin-bottom: 20px;
+    }
+
+    .img-thumbnail {
+        border-radius: 5px;
+    }
+
+    .btn-secondary {
+        background-color: #9e9e9e;
+        border-color: #9e9e9e;
+    }
+
+        .btn-secondary:hover {
+            background-color: #757575;
+            border-color: #757575;
+        }
+</style>

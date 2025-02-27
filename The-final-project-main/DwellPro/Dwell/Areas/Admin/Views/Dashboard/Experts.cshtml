@@ -1,0 +1,88 @@
+﻿@model List<App.Domain.Core.Home.Entities.Users.Experts>
+
+<h2>لیست متخصصان</h2>
+<table class="expert-table">
+    <thead>
+        <tr>
+            <th>نام</th>
+            <th>امتیاز</th>
+            <th>بیوگرافی</th>
+            <th>وضعیت</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var expert in Model)
+        {
+            <tr>
+                <td>@expert.User.FirstName @expert.User.LastName</td>
+                <td>@expert.Rating</td>
+                <td>@expert.Biography</td>
+                <td>@(expert.RoleStatus == App.Domain.Core.Home.Enum.UserStatus.Active ? "فعال" : "غیر فعال")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f7fc;
+        color: #333;
+        padding: 20px;
+    }
+
+    h2 {
+        text-align: center;
+        color: #8A2BE2;
+        margin-bottom: 20px;
+    }
+
+    .expert-table {
+        width: 80%;
+        margin: 0 auto;
+        border-collapse: collapse;
+        border-radius: 10px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+    }
+
+        .expert-table thead {
+            background-color: #8A2BE2;
+            color: #fff;
+        }
+
+        .expert-table th, .expert-table td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .expert-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .expert-table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .expert-table td {
+            font-size: 14px;
+        }
+
+        .expert-table th {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .expert-table td:nth-child(4) {
+            font-weight: bold;
+        }
+
+            .expert-table td:nth-child(4):contains('فعال') {
+                color: #8A2BE2; 
+            }
+
+            .expert-table td:nth-child(4):contains('غیر فعال') {
+                color: #f44336;
+            }
+</style>

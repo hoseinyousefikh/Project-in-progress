@@ -1,0 +1,49 @@
+﻿@using App.Domain.Core.Home.Entities.ListOrder
+@using App.Domain.Core.Home.Enum
+@using DwellMVC.Areas.Admin.CustomAuthorize
+@model List<Orders>
+
+<h2>لیست سفارشات</h2>
+
+@if (Model.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>شناسه سفارش</th>
+                <th>تاریخ درخواست</th>
+                <th>تاریخ اجرا</th>
+                <th>مدت زمان اجرا</th>
+                <th>وضعیت سفارش</th>
+                <th>وضعیت پرداخت</th>
+                <th>قیمت پایه</th>
+                <th>مشتری</th>
+                <th>پیشنهادات</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>@order.Id</td>
+                    <td>@order.RequestDate.ToString("yyyy/MM/dd")</td>
+                    <td>@order.ExecutionDate.ToString("yyyy/MM/dd")</td>
+                    <td>@order.ExecutionTime</td>
+                    <td>@order.OrderStatus.GetDisplayName()</td>
+                    <td>@order.PaymentStatus.GetDisplayName()</td>
+                    <td>@(order.BasePrice.HasValue? order.BasePrice.Value.ToString("N0") + " تومان" : "مشخص نشده")</td>
+                    <td>@order.Customer.User.FirstName @order.Customer.User.LastName</td>
+                    <td>
+                        <a href="@Url.Action("Proposals", "OrderProposals", new { orderId = order.Id, page = 1 })" class="btn btn-primary btn-sm">
+                            مشاهده پیشنهادات
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>هیچ سفارشی ثبت نشده است.</p>
+}

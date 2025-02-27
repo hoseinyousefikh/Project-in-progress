@@ -1,0 +1,125 @@
+﻿@using App.Domain.Core.Home.Entities.ListOrder
+@using App.Domain.Core.Home.Enum
+@model List<ExpertProposal>
+@{
+    ViewData["Title"] = "پیشنهادات سفارش";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center text-purple-700 mb-4">پیشنهادات سفارش</h2>
+
+    @if (Model.Any())
+    {
+        <div class="proposal-list">
+            @foreach (var proposal in Model)
+            {
+                <div class="proposal-card mb-4 p-4 rounded-lg shadow-lg bg-purple-100">
+                    <h4 class="text-purple-800">@proposal.Expert.User.FirstName @proposal.Expert.User.LastName</h4>
+ 
+                    <p class="text-purple-600">@proposal.ProposalDescription</p>
+
+                    <p class="text-purple-500">قیمت پیشنهادی: @(proposal.ProposedPrice.ToString("N0") + " تومان")</p>
+
+                    <p class="text-purple-500">تاریخ تکمیل کار: @proposal.WorkCompletionDate.ToString("yyyy/MM/dd")</p>
+
+                    <p class="text-purple-500">
+                        وضعیت پیشنهاد:
+                        @Html.DisplayNameFor(m => proposal.ProposalStatus)
+                    </p>
+
+                    <p class="text-purple-500">زمان پیشنهادی: @proposal.ProposedExecutionTime?.ToString(@"hh\:mm") ?? "نامشخص"</p>
+
+                    <p class="text-purple-500">تاریخ انتخاب مشتری: @proposal.CustomerSelectionDate?.ToString("yyyy/MM/dd") ?? "نامشخص"</p>
+
+                    <div class="rating">
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            <span class="star @((proposal.Expert.Rating >= i) ? "filled" : (proposal.Expert.Rating >= i - 0.5 ? "half" : ""))"></span>
+                        }
+                    </div>
+
+                    <p class="text-purple-500">رتبه کارشناس: @proposal.Expert.Rating</p>
+
+                    <p class="text-purple-500">آیا انتخاب شده توسط مشتری: @(proposal.IsSelectedByCustomer ? "بله" : "خیر")</p>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p>هیچ پیشنهادی برای این سفارش وجود ندارد.</p>
+    }
+
+    <div class="text-center mt-4">
+        <a href="@Url.Action("Index", "OrderProposals")" class="btn btn-lg btn-purple">
+            بازگشت به لیست سفارشات
+        </a>
+    </div>
+</div>
+
+<style>
+    .text-purple-700 {
+        color: #6b2f92;
+    }
+
+    .text-purple-800 {
+        color: #5a1e77;
+    }
+
+    .text-purple-600 {
+        color: #8a4cbb;
+    }
+
+    .text-purple-500 {
+        color: #9c57b7;
+    }
+
+    .bg-purple-100 {
+        background-color: #f3e8f7;
+    }
+
+    .proposal-card {
+        border: 2px solid #9c57b7;
+    }
+
+    .btn-purple {
+        background-color: #6b2f92;
+        color: white;
+    }
+
+        .btn-purple:hover {
+            background-color: #5a1e77;
+        }
+
+    .container {
+        max-width: 800px;
+    }
+
+    .shadow-lg {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .rounded-lg {
+        border-radius: 10px;
+    }
+
+    .rating {
+        display: inline-block;
+    }
+
+    .star {
+        font-size: 20px;
+        color: lightgray;
+        margin-right: 5px;
+    }
+
+        .star.filled {
+            color: gold;
+        }
+
+        .star.half {
+            background: linear-gradient(90deg, gold 50%, lightgray 50%);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+</style>

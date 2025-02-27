@@ -1,0 +1,65 @@
+﻿@model App.Domain.Core.Home.Entities.Categories.SubCategory
+
+@{
+    ViewData["Title"] = "تایید حذف زیرمجموعه";
+}
+
+<h2 class="text-center text-purple">@ViewData["Title"]</h2>
+
+<p class="text-center text-dark">آیا مطمئن هستید که می‌خواهید زیرمجموعه <strong>@Model.Name</strong> را حذف کنید؟</p>
+
+@if (!string.IsNullOrEmpty(Model.ImageUrl))
+{
+    <div class="text-center mt-3 image-container">
+        <label>تصویر زیرمجموعه:</label>
+        <img src="@Model.ImageUrl" alt="SubCategory Image" class="sub-category-image" />
+    </div>
+}
+
+<div class="text-center mt-3">
+    <form method="post" action="@Url.Action("DeleteSubCategory", "SubCategory", new { id = Model.Id })">
+        <button type="submit" class="btn btn-danger btn-block">حذف</button>
+    </form>
+    <a href="@Url.Action("Index", "SubCategory")" class="btn btn-secondary btn-block mt-3">بازگشت</a>
+</div>
+
+<style>
+    .text-purple {
+        color: #6a1b9a;
+    }
+
+    .btn-danger {
+        background-color: #d32f2f;
+        border-color: #d32f2f;
+    }
+
+        .btn-danger:hover {
+            background-color: #c62828;
+            border-color: #c62828;
+        }
+
+    .btn-secondary {
+        background-color: #9e9e9e;
+        border-color: #9e9e9e;
+    }
+
+        .btn-secondary:hover {
+            background-color: #757575;
+            border-color: #757575;
+        }
+
+    .image-container {
+        width: 200px; 
+        height: 200px; 
+        overflow: hidden; 
+        border-radius: 10px; 
+        display: inline-block;
+        border: 2px solid #6a1b9a;
+    }
+
+    .sub-category-image {
+        width: 100%; 
+        height: 100%; 
+        object-fit: cover; 
+    }
+</style>

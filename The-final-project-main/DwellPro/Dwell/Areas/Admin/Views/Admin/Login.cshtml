@@ -1,0 +1,66 @@
+﻿@model DwellMVC.Areas.Admin.Models.LoginViewModel
+
+@{
+    Layout = null;
+}
+@{
+    ViewData["Title"] = "ورود به پنل ادمین";
+}
+
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ورود به پنل ادمین</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body style="background-color: #f4f7fa; font-family: Arial, sans-serif; direction: rtl;">
+
+    <div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
+        <div class="card shadow-sm" style="width: 100%; max-width: 400px; border-radius: 10px; border: 1px solid #6a3d9e;">
+            <div class="card-body">
+                <h2 class="text-center mb-4" style="color: #6a3d9e;">ورود به پنل ادمین</h2>
+                <h4 class="card-title text-center mb-4" style="color: #6a3d9e;">لطفاً وارد حساب کاربری خود شوید</h4>
+
+                <form asp-action="Login" method="post">
+                    <div class="form-group">
+                        <label for="Username" class="font-weight-bold" style="color: #6a3d9e;">نام کاربری</label>
+                        <input asp-for="Username" id="Username" class="form-control" placeholder="نام کاربری خود را وارد کنید" />
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Password" class="font-weight-bold" style="color: #6a3d9e;">رمز عبور</label>
+                        <input asp-for="Password" type="password" id="Password" class="form-control" placeholder="رمز عبور خود را وارد کنید" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group form-check">
+                        <input asp-for="RememberMe" type="checkbox" class="form-check-input" id="RememberMe" />
+                        <label for="RememberMe" class="form-check-label" style="color: #6a3d9e;">مرا به خاطر بسپار</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block" style="background-color: #6a3d9e; border-color: #6a3d9e;">ورود</button>
+                </form>
+
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger mt-3">
+                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                        {
+                            <p>@error.ErrorMessage</p>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-beta2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
+

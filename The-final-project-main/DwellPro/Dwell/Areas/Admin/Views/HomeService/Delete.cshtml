@@ -1,0 +1,44 @@
+﻿@model App.Domain.Core.Home.Entities.Categories.HomeService
+
+@{
+    ViewData["Title"] = "حذف هوم سرویس";
+}
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="card" style="width: 500px; border-radius: 15px; border: 2px solid #6f42c1; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+        <div class="card-body">
+            <h4 class="card-title text-center text-purple">@ViewData["Title"]</h4>
+            <p class="text-center">آیا از حذف سرویس با نام <strong>@Model.Name</strong> اطمینان دارید؟</p>
+
+            <form method="post" action="@Url.Action("DeleteConfirmed", "HomeService", new { id = Model.Id })">
+                <button type="submit" class="btn btn-danger btn-block">حذف</button>
+            </form>
+            <a href="@Url.Action("Index", "HomeService")" class="btn btn-secondary btn-block mt-3">بازگشت</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .text-purple {
+        color: #6f42c1;
+    }
+
+    .card {
+        background-color: #f8f9fa;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+
+    .btn-secondary {
+        background-color: #6f42c1;
+        border-color: #6f42c1;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a32b3;
+            border-color: #5a32b3;
+        }
+</style>

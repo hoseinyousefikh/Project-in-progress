@@ -1,0 +1,67 @@
+﻿@model App.Domain.Core.Home.Entities.Users.User
+
+<div class="delete-container">
+    <h2>حذف کاربر</h2>
+
+    <p>آیا مطمئن هستید که می‌خواهید کاربر <strong>@Model.FirstName @Model.LastName</strong> را حذف کنید؟</p>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="confirmation-message">
+            <p>این اقدام قابل بازگشت نیست!</p>
+        </div>
+
+        <button type="submit" class="btn btn-danger">حذف کاربر</button>
+        <a href="@Url.Action("Index")" class="btn btn-secondary">بازگشت</a>
+    </form>
+</div>
+
+<style>
+    .delete-container {
+        max-width: 600px;
+        margin: 30px auto;
+        padding: 20px;
+        background-color: #ffdddd;
+        color: #333;
+        border-radius: 10px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        text-align: center;
+    }
+
+        .delete-container h2 {
+            color: #d9534f;
+        }
+
+    .confirmation-message {
+        margin: 20px 0;
+        color: #d9534f;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .btn-danger {
+        background-color: #d9534f;
+        color: white;
+        border: none;
+    }
+
+        .btn-danger:hover {
+            background-color: #c9302c;
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+        border: none;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+</style>

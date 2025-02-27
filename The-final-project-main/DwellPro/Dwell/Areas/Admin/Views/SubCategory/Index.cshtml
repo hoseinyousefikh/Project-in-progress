@@ -1,0 +1,69 @@
+﻿@model List<App.Domain.Core.Home.Entities.Categories.SubCategory>
+@{
+    ViewData["Title"] = "لیست زیرمجموعه‌ها";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-purple">لیست زیرمجموعه‌ها</h2>
+        <a href="/Admin/Dashboard/Index" class="btn btn-outline-danger">بازگشت به داشبورد</a>
+    </div>
+
+    <form method="get" class="d-flex align-items-center mb-3">
+        <label for="categoryFilter" class="form-label me-2">انتخاب دسته‌بندی:</label>
+        <select name="categoryId" id="categoryFilter" class="form-select form-select-sm me-2" style="width: auto;" onchange="this.form.submit()">
+            <option value="">همه دسته‌بندی‌ها</option>
+            @foreach (var category in ViewBag.Categories)
+            {
+                <option value="@category.Id" selected="@(category.Id == ViewBag.SelectedCategoryId ? "selected" : null)">@category.Name</option>
+            }
+        </select>
+        <a href="/Admin/SubCategory/Create" class="btn btn-success">افزودن زیرمجموعه</a>
+    </form>
+
+    <table class="table table-hover table-bordered text-center">
+        <thead class="table-dark">
+            <tr>
+                <th>شناسه</th>
+                <th>تصویر</th>
+                <th>نام</th>
+                <th>دسته‌بندی</th>
+                <th>عملیات</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var subCategory in Model)
+            {
+                <tr>
+                    <td>@subCategory.Id</td>
+                    <td><img src="@subCategory.ImageUrl" alt="تصویر" width="50" height="50" /></td>
+                    <td>@subCategory.Name</td>
+                    <td>@subCategory.Category.Name</td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                عملیات
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/Admin/SubCategory/Details/@subCategory.Id">جزئیات</a></li>
+                                <li><a class="dropdown-item" href="/Admin/SubCategory/Edit/@subCategory.Id">ویرایش</a></li>
+                                <li>
+                                    <a class="dropdown-item text-danger" href="@Url.Action("DeleteSubCategory", "SubCategory", new { id = subCategory.Id })">حذف</a>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<style>
+    .text-purple {
+        color: purple;
+    }
+</style>

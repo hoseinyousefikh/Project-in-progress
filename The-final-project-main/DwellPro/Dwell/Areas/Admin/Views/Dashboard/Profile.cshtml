@@ -1,0 +1,242 @@
+﻿@model App.Domain.Core.Home.Entities.Users.User
+
+@{
+    ViewData["Title"] = "پروفایل کاربری";
+}
+
+<h2>پروفایل کاربری</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<div class="profile-info">
+    <div class="profile-header">
+        <h3>اطلاعات پروفایل</h3>
+    </div>
+
+    <div class="profile-details">
+        <div class="profile-header-content">
+            <div class="profile-image">
+                <img src="@Model.ProfilePicture" alt="تصویر پروفایل" />
+            </div>
+
+            <div class="profile-name">
+                <p><strong>نام:</strong> @Model.FirstName @Model.LastName</p>
+                <p><strong>شهر:</strong> @Model.City?.Name</p>
+            </div>
+        </div>
+        <div class="logout-button">
+            <a href="@Url.Action("Index", "Dashboard")" title="خروج">
+                <i class="fa fa-sign-out"></i>
+            </a>
+        </div>
+        <div class="profile-info-table">
+            <table>
+
+                <tr>
+                    <td><strong>آدرس:</strong></td>
+                    <td>@Model.Address</td>
+                </tr>
+                <tr>
+                    <td><strong>شبا:</strong></td>
+                    <td>@Model.ShebaNumber</td>
+                </tr>
+                <tr>
+                    <td><strong>شماره کارت:</strong></td>
+                    <td>@Model.CardNumber</td>
+                </tr>
+                <tr>
+                    <td><strong>توضیحات:</strong></td>
+                    <td>@Model.Description</td>
+                </tr>
+                <tr>
+                    <td><strong>تاریخ ثبت:</strong></td>
+                    <td>@Model.RegisterAt.ToString("yyyy/MM/dd")</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="profile-actions">
+        <a href="@Url.Action("UpdatePro", "Dashboard")" class="btn btn-primary">ویرایش پروفایل</a>
+        <a href="@Url.Action("ChangePassword", "Dashboard")" class="btn btn-warning">تغییر پسورد</a>
+        <a href="@Url.Action("ChangeEmail", "Dashboard")" class="btn btn-info">تغییر ایمیل</a>
+    </div>
+</div>
+
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    h2, h3 {
+        color: #6a1b9a; 
+        text-align: center;
+    }
+
+    .logout-button {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background-color: #ff3b3b;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.3s ease;
+    }
+
+        .logout-button a {
+            color: white;
+            font-size: 20px;
+            text-decoration: none;
+        }
+
+        .logout-button:hover {
+            background-color: #cc0000;
+        }
+    .profile-info {
+        background-color: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-top: 30px;
+        max-width: 700px; 
+        margin: 20px auto;
+    }
+
+    .profile-header h3 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+
+    .profile-header-content {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .profile-image {
+        margin-right: 20px;
+    }
+
+        .profile-image img {
+            border: 3px solid #6a1b9a;
+            width: 150px; 
+            height: 150px; 
+            object-fit: cover; 
+        }
+
+    .profile-name p {
+        font-size: 1.2rem;
+        margin: 0;
+    }
+
+        .profile-name p strong {
+            color: #6a1b9a;
+        }
+
+
+    .profile-info-table {
+        margin-top: 20px;
+    }
+
+        .profile-info-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .profile-info-table table, .profile-info-table th, .profile-info-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .profile-info-table th {
+            background-color: #f4f4f4;
+            color: #6a1b9a;
+        }
+
+    .profile-actions {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+        .profile-actions a {
+            padding: 12px 20px;
+            margin: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+            .profile-actions a:hover {
+                opacity: 0.8;
+            }
+
+    .btn-primary {
+        background-color: #6a1b9a;
+        color: white;
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background-color: #9c4dcc;
+        }
+
+    .btn-warning {
+        background-color: #ff9800;
+        color: white;
+        border: none;
+    }
+
+        .btn-warning:hover {
+            background-color: #ff5722;
+        }
+
+    .btn-info {
+        background-color: #03a9f4;
+        color: white;
+        border: none;
+    }
+
+        .btn-info:hover {
+            background-color: #0288d1;
+        }
+
+    .alert {
+        margin: 20px auto;
+        max-width: 700px; 
+        text-align: center;
+    }
+
+    .alert-success {
+        background-color: #4caf50;
+        color: white;
+        border-radius: 5px;
+    }
+
+    .alert-danger {
+        background-color: #f44336;
+        color: white;
+        border-radius: 5px;
+    }
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
