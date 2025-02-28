@@ -1,13 +1,6 @@
 ﻿using App.Domain.Core.Home.Contract.Repositories.Categories;
 using App.Domain.Core.Home.Contract.Services.Categories;
 using App.Domain.Core.Home.Entities.Categories;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace App.Domain.Services.Home.Services.Categories
 {
@@ -50,6 +43,6 @@ namespace App.Domain.Services.Home.Services.Categories
         {
             return await _categoryRepository.DeleteAsync(id, cancellationToken);
         }
-      
+
     }
 }

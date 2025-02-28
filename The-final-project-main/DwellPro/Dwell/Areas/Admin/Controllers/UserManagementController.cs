@@ -190,6 +190,18 @@ namespace DwellMVC.Areas.Admin.Controllers
                     return RedirectToAction(nameof(Index));
                 }
 
+                if (currentUser.RoleType == RoleEnum.Expert && currentUser.ExpertDetails != null)
+                {
+                    if (currentUser.ExpertDetails.Rating < 0 || currentUser.ExpertDetails.Rating >= 5)
+                    {
+                        _logger.LogError("امتیاز باید بین 0 تا 5 باشد.");
+                        TempData["ErrorMessage"] = "امتیاز باید بین 0 تا 5 باشد.";
+                    }
+
+                    currentUser.ExpertDetails.Biography = user.ExpertDetails?.Biography;
+                    currentUser.ExpertDetails.Rating = user.ExpertDetails?.Rating ?? currentUser.ExpertDetails.Rating;
+                }
+
                 var result = await _userAppService.UpdateUserAsync(
                     user.Id,
                     user.FirstName,
@@ -200,7 +212,7 @@ namespace DwellMVC.Areas.Admin.Controllers
                     user.Address,
                     user.ShebaNumber,
                     user.CardNumber,
-                    currentStatus, 
+                    currentStatus,
                     CancellationToken.None
                 );
 
@@ -219,7 +231,8 @@ namespace DwellMVC.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = ex.Message;
+                _logger.LogError($"خطا در ویرایش کاربر: {ex.Message}");
+                TempData["ErrorMessage"] = "خطایی رخ داد، لطفا دوباره تلاش کنید.";
                 return RedirectToAction(nameof(Index));
             }
         }

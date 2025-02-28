@@ -5,6 +5,10 @@
 }
 
 <h2>@ViewData["Title"]</h2>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
 
 @TempData["SuccessMessage"]
 @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
