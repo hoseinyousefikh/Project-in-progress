@@ -1,0 +1,133 @@
+﻿@using App.Domain.Core.Home.Enum
+<div class="order-table-container">
+    <h2>سفارشات شما</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>شناسه</th>
+                <th>اسم هوم سرویس</th>
+                <th>تاریخ ثبت</th>
+                <th>وضعیت</th>
+                <th>وضعیت پرداخت</th>
+                <th>جزئیات سفارش</th>
+                <th>پیشنهادها</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>@order.Id</td>
+                    <td>@order.HomeServiceName.Name</td>
+                    <td>@order.RequestDate.ToString("yyyy-MM-dd")</td>
+                    <td>
+                        @switch (order.OrderStatus)
+                        {
+                            case OrderStatus.WaitingForExpertSelection:
+                                @:منتظر انتخاب متخصص
+                                break;
+                            case OrderStatus.WaitingForExpertProposal:
+                                @:منتظر پیشنهاد متخصص
+                                break;
+                            case OrderStatus.WaitingForExpertArrival:
+                                @:منتظر آمدن متخصص
+                                break;
+                            case OrderStatus.Completed:
+                                @:اتمام کار
+                                break;
+                        }
+                    </td>
+                    <td>
+                        @switch (order.PaymentStatus)
+                        {
+                            case PaymentStatus.Pending:
+                                @:پرداخت نشده
+                                break;
+                            case PaymentStatus.Paid:
+                                @:پرداخت شده
+                                break;
+                        }
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Details", "Order", new { id = order.Id })" class="btn btn-info">جزئیات سفارش</a>
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Proposals", "Order", new { orderId = order.Id })" class="btn btn-primary">پیشنهادها</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<style>
+    .order-table-container {
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+    }
+
+    table.table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        table.table th, table.table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        table.table th {
+            background-color: #f8d7da;
+            color: #333;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        table.table td {
+            background-color: #fff;
+            color: #666;
+            font-size: 14px;
+        }
+
+        table.table tbody tr:hover {
+            background-color: #f8d7da;
+            cursor: pointer;
+        }
+
+        table.table a.btn {
+            padding: 8px 16px;
+            font-size: 14px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-right: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        table.table a.btn-info {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+            table.table a.btn-info:hover {
+                background-color: #138496;
+            }
+
+        table.table a.btn-primary {
+            background-color: #f44336;
+            color: white;
+        }
+
+            table.table a.btn-primary:hover {
+                background-color: #d32f2f;
+            }
+
+    .order-table-container h2 {
+        color: #f44336;
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+</style>

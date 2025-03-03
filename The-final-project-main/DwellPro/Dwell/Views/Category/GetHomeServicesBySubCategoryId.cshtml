@@ -1,0 +1,126 @@
+﻿@model List<DwellMVC.Models.HomeServiceViewModel>
+<div class="home-services-wrapper">
+    <div class="home-services-container">
+      @foreach (var homeService in Model)
+{
+    <div class="home-service-card">
+        <div class="home-service-image">
+            <img src="@homeService.ImageUrl" alt="@homeService.Name">
+        </div>
+        <div class="home-service-info">
+            <h3>@homeService.Name</h3>
+            <p>@homeService.Description</p>
+            <p>قیمت پایه: @homeService.BasePrice تومان</p>
+            <p>تعداد بازدید: <span id="viewCount-@homeService.Id">@homeService.ViewCount</span></p>
+            
+            @if (User.Identity.IsAuthenticated) 
+            {
+                <a href="@Url.Action("CreateOrder", "Order", new { homeServiceId = homeService.Id })" class="btn btn-primary">ثبت سفارش</a>
+            }
+            else
+            {
+                <p class="text-danger">برای ثبت سفارش ابتدا وارد شوید.</p>  
+            }
+        </div>
+    </div>
+}
+
+        }
+    </div>
+</div>
+
+
+<style>
+    .home-services-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .home-services-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .home-service-card {
+        background-color: #ffebee;
+        padding: 15px;
+        border-radius: 10px;
+        width: 100%;
+        max-width: 500px;
+        display: flex;
+        flex-direction: row-reverse; /* تغییر به جهت برعکس */
+        gap: 20px; /* فاصله بین تصویر و توضیحات */
+        box-sizing: border-box;
+        transition: 0.3s;
+        cursor: pointer;
+        overflow: hidden;
+    }
+
+    .home-service-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        flex: 1; /* از کل فضا استفاده کند */
+    }
+
+    .home-service-image {
+        flex-shrink: 0; /* تصویر حجم را محدود می‌کند */
+        width: 150px; /* عرض ثابت برای تصویر */
+        height: 150px;
+        overflow: hidden;
+        border-radius: 10px;
+    }
+
+        .home-service-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    .home-service-card h3 {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .home-service-card p {
+        font-size: 14px;
+        margin: 5px 0;
+    }
+
+    .home-service-card button {
+        background-color: #f44336;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 10px;
+        max-width: 200px;
+    }
+
+        .home-service-card button:hover {
+            background-color: #d32f2f;
+        }
+</style>
+
+<script>
+    function increaseViewCount(serviceId) {
+        let viewCountElement = document.getElementById(`viewCount-${serviceId}`);
+        let currentViewCount = parseInt(viewCountElement.innerText);
+        viewCountElement.innerText = currentViewCount + 1;
+
+        fetch(`/Category/IncreaseViewCount?serviceId=${serviceId}`, {
+            method: 'POST'
+        });
+
+        window.location.href = `/Order/Create?serviceId=${serviceId}`;
+    }
+</script>

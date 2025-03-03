@@ -185,29 +185,36 @@
                     }">
         @model DwellMVC.Models.HomePageViewModel
 
+        @{
+            string[] backgroundColors = { "green", "brown", "orange", "blue", "yellow", "red", "darkblue", "violet" };
+            int index = 0;
+        }
+
         @if (Model.Categories != null && Model.Categories.Any())
         {
             <div class="swiper-wrapper row cols-xl-8 cols-lg-7 cols-md-6 cols-sm-4 cols-xs-3 cols-2">
                 @foreach (var category in Model.Categories)
                 {
                     <div class="swiper-slide category category-icon">
-                        <a href="@Url.Action("ViewCategory", "Category", new { categoryId = category.Id })">
-                            <figure class="category-media">
+                        <a href="@Url.Action("GetSubCategoriesByCategoryId", "Category", new { categoryId = category.Id })">
+                            <figure class="category-media" style="background-color: @backgroundColors[index];">
                                 <img src="@category.ImageUrl" alt="@category.Name" />
                             </figure>
                         </a>
                         <div class="category-content">
                             <h4 class="category-name">
-                                <a href="@Url.Action("ViewCategory", "Category", new { categoryId = category.Id })">@category.Name</a>
+                                <a href="@Url.Action("GetSubCategoriesByCategoryId", "Category", new { categoryId = category.Id })">@category.Name</a>
                             </h4>
                         </div>
                     </div>
+                    index = (index + 1) % backgroundColors.Length;
+
                 }
             </div>
         }
         else
         {
-            <p>No categories available.</p> 
+            <p>No categories available.</p>
         }
 
 

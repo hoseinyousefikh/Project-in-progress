@@ -1,0 +1,146 @@
+﻿@model DwellMVC.Models.CreateOrderViewModel
+
+@{
+    ViewData["Title"] = "ثبت سفارش";
+}
+
+<h2>ثبت سفارش برای سرویس خانگی: @Model.SelectedHomeService.Name</h2>
+
+<div class="home-services-wrapper">
+    <div class="home-service-card">
+        <div class="home-service-image">
+            <img src="@Model.SelectedHomeService.ImageUrl" alt="@Model.SelectedHomeService.Name">
+        </div>
+        <div class="home-service-info">
+            <h3>@Model.SelectedHomeService.Name</h3>
+            <p>@Model.SelectedHomeService.Description</p>
+            <p>قیمت پایه: @Model.SelectedHomeService.BasePrice تومان</p>
+            <p>تعداد بازدید: <span id="viewCount-@Model.SelectedHomeService.Id">@Model.SelectedHomeService.ViewCount</span></p>
+
+            <form method="post" action="@Url.Action("CreateOrder", "Order")">
+                @Html.AntiForgeryToken()
+
+                <input type="hidden" name="HomeServiceId" value="@Model.HomeServiceId" />
+
+                <div class="form-group">
+                    <label for="ExecutionDate">تاریخ انجام کار</label>
+                    <input type="date" name="ExecutionDate" value="@Model.ExecutionDate.ToString("yyyy-MM-dd")" required class="form-control" />
+                    @Html.ValidationMessageFor(m => m.ExecutionDate, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <label for="ExecutionTime">زمان انجام کار</label>
+                    <input type="time" name="ExecutionTime" value="@Model.ExecutionTime.ToString(@"hh\:mm")" required class="form-control" />
+                    @Html.ValidationMessageFor(m => m.ExecutionTime, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <label for="Description">توضیحات</label>
+                    <textarea name="Description" rows="4" class="form-control">@Model.Description</textarea>
+                    @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <label for="BasePrice">قیمت پایه</label>
+                    <input type="number" name="BasePrice" value="@Model.BasePrice" class="form-control" />
+                    @Html.ValidationMessageFor(m => m.BasePrice, "", new { @class = "text-danger" })
+                </div>
+
+                <button type="submit" class="btn btn-primary">ثبت سفارش</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .home-services-wrapper {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .home-service-card {
+        width: 100%;
+        max-width: 450px;
+        border: 2px solid #f8d7da;
+        border-radius: 12px;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease;
+    }
+
+        .home-service-card:hover {
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+
+    .home-service-image img {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+    }
+
+    .home-service-info h3 {
+        font-size: 20px;
+        color: #333;
+        margin-top: 10px;
+    }
+
+    .home-service-info p {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 15px;
+    }
+
+    .home-service-info form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .home-service-info label {
+        font-size: 14px;
+        color: #555;
+    }
+
+    .home-service-info input,
+    .home-service-info textarea {
+        padding: 10px;
+        border: 1px solid #f8d7da;
+        border-radius: 8px;
+        font-size: 14px;
+        outline: none;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .home-service-info input:focus,
+        .home-service-info textarea:focus {
+            border-color: #f44336;
+            box-shadow: 0 0 5px rgba(244, 67, 54, 0.5);
+        }
+
+    .home-service-info button {
+        padding: 12px;
+        background-color: #f44336;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .home-service-info button:hover {
+            background-color: #d32f2f;
+        }
+
+    .home-service-info textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    .home-service-info input[type="date"],
+    .home-service-info input[type="time"] {
+        max-width: 200px;
+    }
+</style>

@@ -17,22 +17,22 @@
     <!-- WebFont.js -->
     <script>
         WebFontConfig = {
-            google: { families: ['Poppins:400,500,600,700,800','Yellowtail:400'] }
+        google: { families: ['Poppins:400,500,600,700,800','Yellowtail:400'] }
         };
         (function (d) {
-            var wf = d.createElement('script'), s = d.scripts[0];
-            wf.src = '~/asset/assets/js/webfont.js';
-            wf.async = true;
-            s.parentNode.insertBefore(wf, s);
+        var wf = d.createElement('script'), s = d.scripts[0];
+        wf.src = '~/asset/assets/js/webfont.js';
+        wf.async = true;
+        s.parentNode.insertBefore(wf, s);
         })(document);
     </script>
 
     <link rel="preload" href="~/asset/assets/vendor/fontawesome-free/webfonts/fa-regular-400.woff2" as="font" type="font/woff2"
-          crossorigin="anonymous">
+    crossorigin="anonymous">
     <link rel="preload" href="~/asset/assets/vendor/fontawesome-free/webfonts/fa-solid-900.woff2" as="font" type="font/woff2"
-          crossorigin="anonymous">
+    crossorigin="anonymous">
     <link rel="preload" href="~/asset/assets/vendor/fontawesome-free/webfonts/fa-brands-400.woff2" as="font" type="font/woff2"
-          crossorigin="anonymous">
+    crossorigin="anonymous">
     <link rel="preload" href="~/asset/assets/fonts/wolmart87d5.ttf?png09e" as="font" type="font/ttf" crossorigin="anonymous">
 
     <!-- Vendor CSS -->
@@ -61,6 +61,11 @@
                         <span class="divider d-lg-show"></span>
                         <a href="blog.html" class="d-lg-show">بلاگ </a>
                         <a href="contact-us.html" class="d-lg-show">تماس با ما </a>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <a href="@Url.Action("GetOrdersForUser", "Order")" class="d-lg-show">سفارشات من</a>
+                        }
+
                         @if (User.Identity.IsAuthenticated)
                         {
                             <a href="@Url.Action("Details", "Authentication")" class="d-lg-show">حساب من</a>
@@ -101,21 +106,26 @@
                                 </select>
                             </div>
                             <input type="text" class="form-control bg-white" name="search" id="search"
-                                   placeholder="جستجو کنید ..." required />
+                            placeholder="جستجو کنید ..." required />
                             <button class="btn btn-search" type="submit">
                                 <i class="w-icon-search"></i>
                             </button>
                         </form>
                     </div>
                     <div class="header-right ml-4">
+
                         <div class="dropdown cart-dropdown cart-offcanvas mr-0 mr-lg-2 text-white">
                             <div class="cart-overlay"></div>
-                            <a href="#" class="cart-toggle label-down link">
-                                <i class="w-icon-cart">
+                           
+
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <a href="#" class="cart-toggle label-down link">
+                                    <i class="w-icon-cart">
                                     <span class="cart-count text-white">2</span>
                                 </i>
                                 <span class="cart-label">سفارشات</span>
-                            </a>
+                            </a>}
                             <div class="dropdown-box">
                                 <div class="cart-header">
                                     <span>سفارشات من  </span>
@@ -257,16 +267,8 @@
                             <nav class="main-nav">
                                 <ul class="menu active-underline">
                                     <li class="active">
-                                        <a href="demo11.html">خانه </a>
+                                        <a href="~/Home/Index">خانه </a>
                                     </li>
-
-
-
-
-
-
-
-
                                 </ul>
                             </nav>
                         </div>

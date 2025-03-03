@@ -1,0 +1,67 @@
+﻿@model List<DwellMVC.Models.SubCategoryViewModel>
+
+
+<div class="subcategories-wrapper">
+    <div class="subcategories-container">
+        @foreach (var subCategory in Model)
+        {
+            <div class="subcategory-card" onclick="location.href='/Category/GetHomeServicesBySubCategoryId?subCategoryId=@subCategory.Id'">
+                <img src="@subCategory.ImageUrl" alt="@subCategory.Name">
+                <h3>@subCategory.Name</h3>
+            </div>
+        }
+    </div>
+</div>
+
+
+<style>
+    .subcategories-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .subcategories-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .subcategory-card {
+        background-color: #ffebee;
+        padding: 0;
+        border-radius: 10px;
+        width: 200px;
+        height: 250px;
+        text-align: center;
+        transition: 0.3s;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+        .subcategory-card:hover {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .subcategory-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 0;
+        }
+
+        .subcategory-card h3 {
+            margin: auto 0;
+            font-size: 16px;
+            padding: 10px;
+        }
+</style>

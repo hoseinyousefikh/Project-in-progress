@@ -332,7 +332,7 @@ namespace App.Domain.Services.Home.Services.Users
                 throw new Exception("کاربر پیدا نشد.");
             }
 
-           
+
 
             user.FirstName = firstName;
             user.LastName = lastName;
@@ -353,5 +353,12 @@ namespace App.Domain.Services.Home.Services.Users
 
             return IdentityResult.Success;
         }
+
+        public async Task<Experts> GetExpertByIdAsync(int id, CancellationToken cancellationToken)
+        {
+            return await _expertRepository.GetByIdAsync(id, cancellationToken);
+        }
+
+
     }
 }

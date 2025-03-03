@@ -1,4 +1,5 @@
-﻿using App.Domain.Core.Home.Enum;
+﻿using App.Domain.Core.Home.Entities.Users;
+using App.Domain.Core.Home.Enum;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,8 @@ namespace App.Domain.Core.Home.Contract.Services.Users
                                         string? shebaNumber,
                                         string? cardNumber,
                                         CancellationToken cancellationToken);
-        
+        Task<Experts> GetExpertByIdAsync(int id, CancellationToken cancellationToken);
+
+
         }
 }

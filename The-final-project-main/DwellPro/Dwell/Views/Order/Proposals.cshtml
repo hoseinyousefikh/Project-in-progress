@@ -1,0 +1,149 @@
+﻿@model DwellMVC.Models.ProposalViewModel
+
+<div class="proposal-container">
+    <h2>پیشنهادات برای سفارش @Model.OrderId</h2>
+
+    @if (Model.Proposals == null || !Model.Proposals.Any())
+    {
+        <p class="no-proposals">پیشنهادی موجود نیست</p>
+    }
+    else
+    {
+        <table class="proposal-table">
+            <thead>
+                <tr>
+                    <th>شناسه</th>
+                    <th>نام کارشناس</th>
+                    <th>تاریخ پیشنهاد</th>
+                    <th>قیمت پیشنهادی</th>
+                    <th>تاریخ اتمام کار</th>
+                    <th>وضعیت</th>
+                    <th>عملیات</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Proposals)
+                {
+                    <tr>
+                        <td>@item.Proposal.Id</td>
+                        <td>
+                            @if (item.Expert?.User != null)
+                            {
+                                @item.Expert.User.FirstName@item.Expert.User.LastName
+                            }
+                            else
+                            {
+                                <span>اکسپرت یافت نشد</span>
+                            }
+                        </td>
+                        <td>@item.Proposal.ProposalDate?.ToString("yyyy-MM-dd")</td>
+                        <td>@item.Proposal.ProposedPrice</td>
+                        <td>@item.Proposal.WorkCompletionDate.ToString("yyyy-MM-dd")</td>
+                        <td>
+                            @if (!Model.Proposals.Any(p => p.Proposal.IsSelectedByCustomer))
+                            {
+                                <form method="post" asp-action="AcceptProposal" asp-controller="Order">
+                                    <input type="hidden" name="proposalId" value="@item.Proposal.Id" />
+                                    <button type="submit" class="btn btn-success">تایید</button>
+                                </form>
+                            }
+                            else
+                            {
+                                @if (item.Proposal.IsSelectedByCustomer)
+                                {
+                                    <span class="badge badge-success">تایید شده</span>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-danger" disabled>رد شده</button>
+                                }
+                            }
+                        </td>
+                        <td>
+                            <a href="@Url.Action("AddComment", "Order", new { orderId = Model.OrderId })" class="btn btn-dark">ثبت نظر و امتیاز</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+<style>
+    /* کل کادر اصلی */
+    .proposal-container {
+        background-color: #ffe6e6; /* پس‌زمینه قرمز کمرنگ */
+        padding: 20px;
+        border-radius: 15px;
+        border: 2px solid #ff9999;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        max-width: 90%;
+        margin: 20px auto;
+        text-align: center;
+    }
+
+    /* پیام در صورت نبود پیشنهاد */
+    .no-proposals {
+        font-size: 18px;
+        color: #ff6666;
+        font-weight: bold;
+    }
+
+    /* جدول استایل */
+    .proposal-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+        text-align: center;
+    }
+
+        /* استایل برای سرصفحه جدول */
+        .proposal-table th {
+            background: #ff6666;
+            color: white;
+            padding: 12px;
+        }
+
+        /* استایل برای سلول‌های جدول */
+        .proposal-table td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* هاور برای سطرها */
+        .proposal-table tbody tr:hover {
+            background-color: #ffcccc;
+            transition: 0.3s;
+        }
+
+    /* وضعیت‌ها */
+    .badge-success {
+        background-color: #28a745;
+        color: white;
+        padding: 6px 12px;
+        border-radius: 6px;
+    }
+
+    .badge-danger {
+        background-color: #dc3545;
+        color: white;
+        padding: 6px 12px;
+        border-radius: 6px;
+    }
+
+    /* دکمه‌ها */
+    .btn-dark {
+        background-color: #343a40;
+        color: white;
+        padding: 8px 14px;
+        border-radius: 6px;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+        .btn-dark:hover {
+            background-color: #23272b;
+        }
+</style>

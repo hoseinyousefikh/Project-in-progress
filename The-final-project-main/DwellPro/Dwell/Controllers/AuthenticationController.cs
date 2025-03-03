@@ -85,7 +85,6 @@ namespace DwellMVC.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        // متد GET برای بارگذاری فرم تغییر رمز عبور
         [HttpGet]
         public IActionResult UpdatePassword()
         {

@@ -90,5 +90,15 @@ namespace App.Domain.AppServices.Home.AppServices.Users
         {
             return await _userService.UpdateUserAsync(userId, firstName, lastName, cityId, profilePicture, description, address, shebaNumber, cardNumber, cancellationToken);
         }
+
+        public async Task<Experts> GetExpertByIdAsync(int id, CancellationToken cancellationToken)
+        {
+            var expert = await _userService.GetExpertByIdAsync(id, cancellationToken);
+            if (expert != null && !expert.IsDeleted && expert.RoleStatus == UserStatus.Active)
+            {
+                return expert;
+            }
+            throw new Exception("Expert not found, not approved, deleted, or inactive");
+        }
     }
 }
