@@ -13,8 +13,20 @@ namespace App.Domain.Core.Home.Contract.Services.Users
         Task<IdentityResult> RegisterAsync(string firstName, string lastName, string email, string password, string confirmPassword, int cityId, RoleEnum roleType, CancellationToken cancellationToken);
         Task<IdentityResult> Login(string username, string password, bool rememberMe);
         Task<IdentityResult> UpdateUserAsync(int userId, string firstName, string lastName, int? cityId, string? profilePicture, string? description, string? address, string? shebaNumber, string? cardNumber, UserStatus roleStatus, CancellationToken cancellationToken);
-        Task<IdentityResult> UpdatePasswordAsync(int userId, string newPassword, string confirmPassword, CancellationToken cancellationToken);
+        Task<IdentityResult> UpdatePasswordAsync(int userId, string currentPassword, string newPassword, string confirmPassword, CancellationToken cancellationToken);
         Task<IdentityResult> UpdateEmailAsync(int userId, string newEmail, CancellationToken cancellationToken);
         Task<IdentityResult> DeleteUserAsync(int userId, CancellationToken cancellationToken);
-    }
+        Task<IdentityResult> UpdateUserAsync(
+                                        int userId,
+                                        string firstName,
+                                        string lastName,
+                                        int? cityId,
+                                        string? profilePicture,
+                                        string? description,
+                                        string? address,
+                                        string? shebaNumber,
+                                        string? cardNumber,
+                                        CancellationToken cancellationToken);
+        
+        }
 }

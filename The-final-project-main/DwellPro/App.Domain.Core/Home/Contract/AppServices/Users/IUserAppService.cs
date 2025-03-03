@@ -21,10 +21,21 @@ namespace App.Domain.Core.Home.Contract.AppServices.Users
             string? description, string? address, string? shebaNumber, string? cardNumber,
             UserStatus roleStatus, CancellationToken cancellationToken);
 
-        Task<IdentityResult> UpdatePasswordAsync(int userId, string newPassword, string confirmPassword, CancellationToken cancellationToken);
-
+        Task<IdentityResult> UpdatePasswordAsync(int userId, string currentPassword, string newPassword, string confirmPassword, CancellationToken cancellationToken);
         Task<IdentityResult> UpdateEmailAsync(int userId, string newEmail, CancellationToken cancellationToken);
 
         Task<IdentityResult> DeleteUserAsync(int userId, CancellationToken cancellationToken);
+        Task SignOutCustomerAsync();
+        Task<IdentityResult> UpdateUserAsync(
+                                        int userId,
+                                        string firstName,
+                                        string lastName,
+                                        int? cityId,
+                                        string? profilePicture,
+                                        string? description,
+                                        string? address,
+                                        string? shebaNumber,
+                                        string? cardNumber,
+                                        CancellationToken cancellationToken);
     }
 }

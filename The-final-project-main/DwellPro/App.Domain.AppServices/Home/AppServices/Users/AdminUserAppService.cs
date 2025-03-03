@@ -106,36 +106,38 @@ namespace App.Domain.AppServices.Home.AppServices.Users
 
         public async Task<string> EditProfileAndUploadImage(int userId, IFormFile profilePicture, string existingImageUrl, CancellationToken cancellationToken)
         {
+            if (profilePicture == null || profilePicture.Length == 0)
+            {
+                return existingImageUrl;
+            }
+
             string profileImagePath = existingImageUrl;
 
-            if (profilePicture != null && profilePicture.Length > 0)
+            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+
+            if (!Directory.Exists(uploadsFolder))
             {
-                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
-
-                if (!Directory.Exists(uploadsFolder))
-                {
-                    Directory.CreateDirectory(uploadsFolder);
-                }
-
-                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(profilePicture.FileName);
-                var filePath = Path.Combine(uploadsFolder, fileName);
-
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    await profilePicture.CopyToAsync(fileStream, cancellationToken);
-                }
-
-                if (!string.IsNullOrEmpty(existingImageUrl))
-                {
-                    var oldImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", existingImageUrl.TrimStart('/'));
-                    if (System.IO.File.Exists(oldImagePath))
-                    {
-                        System.IO.File.Delete(oldImagePath);
-                    }
-                }
-
-                profileImagePath = "/uploads/" + fileName;
+                Directory.CreateDirectory(uploadsFolder);
             }
+
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(profilePicture.FileName);
+            var filePath = Path.Combine(uploadsFolder, fileName);
+
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await profilePicture.CopyToAsync(fileStream, cancellationToken);
+            }
+
+            if (!string.IsNullOrEmpty(existingImageUrl))
+            {
+                var oldImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", existingImageUrl.TrimStart('/'));
+                if (System.IO.File.Exists(oldImagePath))
+                {
+                    System.IO.File.Delete(oldImagePath);
+                }
+            }
+
+            profileImagePath = "/uploads/" + fileName;
 
             return profileImagePath;
         }

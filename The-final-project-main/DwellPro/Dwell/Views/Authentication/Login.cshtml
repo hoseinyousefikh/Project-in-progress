@@ -1,0 +1,95 @@
+﻿
+@model App.Domain.Core.Home.DTO.LoginDto
+
+@{
+    ViewData["Title"] = "ورود";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow-lg border-0 rounded" style="border-radius: 15px; border: 1px solid #e57373;">
+                <div class="card-header text-white text-center" style="background-color: #b71c1c;">
+                    <h3>ورود</h3>
+                </div>
+                <div class="card-body" style="background-color: #f5f5f5; border-radius: 15px;">
+                    <form asp-action="Login" method="post">
+                        <div class="mb-3">
+                            <label asp-for="Username" class="form-label">ایمیل</label>
+                            <input asp-for="Username" class="form-control input-field" />
+                            <span asp-validation-for="Username" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Password" class="form-label">گذرواژه</label>
+                            <input asp-for="Password" type="password" class="form-control input-field" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input asp-for="RememberMe" class="form-check-input" />
+                            <label asp-for="RememberMe" class="form-check-label">مرا به خاطر بسپار</label>
+                        </div>
+
+                        <button type="submit" class="btn w-100 text-white" style="background-color: #b71c1c;">
+                            ورود
+                        </button>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <p>حساب کاربری ندارید؟ <a asp-action="Register" class="text-danger">اینجا ثبت‌نام کنید</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<style>
+    .input-field {
+        border-radius: 8px;
+        padding: 10px;
+        transition: all 0.3s ease;
+    }
+
+        .input-field:hover {
+            border-color: #c62828;
+            font-weight: bold;
+        }
+
+        .input-field:focus {
+            border-color: #c62828;
+            box-shadow: 0 0 5px rgba(204, 51, 51, 0.8);
+            font-weight: bold;
+        }
+
+    .card {
+        border-radius: 15px;
+        border: 1px solid #e57373;
+        padding: 15px; 
+    }
+
+    .card-header {
+        background-color: #b71c1c;
+        border-radius: 15px 15px 0 0;
+        padding: 10px; 
+    }
+
+    .card-footer {
+        background-color: #f5f5f5;
+        border-radius: 0 0 15px 15px;
+        padding: 10px; 
+    }
+
+    button {
+        background-color: #b71c1c;
+        border-radius: 5px;
+    }
+
+        button:hover {
+            background-color: #c62828;
+        }
+</style>
+

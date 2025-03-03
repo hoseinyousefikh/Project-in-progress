@@ -1,7 +1,9 @@
 ﻿using App.Domain.Core.Home.Contract.AppServices.Users;
 using App.Domain.Core.Home.Contract.Services.Users;
+using App.Domain.Core.Home.Entities.Users;
 using App.Domain.Core.Home.Enum;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +15,14 @@ namespace App.Domain.AppServices.Home.AppServices.Users
     public class UserAppService : IUserAppService
     {
         private readonly IUserService _userService;
+        private readonly SignInManager<User> _signInManager;
+        private readonly ILogger<AdminUserAppService> _logger;
 
-        public UserAppService(IUserService userService)
+        public UserAppService(IUserService userService, SignInManager<User> signInManager, ILogger<AdminUserAppService> logger)
         {
             _userService = userService;
+            _logger = logger;
+            _signInManager = signInManager;
         }
 
         public Task<IdentityResult> RegisterAsync(
@@ -39,10 +45,11 @@ namespace App.Domain.AppServices.Home.AppServices.Users
             return _userService.UpdateUserAsync(userId, firstName, lastName, cityId, profilePicture, description, address, shebaNumber, cardNumber, roleStatus, cancellationToken);
         }
 
-        public Task<IdentityResult> UpdatePasswordAsync(int userId, string newPassword, string confirmPassword, CancellationToken cancellationToken)
+        public async Task<IdentityResult> UpdatePasswordAsync(int userId, string currentPassword, string newPassword, string confirmPassword, CancellationToken cancellationToken)
         {
-            return _userService.UpdatePasswordAsync(userId, newPassword, confirmPassword, cancellationToken);
+            return await _userService.UpdatePasswordAsync(userId, currentPassword, newPassword, confirmPassword, cancellationToken);
         }
+
 
         public Task<IdentityResult> UpdateEmailAsync(int userId, string newEmail, CancellationToken cancellationToken)
         {
@@ -52,6 +59,36 @@ namespace App.Domain.AppServices.Home.AppServices.Users
         public Task<IdentityResult> DeleteUserAsync(int userId, CancellationToken cancellationToken)
         {
             return _userService.DeleteUserAsync(userId, cancellationToken);
+        }
+        public async Task SignOutCustomerAsync()
+        {
+            try
+            {
+                _logger.LogInformation("Customer user is signing out.");
+
+                await _signInManager.SignOutAsync();
+
+                _logger.LogInformation("Customer user signed out successfully.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while signing out the customer user.");
+                throw;
+            }
+        }
+        public async Task<IdentityResult> UpdateUserAsync(
+                                        int userId,
+                                        string firstName,
+                                        string lastName,
+                                        int? cityId,
+                                        string? profilePicture,
+                                        string? description,
+                                        string? address,
+                                        string? shebaNumber,
+                                        string? cardNumber,
+                                        CancellationToken cancellationToken)
+        {
+            return await _userService.UpdateUserAsync(userId, firstName, lastName, cityId, profilePicture, description, address, shebaNumber, cardNumber, cancellationToken);
         }
     }
 }

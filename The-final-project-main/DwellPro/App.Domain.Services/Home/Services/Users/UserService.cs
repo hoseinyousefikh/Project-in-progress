@@ -217,7 +217,7 @@ namespace App.Domain.Services.Home.Services.Users
         }
 
 
-        public async Task<IdentityResult> UpdatePasswordAsync(int userId, string newPassword, string confirmPassword, CancellationToken cancellationToken)
+        public async Task<IdentityResult> UpdatePasswordAsync(int userId, string currentPassword, string newPassword, string confirmPassword, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null)
@@ -225,17 +225,12 @@ namespace App.Domain.Services.Home.Services.Users
                 throw new Exception("User not found.");
             }
 
-            if (user.RoleType == RoleEnum.Admin)
-            {
-                throw new Exception("Admin users are not allowed to update their password.");
-            }
-
             if (newPassword != confirmPassword)
             {
                 throw new Exception("Password and Confirm Password do not match.");
             }
 
-            var passwordValidationResult = await _userManager.ChangePasswordAsync(user, user.PasswordHash, newPassword);
+            var passwordValidationResult = await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
             if (!passwordValidationResult.Succeeded)
             {
                 return passwordValidationResult;
@@ -315,6 +310,45 @@ namespace App.Domain.Services.Home.Services.Users
             if (!result.Succeeded)
             {
                 return result;
+            }
+
+            return IdentityResult.Success;
+        }
+        public async Task<IdentityResult> UpdateUserAsync(
+                                         int userId,
+                                         string firstName,
+                                         string lastName,
+                                         int? cityId,
+                                         string? profilePicture,
+                                         string? description,
+                                         string? address,
+                                         string? shebaNumber,
+                                         string? cardNumber,
+                                         CancellationToken cancellationToken)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user == null)
+            {
+                throw new Exception("کاربر پیدا نشد.");
+            }
+
+           
+
+            user.FirstName = firstName;
+            user.LastName = lastName;
+
+            user.CityId = cityId.HasValue ? cityId.Value : 0;
+
+            user.ProfilePicture = profilePicture;
+            user.Description = description;
+            user.Address = address;
+            user.ShebaNumber = shebaNumber;
+            user.CardNumber = cardNumber;
+
+            var updateResult = await _userManager.UpdateAsync(user);
+            if (!updateResult.Succeeded)
+            {
+                return updateResult;
             }
 
             return IdentityResult.Success;

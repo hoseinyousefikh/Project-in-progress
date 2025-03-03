@@ -1,5 +1,8 @@
-﻿using App.Domain.Core.Home.Contract.Repositories.Categories;
+﻿using App.Domain.AppServices.Home.AppServices.Categories;
+using App.Domain.Core.Home.Contract.AppServices.Categories;
+using App.Domain.Core.Home.Contract.Repositories.Categories;
 using Dwell.Models;
+using DwellMVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Threading;
@@ -12,25 +15,60 @@ namespace Dwell.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly ICategoryRepository _categoryRepository;
         private readonly ISubCategoryRepository _subCategoryRepository;
-        private readonly IHomeServiceRepository _homeServiceRepository;
+        private readonly IHomeServiceAppService _homeServiceAppService;
+        private readonly ICategoryAppService _categoryAppService;
+
 
         public HomeController(ILogger<HomeController> logger,
             ICategoryRepository categoryRepository,
-            ISubCategoryRepository subCategoryRepository,
-            IHomeServiceRepository homeServiceRepository)
+            ISubCategoryRepository subCategoryRepository,IHomeServiceAppService homeServiceAppService
+           , ICategoryAppService categoryAppService)
         {
             _logger = logger;
             _categoryRepository = categoryRepository;
             _subCategoryRepository = subCategoryRepository;
-            _homeServiceRepository = homeServiceRepository;
+            _categoryAppService = categoryAppService;
+            _homeServiceAppService = homeServiceAppService;
         }
 
-        public IActionResult Index(CancellationToken cancellationToken)
+
+        [HttpGet]
+        public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            //var result = await _categoryRepository.GetAllAsync(cancellationToken);
-            //return View(result);
-            return View();
+            var categories = await _categoryAppService.GetAllCategoriesAsync(cancellationToken);
+
+            if (categories == null)
+            {
+                return NotFound();
+            }
+
+            var allHomeServices = await _homeServiceAppService.GetAllHomeServicesAsync(cancellationToken);
+
+            if (allHomeServices == null)
+            {
+                return NotFound();
+            }
+
+            var topHomeServices = allHomeServices
+                .OrderByDescending(hs => hs.ViewCount)
+                .Take(5)
+                .ToList();
+
+            var latestHomeServices = allHomeServices
+                .OrderByDescending(hs => hs.Id) 
+                .Take(2)
+                .ToList();
+
+            var viewModel = new HomePageViewModel
+            {
+                Categories = categories,
+                TopHomeServices = topHomeServices,
+                LatestHomeServices = latestHomeServices 
+            };
+
+            return View(viewModel);
         }
+
         public ActionResult Details()
         {
             ViewBag.Message = "این صفحه جزئیات کارت است.";
