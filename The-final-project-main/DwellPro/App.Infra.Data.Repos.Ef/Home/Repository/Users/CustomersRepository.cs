@@ -42,7 +42,21 @@ namespace App.Infra.Data.Repos.Ef.Home.Repository.Users
 
             throw new Exception("Customer not found.");
         }
+        public async Task<Customers> GetByCustomerIdAsync(int id, CancellationToken cancellationToken)
+        {
+            var result = await _context.Customers
+                .Include(c => c.User)
+                .Include(c => c.Orders)
+                .Where(c => c.Id == id && !c.IsDeleted)
+                .FirstOrDefaultAsync(cancellationToken);
 
+            if (result != null)
+            {
+                return result;
+            }
+
+            throw new Exception("Customer not found.");
+        }
         public async Task<bool> AddAsync(Customers customer, CancellationToken cancellationToken)
         {
             await _context.Customers.AddAsync(customer, cancellationToken);

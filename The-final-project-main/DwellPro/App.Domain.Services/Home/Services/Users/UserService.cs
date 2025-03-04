@@ -358,6 +358,14 @@ namespace App.Domain.Services.Home.Services.Users
         {
             return await _expertRepository.GetByIdAsync(id, cancellationToken);
         }
+        public async Task<Customers> GetCustomerByIdAsync(int id, CancellationToken cancellationToken)
+        {
+            return await _customersRepository.GetByCustomerIdAsync(id, cancellationToken);
+        }
+        public async Task<IdentityResult> UpdateUser(User user, CancellationToken cancellationToken)
+        {
+            return await _userManager.UpdateAsync(user);
+        }
 
 
     }

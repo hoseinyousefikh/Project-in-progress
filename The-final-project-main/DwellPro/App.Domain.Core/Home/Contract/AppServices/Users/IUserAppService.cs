@@ -39,5 +39,7 @@ namespace App.Domain.Core.Home.Contract.AppServices.Users
                                         string? cardNumber,
                                         CancellationToken cancellationToken);
         Task<Experts> GetExpertByIdAsync(int id, CancellationToken cancellationToken);
+        Task<Customers> GetCustomerByIdAsync(int id, CancellationToken cancellationToken);
+        Task<IdentityResult> UpdateUser(User user, CancellationToken cancellationToken);
     }
 }

@@ -100,5 +100,15 @@ namespace App.Domain.AppServices.Home.AppServices.Users
             }
             throw new Exception("Expert not found, not approved, deleted, or inactive");
         }
+
+        public Task<IdentityResult> UpdateUser(User user, CancellationToken cancellationToken)
+        {
+            return _userService.UpdateUser(user,cancellationToken);
+        }
+
+        public Task<Customers> GetCustomerByIdAsync(int id, CancellationToken cancellationToken)
+        {
+            return _userService.GetCustomerByIdAsync(id, cancellationToken);
+        }
     }
 }

@@ -1,0 +1,48 @@
+﻿@{
+    ViewData["Title"] = "تکمیل سفارش";
+}
+
+<div class="completion-container">
+    <h2 class="completion-title">@ViewData["Title"]</h2>
+    <p class="completion-message">سفارش با موفقیت تکمیل شد.</p>
+    <a href="@Url.Action("GetAllOrderByStatus", "OrderPayment")" class="btn btn-return">بازگشت به لیست سفارشات</a>
+</div>
+
+<style>
+    .completion-container {
+        max-width: 600px;
+        margin: 50px auto;
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .completion-title {
+        font-size: 24px;
+        color: #721c24;
+        margin-bottom: 15px;
+    }
+
+    .completion-message {
+        font-size: 18px;
+        color: #721c24;
+        margin-bottom: 20px;
+    }
+
+    .btn-return {
+        background-color: #dc3545;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        display: inline-block;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-return:hover {
+            background-color: #c82333;
+        }
+</style>

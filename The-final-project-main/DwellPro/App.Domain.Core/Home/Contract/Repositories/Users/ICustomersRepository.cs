@@ -9,6 +9,7 @@ namespace App.Domain.Core.Home.Contract.Repositories.Users
     {
         Task<List<Customers>> GetAllAsync(CancellationToken cancellationToken);
         Task<Customers> GetByIdAsync(int id, CancellationToken cancellationToken);
+        Task<Customers> GetByCustomerIdAsync(int id, CancellationToken cancellationToken);
         Task<bool> AddAsync(Customers customer, CancellationToken cancellationToken);
         Task<bool> UpdateAsync(Customers customer, CancellationToken cancellationToken);
         Task<bool> DeleteAsync(int id, CancellationToken cancellationToken);

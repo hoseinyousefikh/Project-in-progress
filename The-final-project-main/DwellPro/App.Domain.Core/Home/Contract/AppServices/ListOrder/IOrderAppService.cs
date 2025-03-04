@@ -1,4 +1,5 @@
 ﻿using App.Domain.Core.Home.Entities.ListOrder;
+using App.Domain.Core.Home.Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,6 @@ namespace App.Domain.Core.Home.Contract.AppServices.ListOrder
         Task<Orders> GetOrderByIdAsync(int id, CancellationToken cancellationToken);
         Task<bool> UpdateOrderAsync(Orders order, CancellationToken cancellationToken);
         Task<bool> DeleteOrderAsync(int id, CancellationToken cancellationToken);
+        Task<List<Orders>> GetOrdersByStatusAndCustomerIdAsync(OrderStatus status, int customerId, CancellationToken cancellationToken);
     }
 }
