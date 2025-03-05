@@ -121,7 +121,7 @@ namespace DwellMVC.Controllers
             expertUser.Balance += approvedProposal.ProposedPrice;
             await _userAppService.UpdateUser(expertUser, cancellationToken);
 
-            order.OrderStatus = OrderStatus.Completed;
+            order.OrderStatus = OrderStatus.Completed;//***********************
             order.PaymentStatus = PaymentStatus.Paid;
 
             await _orderAppService.UpdateOrderAsync(order, cancellationToken);
