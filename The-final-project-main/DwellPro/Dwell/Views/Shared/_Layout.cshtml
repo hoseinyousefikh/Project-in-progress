@@ -101,12 +101,15 @@
                         </form>
 
                     </div>
-                    <div class="header-right ml-4">
-                        <a href="@Url.Action("GetAllOrderByStatus", "OrderPayment")" class="cart-toggle label-down link" style="display: flex; flex-direction: column; align-items: center;">
-                            <i class="w-icon-cart" style="font-size: 2rem;"></i> 
-                            <span class="cart-label" style="margin-top: 8px;">سبد سفارشات</span> 
-                        </a>
-                    </div>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div class="header-right ml-4">
+                            <a href="@Url.Action("GetAllOrderByStatus", "OrderPayment")" class="cart-toggle label-down link" style="display: flex; flex-direction: column; align-items: center;">
+                                <i class="w-icon-cart" style="font-size: 2rem;"></i>
+                                <span class="cart-label" style="margin-top: 8px;">سبد سفارشات</span>
+                            </a>
+                        </div>
+                    }
                 </div>
             </div>
             <!-- End of Header Middle -->
@@ -142,9 +145,6 @@
                                         }
                                     </ul>
                                 </div>
-
-
-
                             </div>
                             <nav class="main-nav">
                                 <ul class="menu active-underline">

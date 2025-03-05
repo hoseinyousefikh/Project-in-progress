@@ -55,12 +55,16 @@ namespace DwellMVC.Controllers
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
-                    ModelState.AddModelError("", error.Description);
-                return BadRequest(ModelState);
+                {
+                    ModelState.AddModelError("", error.Description); 
+                }
+                return View(model);
             }
 
+            TempData["SuccessMessage"] = "ثبت‌نام با موفقیت انجام شد. لطفاً وارد شوید."; 
             return RedirectToAction("Login");
         }
+
 
 
         [HttpGet]
@@ -73,18 +77,21 @@ namespace DwellMVC.Controllers
         public async Task<IActionResult> Login(LoginDto model)
         {
             if (!ModelState.IsValid)
+            {
                 return View(model);
+            }
 
             var result = await _userAppService.Login(model.Username, model.Password, model.RememberMe);
 
             if (!result.Succeeded)
             {
-                ModelState.AddModelError("", "Invalid username or password");
-                return BadRequest(ModelState);
+                ModelState.AddModelError("", "Invalid username or password.");
+                return View(model);
             }
 
             return RedirectToAction("Index", "Home");
         }
+
 
         [HttpGet]
         public IActionResult UpdatePassword()

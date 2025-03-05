@@ -1,5 +1,4 @@
-﻿
-@model App.Domain.Core.Home.DTO.LoginDto
+﻿@model App.Domain.Core.Home.DTO.LoginDto
 
 @{
     ViewData["Title"] = "ورود";
@@ -13,17 +12,27 @@
                     <h3>ورود</h3>
                 </div>
                 <div class="card-body" style="background-color: #f5f5f5; border-radius: 15px;">
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger">
+                            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                            {
+                                <p>@error.ErrorMessage</p>
+                            }
+                        </div>
+                    }
+
                     <form asp-action="Login" method="post">
                         <div class="mb-3">
                             <label asp-for="Username" class="form-label">ایمیل</label>
                             <input asp-for="Username" class="form-control input-field" />
-                            <span asp-validation-for="Username" class="text-danger"></span>
+                            @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
                         </div>
 
                         <div class="mb-3">
                             <label asp-for="Password" class="form-label">گذرواژه</label>
                             <input asp-for="Password" type="password" class="form-control input-field" />
-                            <span asp-validation-for="Password" class="text-danger"></span>
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                         </div>
 
                         <div class="form-check mb-3">
@@ -45,8 +54,11 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
+
 <style>
     .input-field {
         border-radius: 8px;
@@ -68,19 +80,19 @@
     .card {
         border-radius: 15px;
         border: 1px solid #e57373;
-        padding: 15px; 
+        padding: 15px;
     }
 
     .card-header {
         background-color: #b71c1c;
         border-radius: 15px 15px 0 0;
-        padding: 10px; 
+        padding: 10px;
     }
 
     .card-footer {
         background-color: #f5f5f5;
         border-radius: 0 0 15px 15px;
-        padding: 10px; 
+        padding: 10px;
     }
 
     button {
@@ -92,4 +104,3 @@
             background-color: #c62828;
         }
 </style>
-
