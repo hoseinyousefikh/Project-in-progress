@@ -54,6 +54,8 @@ builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
 }).AddRoles<IdentityRole<int>>()
   .AddEntityFrameworkStores<AppDbContext>();
 
+builder.Services.AddMemoryCache();
+
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddSingleton<RandomHomeServicesUpdater>();

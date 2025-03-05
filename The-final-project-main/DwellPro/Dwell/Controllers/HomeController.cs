@@ -1,10 +1,12 @@
 ﻿using App.Domain.AppServices.Home.AppServices.Categories;
 using App.Domain.Core.Home.Contract.AppServices.Categories;
 using App.Domain.Core.Home.Contract.Repositories.Categories;
+using App.Domain.Core.Home.Entities.Categories;
 using Dwell.Models;
 using DwellMVC.BackgroundServices;
 using DwellMVC.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,45 +16,61 @@ namespace Dwell.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ICategoryRepository _categoryRepository;
-        private readonly ISubCategoryRepository _subCategoryRepository;
         private readonly IHomeServiceAppService _homeServiceAppService;
         private readonly ICategoryAppService _categoryAppService;
         private readonly RandomHomeServicesUpdater _randomHomeServicesUpdater;
-
-
+        private readonly IMemoryCache _memoryCache;
 
         public HomeController(ILogger<HomeController> logger,
-            ICategoryRepository categoryRepository,
-            ISubCategoryRepository subCategoryRepository,IHomeServiceAppService homeServiceAppService
-           , ICategoryAppService categoryAppService, RandomHomeServicesUpdater randomHomeServicesUpdater)
+            IHomeServiceAppService homeServiceAppService,
+            ICategoryAppService categoryAppService,
+            RandomHomeServicesUpdater randomHomeServicesUpdater,
+            IMemoryCache memoryCache)
         {
             _logger = logger;
-            _categoryRepository = categoryRepository;
-            _subCategoryRepository = subCategoryRepository;
             _categoryAppService = categoryAppService;
             _homeServiceAppService = homeServiceAppService;
             _randomHomeServicesUpdater = randomHomeServicesUpdater;
-
+            _memoryCache = memoryCache;
         }
-
 
         [HttpGet]
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            var categories = await _categoryAppService.GetAllCategoriesAsync(cancellationToken);
+            var cacheOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(10));
 
-            if (categories == null)
+            if (!_memoryCache.TryGetValue("Categories", out List<Category> categories))
             {
-                return NotFound();
+                _logger.LogInformation("Fetching categories from service.");
+                categories = await _categoryAppService.GetAllCategoriesAsync(cancellationToken);
+                if (categories == null)
+                {
+                    _logger.LogWarning("Categories not found.");
+                    return NotFound();
+                }
+                _memoryCache.Set("Categories", categories, cacheOptions);
             }
+            else
+            {
+                _logger.LogInformation("Categories loaded from cache.");
+            }
+
             ViewData["Categories"] = categories;
 
-            var allHomeServices = await _homeServiceAppService.GetAllHomeServicesAsync(cancellationToken);
-
-            if (allHomeServices == null)
+            if (!_memoryCache.TryGetValue("AllHomeServices", out List<HomeService> allHomeServices))
             {
-                return NotFound();
+                _logger.LogInformation("Fetching home services from service.");
+                allHomeServices = await _homeServiceAppService.GetAllHomeServicesAsync(cancellationToken);
+                if (allHomeServices == null)
+                {
+                    _logger.LogWarning("Home services not found.");
+                    return NotFound();
+                }
+                _memoryCache.Set("AllHomeServices", allHomeServices, cacheOptions);
+            }
+            else
+            {
+                _logger.LogInformation("Home services loaded from cache.");
             }
 
             var topHomeServices = allHomeServices
@@ -61,12 +79,11 @@ namespace Dwell.Controllers
                 .ToList();
 
             var latestHomeServices = allHomeServices
-                .OrderByDescending(hs => hs.Id) 
+                .OrderByDescending(hs => hs.Id)
                 .Take(2)
                 .ToList();
 
             var randomHomeServices = await _randomHomeServicesUpdater.UpdateRandomHomeServices();
-
 
             var viewModel = new HomePageViewModel
             {
@@ -79,39 +96,6 @@ namespace Dwell.Controllers
             return View(viewModel);
         }
 
-        public ActionResult Details()
-        {
-            ViewBag.Message = "این صفحه جزئیات کارت است.";
-
-            return View();
-        }
-        public IActionResult GetAllHomeService(CancellationToken cancellationToken)
-        {
-          
-            return View();
-        }
-        //var result = await _homeServiceRepository.GetAllAsync(cancellationToken);
-        //return View(result);
-        public IActionResult GetAllSubCategory(CancellationToken cancellationToken)
-        {
-            //var result = await _subCategoryRepository.GetAllAsync(cancellationToken);
-            //return View(result);
-            return View();
-
-        }
-        public IActionResult Shop(CancellationToken cancellationToken)
-        {
-
-            return View();
-        }
-        public IActionResult listOrders()
-        {
-            return View();
-        }
-        public IActionResult ShopList()
-        {
-            return View();
-        }
         public IActionResult Privacy()
         {
             return View();

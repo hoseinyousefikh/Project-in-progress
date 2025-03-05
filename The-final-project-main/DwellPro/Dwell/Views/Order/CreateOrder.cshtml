@@ -215,13 +215,13 @@
 
 
 <script>
-    let dataTransfer = new DataTransfer(); // نگه داشتن لیست فایل‌ها هنگام تغییر انتخاب
+    let dataTransfer = new DataTransfer(); 
 
     document.getElementById('upload-image-one').addEventListener('change', function (event) {
         let previewContainer = document.getElementById('imagePreviewContainer');
 
         for (let file of event.target.files) {
-            dataTransfer.items.add(file); // اضافه کردن فایل‌ها بدون پاک شدن قبلی‌ها
+            dataTransfer.items.add(file);
 
             let previewDiv = document.createElement('div');
             previewDiv.classList.add('image-preview');
@@ -236,9 +236,9 @@
             deleteBtn.classList.add('delete-btn');
             deleteBtn.onclick = function () {
                 let index = Array.from(dataTransfer.files).indexOf(file);
-                dataTransfer.items.remove(index); // حذف فایل از لیست
-                previewDiv.remove(); // حذف نمایش تصویر
-                updateFileInput(); // بروزرسانی ورودی فایل
+                dataTransfer.items.remove(index);
+                previewDiv.remove(); 
+                updateFileInput(); 
             };
 
             previewDiv.appendChild(img);
@@ -251,7 +251,7 @@
 
     function updateFileInput() {
         let inputElement = document.getElementById('upload-image-one');
-        inputElement.files = dataTransfer.files; // بروزرسانی فایل‌های ورودی
+        inputElement.files = dataTransfer.files; 
     }
 
     function uploadFiles() {
