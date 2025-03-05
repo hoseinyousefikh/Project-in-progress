@@ -4,70 +4,41 @@
         <div class="row">
             <div class="intro-slide-wrapper col-lg-9">
                 <div class="swiper-container swiper-theme animation-slider pg-inner pg-xxl-hide pg-show pg-white nav-xxl-show nav-hide" data-swiper-options="{
-                                'spaceBetween': 0,
-                                'slidesPerView': 1
-                            }">
+                'spaceBetween': 0,
+                'slidesPerView': 1
+                }">
+
                     <div class="swiper-wrapper gutter-no row cols-1">
-                        <div class="swiper-slide banner banner-fixed intro-slide intro-slide1 br-sm text-center"
-                             style="background-image: url(asset/assets/images/demos/demo11/slides/slide-1.jpg); background-color: #5B98B7;">
-                            <div class="banner-content y-50">
-                                <h3 class="banner-title text-capitalize text-white font-secondary font-weight-normal ls-0 slide-animate"
+                        @foreach (var homeService in Model.RandomHomeServices)
+                        {
+                            <div class="swiper-slide banner banner-fixed intro-slide intro-slide1 br-sm text-center"
+                            style="background-image: url(@homeService.ImageUrl); background-color: #5B98B7;">
+                                <div class="banner-content y-50">
+                                    <h3 class="banner-title text-capitalize text-white font-secondary font-weight-normal ls-0 slide-animate"
                                     data-animation-options="{'name': 'fadeInLeftShorter', 'duration': '.5s', 'delay': '.2s'}">
-                                    نور شهر
-                                </h3>
-                                <h4 class="banner-subtitle text-uppercase text-white font-weight-normal ls-0 slide-animate"
+                                        @homeService.Name
+                                    </h3>
+                                    <h4 class="banner-subtitle text-uppercase text-white font-weight-normal ls-0 slide-animate"
                                     data-animation-options="{'name': 'fadeInRightShorter', 'duration': '.5s', 'delay': '.4s'}">
-                                    روندهای جدید این فصل
-                                </h4>
-                                <span class="font-weight-bolder text-uppercase text-white slide-animate d-block ls-normal"
-                                      data-animation-options="{'name': 'fadeInRightShorter', 'duration': '.5s', 'delay': '.4s'}">
-                                    نمایش مد 1401
-                                </span>
-                                <a href="shop-banner-sidebar.html" class="btn btn-white btn-outline btn-rounded btn-icon-right br-xs slide-animate"
-                                   data-animation-options="{'name': 'fadeInRightShorter', 'duration': '.5s', 'delay': '.6s'}">
-                                    اکنون کشف کنید<i class="w-icon-long-arrow-left"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <!-- End of Intro Slide 1 -->
-                        <div class="swiper-slide banner banner-fixed intro-slide intro-slide2 br-sm"
-                             style="background-image: url(asset/assets/images/demos/demo11/slides/slide-2.jpg); background-color: #DFE0E4;">
-                            <div class="banner-content">
-                                <div class="slide-animate" data-animation-options="{
-                                                'name': 'fadeInDownShorter', 'duration': '1s'
-                                                }">
-                                    <h3 class="banner-title text-capitalize text-dark font-secondary font-weight-normal mb-1">تازه رسیده ها!</h3>
-                                    <h4 class="banner-price-info text-capitalize text-dark mb-4 ls-25">
-                                        سبک زندگی از <strong class="text-secondary">29000 تومان</strong>
+                                        @homeService.Description
                                     </h4>
-                                    <a href="shop-banner-sidebar.html" class="btn btn-dark btn-rounded btn-icon-right">
-                                        اکنون کشف کنید
-                                        <i class="w-icon-long-arrow-left"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End of Intro Slide 2 -->
-                        <div class="swiper-slide banner banner-fixed intro-slide intro-slide3 br-sm" style="background-image: url(asset/assets/images/demos/demo11/slides/slide-3.jpg); background-color: #ECECEC;">
-                            <div class="banner-content y-50">
-                                <div class="slide-animate" data-animation-options="{'name': 'fadeInLeftShorter', 'duration': '1s'}">
-                                    <h3 class="banner-title text-capitalize text-dark font-secondary font-weight-normal">از فروشگاه اینترنتی</h3>
-                                    <h4 class="banner-price-info text-dark ls-25">
-                                        <strong>دریافت کنید</strong><br>
-                                        35% تخفیف!
-                                    </h4>
-                                    <div class="d-flex">
-                                        <a href="shop-banner-sidebar.html" class="btn btn-dark btn-rounded btn-icon-right mt-4 mr-6">
-                                            اکنون بخرید
-                                            <i class="w-icon-long-arrow-left"></i>
+                                    <span class="font-weight-bolder text-uppercase text-white slide-animate d-block ls-normal"
+                                    data-animation-options="{'name': 'fadeInRightShorter', 'duration': '.5s', 'delay': '.4s'}">
+                                        نمایش مد 1401
+                                    </span>
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        <a href="@Url.Action("CreateOrder", "Order", new { homeServiceId = homeService.Id })"
+                                        class="btn btn-white btn-outline btn-rounded btn-icon-right br-xs slide-animate"
+                                        data-animation-options="{'name': 'fadeInRightShorter', 'duration': '.5s', 'delay': '.6s'}">
+                                            ثبت سفارش<i class="w-icon-long-arrow-left"></i>
                                         </a>
-                                        <img src="~/asset/assets/images/demos/demo11/sale-sm.png" alt="sale" width="196" height="136">
-                                    </div>
+                                    }
                                 </div>
                             </div>
-                        </div>
-                        <!-- End of Intro Slide 3 -->
+                        }
                     </div>
+
                     <div class="swiper-pagination"></div>
                     <button class="swiper-button-next"></button>
                     <button class="swiper-button-prev"></button>
@@ -85,9 +56,14 @@
                             <div class="banner-content">
                                 <h4 class="banner-subtitle text-capitalize text-default font-secondary font-weight-normal">سرویس جدید</h4>
                                 <h3 class="banner-title text-dark text-uppercase ls-25">@homeService.Name</h3>
-                                <a href="@Url.Action("ViewHomeService", "HomeService", new { id = homeService.Id })" class="btn btn-dark btn-link btn-underline btn-icon-right">
-                                    مشاهده سرویس <i class="w-icon-long-arrow-left"></i>
-                                </a>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+
+                                    <a href="@Url.Action("CreateOrder", "Order", new { homeServiceId = homeService.Id })" class="btn btn-dark btn-link btn-underline btn-icon-right">
+                                        مشاهده سرویس <i class="w-icon-long-arrow-left"></i>
+                                    </a>
+
+                                }
                             </div>
                         </div>
                     }
@@ -221,67 +197,87 @@
         <div class="swiper-pagination"></div>
     </div>
 
-<div class="swiper-pagination"></div>
-
-<div class="swiper-container swiper-theme product-deals-wrapper appear-animate mb-6"
-     data-swiper-options="{
-                'spaceBetween': 20,
-                'slidesPerView': 2,
-                'breakpoints': {
-                    '576': {
-                        'slidesPerView': 3
-                    },
-                    '768': {
-                        'slidesPerView': 4
-                    },
-                    '992': {
-                        'slidesPerView': 5
-                    }
+    <div class="swiper-pagination"></div>
+    <div class="swiper-container swiper-theme product-deals-wrapper appear-animate mb-6"
+         data-swiper-options="{
+            'spaceBetween': 20,
+            'slidesPerView': 2,
+            'breakpoints': {
+                '576': {
+                    'slidesPerView': 3
+                },
+                '768': {
+                    'slidesPerView': 4
+                },
+                '992': {
+                    'slidesPerView': 5
                 }
-                }">
-    <h3>Top Home Services</h3>
-    @if (Model.TopHomeServices != null && Model.TopHomeServices.Any())
-    {
-        <div class="swiper-wrapper row cols-lg-5 cols-md-4 cols-sm-3 cols-2">
-            @foreach (var homeService in Model.TopHomeServices)
-            {
-                <div class="swiper-slide product-wrap">
-                    <div class="product text-center">
-                        <figure class="product-media">
-                            <a href="@Url.Action("ViewHomeService", "HomeService", new { id = homeService.Id })">
-                                <img src="@homeService.ImageUrl" alt="@homeService.Name" width="300" height="337">
-                                <img src="@homeService.ImageUrl" alt="@homeService.Name" width="300" height="337">
-                            </a>
-                            <div class="product-action-horizontal">
-                                <a href="#" class="btn-product-icon btn-cart w-icon-cart" title="Add to Cart"></a>
-                                <a href="#" class="btn-product-icon btn-wishlist w-icon-heart" title="Wishlist"></a>
-                                <a href="#" class="btn-product-icon btn-compare w-icon-compare" title="Compare"></a>
-                                <a href="#" class="btn-product-icon btn-quickview w-icon-search" title="Quick View"></a>
-                            </div>
-                        </figure>
-                        <div class="product-details">
-                            <h4 class="product-name">
-                                <a href="@Url.Action("ViewHomeService", "HomeService", new { id = homeService.Id })">@homeService.Name</a>
-                            </h4>
-                            <div class="ratings-container">
-                                <div class="ratings-full">
-                                    <span class="ratings" style="width: @(homeService.ViewCount / 100)%"></span>
-                                    <span class="tooltiptext tooltip-top"></span>
+            }
+            }">
+        <h3>Top Home Services</h3>
+        @if (Model.TopHomeServices != null && Model.TopHomeServices.Any())
+        {
+            <div class="swiper-wrapper row cols-lg-5 cols-md-4 cols-sm-3 cols-2">
+                @foreach (var homeService in Model.TopHomeServices)
+                {
+                    <div class="swiper-slide product-wrap">
+                        <div class="product text-center">
+                            <figure class="product-media">
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <a href="@Url.Action("CreateOrder", "Order", new { homeServiceId = homeService.Id })">
+                                        <img src="@homeService.ImageUrl" alt="@homeService.Name" width="300" height="337">
+                                        <img src="@homeService.ImageUrl" alt="@homeService.Name" width="300" height="337">
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("Login", "Authentication")">
+                                        <img src="@homeService.ImageUrl" alt="@homeService.Name" width="300" height="337">
+                                        <img src="@homeService.ImageUrl" alt="@homeService.Name" width="300" height="337">
+                                    </a>
+                                }
+                                <div class="product-action-horizontal">
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        <a href="#" class="btn-product-icon btn-cart w-icon-cart" title="Add to Cart"></a>
+                                        <a href="#" class="btn-product-icon btn-wishlist w-icon-heart" title="Wishlist"></a>
+                                        <a href="#" class="btn-product-icon btn-compare w-icon-compare" title="Compare"></a>
+                                        <a href="#" class="btn-product-icon btn-quickview w-icon-search" title="Quick View"></a>
+                                    }
+                                    else
+                                    {
+                                        <a href="@Url.Action("Login", "Authentication")" class="btn-product-icon btn-cart w-icon-cart" title="Add to Cart">Login to Add</a>
+                                        <a href="@Url.Action("Login", "Authentication")" class="btn-product-icon btn-wishlist w-icon-heart" title="Wishlist">Login to Wishlist</a>
+                                        <a href="@Url.Action("Login", "Authentication")" class="btn-product-icon btn-compare w-icon-compare" title="Compare">Login to Compare</a>
+                                        <a href="@Url.Action("Login", "Authentication")" class="btn-product-icon btn-quickview w-icon-search" title="Quick View">Login to View</a>
+                                    }
                                 </div>
-                                <a href="@Url.Action("ViewHomeService", "HomeService", new { id = homeService.Id })" class="rating-reviews">(@homeService.ViewCount views)</a>
-                            </div>
-                            <div class="product-price">
-                                <ins class="new-price">@homeService.BasePrice.ToString("C")</ins>
+                            </figure>
+                            <div class="product-details">
+                                <h4 class="product-name">
+                                    <a href="@Url.Action("CreateOrder", "Order", new { homeServiceId = homeService.Id })">@homeService.Name</a>
+                                </h4>
+                                <div class="ratings-container">
+                                    <div class="ratings-full">
+                                        <span class="ratings" style="width: @(homeService.ViewCount / 100)%"></span>
+                                        <span class="tooltiptext tooltip-top"></span>
+                                    </div>
+                                    <a href="@Url.Action("CreateOrder", "Order", new { homeServiceId = homeService.Id })" class="rating-reviews">(@homeService.ViewCount views)</a>
+                                </div>
+                                <div class="product-price">
+                                    <ins class="new-price">@homeService.BasePrice.ToString("C")</ins>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            }
-        </div>
-    }
-    else
-    {
-        <p>No top home services available.</p>
-    }
-</div>
+                }
+            </div>
+        }
+        else
+        {
+            <p>No top home services available.</p>
+        }
+    </div>
+
 </div>

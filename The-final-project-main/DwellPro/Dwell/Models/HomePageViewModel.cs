@@ -6,7 +6,9 @@ namespace DwellMVC.Models
     {
         public List<Category> Categories { get; set; }
         public List<HomeService> TopHomeServices { get; set; }
-        public List<HomeService> LatestHomeServices { get; set; } 
+        public List<HomeService> LatestHomeServices { get; set; }
+        public List<HomeService> RandomHomeServices { get; set; } 
+
 
     }
 

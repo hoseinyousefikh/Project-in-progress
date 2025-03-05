@@ -41,16 +41,19 @@ namespace DwellMVC.Controllers
                 return NotFound();
             }
 
+            homeService.ViewCount += 1;
+            await _homeServiceAppService.UpdateHomeServiceAsync(homeService, cancellationToken);
+
             var users = await _adminUserAppService.GetAllAsync(cancellationToken);
             var customers = users.OfType<Customers>().ToList();
 
             var model = new CreateOrderViewModel
             {
-                HomeServiceId = homeService.Id,  
+                HomeServiceId = homeService.Id,
                 HomeServices = new List<HomeService> { homeService },
                 Users = customers,
                 SelectedHomeService = homeService,
-                BasePrice = homeService.BasePrice 
+                BasePrice = homeService.BasePrice
             };
 
             return View(model);
@@ -58,92 +61,75 @@ namespace DwellMVC.Controllers
 
 
 
+
         [HttpPost]
         public async Task<IActionResult> CreateOrder(CreateOrderViewModel model, CancellationToken cancellationToken)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                return View(model);
+            }
 
-                if (userIdClaim == null)
+            if (!int.TryParse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value, out int userId))
+            {
+                ModelState.AddModelError("", "شناسه کاربر معتبر نیست.");
+                return View(model);
+            }
+
+            var user = await _adminUserAppService.GetByIdAsync(userId, cancellationToken);
+            var customer = user?.CustomerDetails;
+
+            if (customer == null)
+            {
+                ModelState.AddModelError("", "کاستومر مرتبط با این کاربر پیدا نشد.");
+                return View(model);
+            }
+
+            var order = new Orders
+            {
+                RequestDate = DateTime.Now,
+                ExecutionDate = model.ExecutionDate,
+                ExecutionTime = model.ExecutionTime,
+                Description = model.Description,
+                BasePrice = model.BasePrice,
+                OrderStatus = OrderStatus.WaitingForExpertProposal,
+                PaymentStatus = PaymentStatus.Pending,
+                IsApproved = false,
+                IsDeleted = false,
+                HomeServiceId = model.HomeServiceId,
+                CustomerId = customer.Id
+            };
+
+            var result = await _orderAppService.AddOrderAsync(order, cancellationToken);
+            if (!result)
+            {
+                ModelState.AddModelError("", "خطا در ثبت سفارش. لطفاً دوباره تلاش کنید.");
+                return View(model);
+            }
+
+            if (model.Pictures != null && model.Pictures.Any())
+            {
+                var pictureTasks = model.Pictures.Select(async pictureFile =>
                 {
-                    ModelState.AddModelError("", "کاربر شناسایی نشد.");
-                    return View(model);
-                }
-
-                Customers customer = null;
-
-                if (userIdClaim != null && int.TryParse(userIdClaim, out int userId))
-                {
-                    var user = await _adminUserAppService.GetByIdAsync(userId, cancellationToken);
-
-                    if (user.CustomerDetails != null)
+                    var imageUrl = await _pictureAppService.SaveImageAsync(pictureFile, cancellationToken);
+                    return new Pictures
                     {
-                        customer = user.CustomerDetails;
-                    }
-                }
-                else
+                        OrdersId = order.Id,
+                        ImageUrl = imageUrl,
+                        UploadedAt = DateTime.UtcNow
+                    };
+                });
+
+                var pictures = await Task.WhenAll(pictureTasks);
+                foreach (var picture in pictures)
                 {
-                    ModelState.AddModelError("", "شناسه کاربر معتبر نیست.");
-                    return View(model);
-                }
-
-                if (customer == null)
-                {
-                    ModelState.AddModelError("", "کاستومر مرتبط با این کاربر پیدا نشد.");
-                    return View(model);
-                }
-
-                var order = new Orders
-                {
-                    RequestDate = DateTime.Now,
-                    ExecutionDate = model.ExecutionDate,
-                    ExecutionTime = model.ExecutionTime,
-                    Description = model.Description,
-                    BasePrice = model.BasePrice,
-                    OrderStatus = OrderStatus.WaitingForExpertProposal,
-                    PaymentStatus = PaymentStatus.Pending,
-                    IsApproved = false,
-                    IsDeleted = false,
-                    HomeServiceId = model.HomeServiceId,
-                    CustomerId = customer.Id
-                };
-
-                var result = await _orderAppService.AddOrderAsync(order, cancellationToken);
-
-                if (result)
-                {
-                    if (model.Pictures != null && model.Pictures.Any())
-                    {
-                        foreach (var pictureFile in model.Pictures)
-                        {
-                            var picture = new Pictures
-                            {
-                                OrdersId = order.Id,
-                                ImageUrl = await _pictureAppService.SaveImageAsync(pictureFile, cancellationToken),
-                                UploadedAt = DateTime.UtcNow
-                            };
-
-                            var pictureResult = await _pictureAppService.AddPictureAsync(picture, cancellationToken);
-
-                            if (!pictureResult)
-                            {
-                                ModelState.AddModelError("", "خطا در ذخیره عکس‌ها.");
-                                return View(model);
-                            }
-                        }
-                    }
-
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "خطا در ثبت سفارش. لطفاً دوباره تلاش کنید.");
+                    await _pictureAppService.AddPictureAsync(picture, cancellationToken);
                 }
             }
 
-            return View(model);
+            return RedirectToAction("Index", "Home");
         }
+
 
         [HttpGet]
         public async Task<IActionResult> GetOrdersForUser(CancellationToken cancellationToken)
@@ -168,7 +154,7 @@ namespace DwellMVC.Controllers
                 }
 
                 var allOrders = await _orderAppService.GetAllOrdersAsync(cancellationToken);
-                var userOrders = allOrders.Where(order => order.CustomerId == customer.Id).ToList();
+                var userOrders = allOrders.Where(order => order.CustomerId == customer.Id&& order.IsDeleted == false ).ToList();
 
                 return View(userOrders);
             }
@@ -215,7 +201,43 @@ namespace DwellMVC.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Details(int id, CancellationToken cancellationToken)
+        {
+            var order = await _orderAppService.GetOrderByIdAsync(id, cancellationToken);
 
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            return View(order);
+        }
+        [HttpGet]
+        public async Task<IActionResult> DeleteConfirm(int id, CancellationToken cancellationToken)
+        {
+            var order = await _orderAppService.GetOrderByIdAsync(id, cancellationToken);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            return View(order);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
+        {
+            var result = await _orderAppService.DeleteOrderAsync(id, cancellationToken);
+
+            if (!result)
+            {
+                return NotFound();
+            }
+
+            return RedirectToAction("GetOrdersForUser");
+        }
 
 
         [HttpPost]

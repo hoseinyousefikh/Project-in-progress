@@ -1,0 +1,51 @@
+﻿@model App.Domain.Core.Home.Entities.ListOrder.Orders
+
+@{
+    ViewData["Title"] = "تأیید حذف سفارش";
+}
+
+<div class="delete-confirm-container">
+    <h2>آیا از حذف سفارش #@Model.Id اطمینان دارید؟</h2>
+
+    <p>این عملیات غیرقابل بازگشت است.</p>
+
+    <form method="post" action="@Url.Action("Delete", "Order", new { id = Model.Id })">
+        <button type="submit" class="btn btn-danger">حذف</button>
+        <a href="@Url.Action("Details", "Order", new { id = Model.Id })" class="btn btn-secondary">لغو</a>
+    </form>
+</div>
+
+<style>
+    .delete-confirm-container {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #ffebee;
+        border: 2px solid #f8d7da;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn {
+        padding: 10px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-secondary {
+        background-color: #b0bec5;
+        color: white;
+    }
+
+    .btn-danger {
+        background-color: #f44336;
+        color: white;
+    }
+
+        .btn-danger:hover {
+            background-color: #d32f2f;
+        }
+</style>

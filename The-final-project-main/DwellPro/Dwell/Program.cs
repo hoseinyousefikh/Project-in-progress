@@ -28,6 +28,7 @@ using App.Infra.Data.Repos.Ef.Home.Repository.Categories;
 using App.Infra.Data.Repos.Ef.Home.Repository.ListOrder;
 using App.Infra.Data.Repos.Ef.Home.Repository.Other;
 using App.Infra.Data.Repos.Ef.Home.Repository.Users;
+using DwellMVC.BackgroundServices;
 using DwellMVC.Middleware;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -55,6 +56,7 @@ builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
 
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddSingleton<RandomHomeServicesUpdater>();
 
 builder.Services.AddScoped<AppDbContext>();
 //***********************************************************************************************

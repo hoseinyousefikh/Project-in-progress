@@ -47,11 +47,25 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="Pictures">تصاویر</label>
-                    <input type="file" name="Pictures" id="Pictures" class="form-control" multiple />
-                    @Html.ValidationMessageFor(m => m.Pictures, "", new { @class = "text-danger" })
-                </div>
+                    <label for="upload-image-one">تصاویر</label>
+                    <input asp-for="Pictures" type="file" id="upload-image-one" class="form-control" multiple>
+                    <span asp-validation-for="Pictures" class="text-danger"></span>
 
+                    @if (Model?.ExistingPictures != null && Model.ExistingPictures.Any())
+                    {
+                        <div>
+                            <p>تصاویر قبلی:</p>
+                            <ul>
+                                @foreach (var pic in Model.ExistingPictures)
+                                {
+                                    <li>@pic</li>
+                                }
+                            </ul>
+                            <input type="hidden" name="ExistingPictures" value="@string.Join(",", Model.ExistingPictures)" />
+                        </div>
+                    }
+                </div>
+               
                 <div id="imagePreviewContainer" class="d-flex flex-wrap" style="overflow-x: auto; gap: 10px; margin-top: 15px; height: 120px;">
                 </div>
 
@@ -199,72 +213,56 @@
         }
 </style>
 
+
 <script>
-    let picturesList = [];
+    let dataTransfer = new DataTransfer(); // نگه داشتن لیست فایل‌ها هنگام تغییر انتخاب
 
-    document.getElementById('Pictures').addEventListener('change', function(event) {
-        const files = event.target.files;
-        const previewContainer = document.getElementById('imagePreviewContainer');
+    document.getElementById('upload-image-one').addEventListener('change', function (event) {
+        let previewContainer = document.getElementById('imagePreviewContainer');
 
-        Array.from(files).forEach(file => {
-            const reader = new FileReader();
+        for (let file of event.target.files) {
+            dataTransfer.items.add(file); // اضافه کردن فایل‌ها بدون پاک شدن قبلی‌ها
 
-            reader.onload = function(e) {
-                const img = document.createElement('img');
-                img.src = e.target.result;
+            let previewDiv = document.createElement('div');
+            previewDiv.classList.add('image-preview');
 
-                const preview = document.createElement('div');
-                preview.classList.add('image-preview');
+            let img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            img.width = 100;
+            img.height = 100;
 
-                const deleteButton = document.createElement('button');
-                deleteButton.textContent = '×';
-                deleteButton.classList.add('delete-btn');
-                deleteButton.addEventListener('click', function() {
-                    preview.remove();
-                    picturesList = picturesList.filter(item => item !== file); // حذف تصویر از حافظه پنهان
-                });
+            let deleteBtn = document.createElement('button');
+            deleteBtn.innerText = '×';
+            deleteBtn.classList.add('delete-btn');
+            deleteBtn.onclick = function () {
+                let index = Array.from(dataTransfer.files).indexOf(file);
+                dataTransfer.items.remove(index); // حذف فایل از لیست
+                previewDiv.remove(); // حذف نمایش تصویر
+                updateFileInput(); // بروزرسانی ورودی فایل
+            };
 
-                preview.appendChild(deleteButton);
-                preview.appendChild(img);
+            previewDiv.appendChild(img);
+            previewDiv.appendChild(deleteBtn);
+            previewContainer.appendChild(previewDiv);
+        }
 
-                previewContainer.appendChild(preview);
-
-                // اضافه کردن تصویر به حافظه پنهان
-                picturesList.push(file);
-            }
-
-            reader.readAsDataURL(file);
-        });
+        updateFileInput();
     });
 
-    document.querySelector('form').addEventListener('submit', function(event) {
-        // جلوگیری از ارسال پیش‌فرض فرم
-        event.preventDefault();
+    function updateFileInput() {
+        let inputElement = document.getElementById('upload-image-one');
+        inputElement.files = dataTransfer.files; // بروزرسانی فایل‌های ورودی
+    }
 
-        // ایجاد یک شیء FormData
-        const formData = new FormData();
-
-        // اضافه کردن داده‌های دیگر فرم
-        formData.append("HomeServiceId", document.querySelector("input[name='HomeServiceId']").value);
-        formData.append("ExecutionDate", document.querySelector("input[name='ExecutionDate']").value);
-        formData.append("ExecutionTime", document.querySelector("input[name='ExecutionTime']").value);
-        formData.append("Description", document.querySelector("textarea[name='Description']").value);
-        formData.append("BasePrice", document.querySelector("input[name='BasePrice']").value);
-
-        // اضافه کردن تصاویر از حافظه پنهان به FormData
-        picturesList.forEach((file) => {
+    function uploadFiles() {
+        let formData = new FormData();
+        for (let file of dataTransfer.files) {
             formData.append('Pictures', file);
-        });
+        }
 
-        // ارسال فرم به سرور با استفاده از fetch
-        fetch('/Order/CreateOrder', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            // عملیات بعد از موفقیت ارسال
-        })
-        .catch(error => console.error('Error:', error));
-    });
+        fetch('/Upload', { method: 'POST', body: formData })
+            .then(response => response.json())
+            .then(data => alert('آپلود موفقیت‌آمیز بود!'))
+            .catch(error => alert('خطا در آپلود!'));
+    }
 </script>

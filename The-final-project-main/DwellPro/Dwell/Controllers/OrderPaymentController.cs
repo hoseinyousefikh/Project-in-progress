@@ -83,8 +83,6 @@ namespace DwellMVC.Controllers
             }
 
             var Result = await _userAppService.GetCustomerByIdAsync(order.CustomerId, cancellationToken);
-            
-
             var userCustomer = await _adminUserAppService.GetByIdAsync(Result.UserId, cancellationToken);
             if (userCustomer == null)
             {
@@ -92,8 +90,7 @@ namespace DwellMVC.Controllers
             }
 
             var proposals = await _viewOrderAppService.GetProposalsByOrderIdAsync(orderId, cancellationToken);
-
-            var approvedProposal = proposals.FirstOrDefault(p => p.IsSelectedByCustomer); 
+            var approvedProposal = proposals.FirstOrDefault(p => p.IsSelectedByCustomer);
             if (approvedProposal == null)
             {
                 return BadRequest("هیچ پیشنهادی تایید نشده است.");
@@ -111,24 +108,36 @@ namespace DwellMVC.Controllers
             {
                 return BadRequest("کاربر اکسپرت پیدا نشد.");
             }
-            userCustomer.Balance -= approvedProposal.ProposedPrice;
+
+            decimal transactionAmount = approvedProposal.ProposedPrice;
+            decimal platformFee = transactionAmount * 0.05m; 
+            decimal customerAmount = transactionAmount + (transactionAmount * 0.025m);
+            decimal expertAmount = transactionAmount - (transactionAmount * 0.025m);
+
+            userCustomer.Balance -= customerAmount;
             if (userCustomer.Balance < 0)
             {
                 return BadRequest("موجودی کافی برای انجام تراکنش وجود ندارد.");
             }
             await _userAppService.UpdateUser(userCustomer, cancellationToken);
 
-            expertUser.Balance += approvedProposal.ProposedPrice;
+            expertUser.Balance += expertAmount;
             await _userAppService.UpdateUser(expertUser, cancellationToken);
 
-            order.OrderStatus = OrderStatus.Completed;//***********************
-            order.PaymentStatus = PaymentStatus.Paid;
+            var adminUser = await _adminUserAppService.GetByIdAsync(1, cancellationToken); 
+            if (adminUser != null)
+            {
+                adminUser.Balance += platformFee;
+                await _userAppService.UpdateUser(adminUser, cancellationToken);
+            }
 
+            order.OrderStatus = OrderStatus.Completed;
+            order.PaymentStatus = PaymentStatus.Paid;
             await _orderAppService.UpdateOrderAsync(order, cancellationToken);
 
             return RedirectToAction("CompleteOrder", "OrderPayment");
-
         }
+
 
     }
 }

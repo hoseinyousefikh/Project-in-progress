@@ -2,6 +2,7 @@
 using App.Domain.Core.Home.Contract.AppServices.Categories;
 using App.Domain.Core.Home.Contract.Repositories.Categories;
 using Dwell.Models;
+using DwellMVC.BackgroundServices;
 using DwellMVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -17,18 +18,22 @@ namespace Dwell.Controllers
         private readonly ISubCategoryRepository _subCategoryRepository;
         private readonly IHomeServiceAppService _homeServiceAppService;
         private readonly ICategoryAppService _categoryAppService;
+        private readonly RandomHomeServicesUpdater _randomHomeServicesUpdater;
+
 
 
         public HomeController(ILogger<HomeController> logger,
             ICategoryRepository categoryRepository,
             ISubCategoryRepository subCategoryRepository,IHomeServiceAppService homeServiceAppService
-           , ICategoryAppService categoryAppService)
+           , ICategoryAppService categoryAppService, RandomHomeServicesUpdater randomHomeServicesUpdater)
         {
             _logger = logger;
             _categoryRepository = categoryRepository;
             _subCategoryRepository = subCategoryRepository;
             _categoryAppService = categoryAppService;
             _homeServiceAppService = homeServiceAppService;
+            _randomHomeServicesUpdater = randomHomeServicesUpdater;
+
         }
 
 
@@ -41,6 +46,7 @@ namespace Dwell.Controllers
             {
                 return NotFound();
             }
+            ViewData["Categories"] = categories;
 
             var allHomeServices = await _homeServiceAppService.GetAllHomeServicesAsync(cancellationToken);
 
@@ -59,11 +65,15 @@ namespace Dwell.Controllers
                 .Take(2)
                 .ToList();
 
+            var randomHomeServices = await _randomHomeServicesUpdater.UpdateRandomHomeServices();
+
+
             var viewModel = new HomePageViewModel
             {
                 Categories = categories,
                 TopHomeServices = topHomeServices,
-                LatestHomeServices = latestHomeServices 
+                LatestHomeServices = latestHomeServices,
+                RandomHomeServices = randomHomeServices
             };
 
             return View(viewModel);

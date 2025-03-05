@@ -18,8 +18,7 @@ namespace DwellMVC.Models
         [DataType(DataType.Time)] 
         public TimeSpan ExecutionTime { get; set; }
 
-        [Required(ErrorMessage = "توضیحات الزامی است.")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [Required(ErrorMessage = "قیمت پایه الزامی است.")]
         [Range(0, double.MaxValue, ErrorMessage = "قیمت پایه باید یک عدد مثبت باشد.")]
@@ -28,5 +27,7 @@ namespace DwellMVC.Models
         public List<Customers>? Users { get; set; }
         public HomeService? SelectedHomeService { get; set; }
         public List<IFormFile>? Pictures { get; set; }
+        public List<string>? ExistingPictures { get; set; }
+
     }
 }

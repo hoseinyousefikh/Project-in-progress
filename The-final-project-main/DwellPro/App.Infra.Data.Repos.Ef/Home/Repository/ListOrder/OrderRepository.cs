@@ -35,6 +35,7 @@ namespace App.Infra.Data.Repos.Ef.Home.Repository.ListOrder
                 .Include(o => o.Customer)
                 .Include(o => o.HomeServiceName)
                 .Include(o => o.ExpertProposals)
+                .Include(o => o.Pictures)
                 .FirstOrDefaultAsync(o => o.Id == id, cancellationToken);
             if (result != null)
             {
