@@ -17,7 +17,7 @@
             <p>قیمت پایه: @Model.SelectedHomeService.BasePrice تومان</p>
             <p>تعداد بازدید: <span id="viewCount-@Model.SelectedHomeService.Id">@Model.SelectedHomeService.ViewCount</span></p>
 
-            <form method="post" action="@Url.Action("CreateOrder", "Order")">
+            <form method="post" action="@Url.Action("CreateOrder", "Order")" enctype="multipart/form-data">
                 @Html.AntiForgeryToken()
 
                 <input type="hidden" name="HomeServiceId" value="@Model.HomeServiceId" />
@@ -46,8 +46,17 @@
                     @Html.ValidationMessageFor(m => m.BasePrice, "", new { @class = "text-danger" })
                 </div>
 
+                <div class="form-group">
+                    <label for="Pictures">تصاویر</label>
+                    <input type="file" name="Pictures" id="Pictures" class="form-control" multiple />
+                    @Html.ValidationMessageFor(m => m.Pictures, "", new { @class = "text-danger" })
+                </div>
+
+                <div id="imagePreviewContainer" class="d-flex flex-wrap" style="overflow-x: auto; gap: 10px; margin-top: 15px; height: 120px;">
+                </div>
+
                 <button type="submit" class="btn btn-primary">ثبت سفارش</button>
-            </form>
+            </form> 
         </div>
     </div>
 </div>
@@ -143,4 +152,119 @@
     .home-service-info input[type="time"] {
         max-width: 200px;
     }
+
+    #imagePreviewContainer {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 15px;
+        overflow-x: auto;
+        height: 120px;
+        max-width: 100%;
+    }
+
+    .image-preview {
+        position: relative;
+        width: 100px;
+        height: 100px;
+        overflow: hidden;
+        border-radius: 8px;
+    }
+
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    .delete-btn {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+        .delete-btn:hover {
+            background-color: red;
+        }
 </style>
+
+<script>
+    let picturesList = [];
+
+    document.getElementById('Pictures').addEventListener('change', function(event) {
+        const files = event.target.files;
+        const previewContainer = document.getElementById('imagePreviewContainer');
+
+        Array.from(files).forEach(file => {
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+
+                const preview = document.createElement('div');
+                preview.classList.add('image-preview');
+
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = '×';
+                deleteButton.classList.add('delete-btn');
+                deleteButton.addEventListener('click', function() {
+                    preview.remove();
+                    picturesList = picturesList.filter(item => item !== file); // حذف تصویر از حافظه پنهان
+                });
+
+                preview.appendChild(deleteButton);
+                preview.appendChild(img);
+
+                previewContainer.appendChild(preview);
+
+                // اضافه کردن تصویر به حافظه پنهان
+                picturesList.push(file);
+            }
+
+            reader.readAsDataURL(file);
+        });
+    });
+
+    document.querySelector('form').addEventListener('submit', function(event) {
+        // جلوگیری از ارسال پیش‌فرض فرم
+        event.preventDefault();
+
+        // ایجاد یک شیء FormData
+        const formData = new FormData();
+
+        // اضافه کردن داده‌های دیگر فرم
+        formData.append("HomeServiceId", document.querySelector("input[name='HomeServiceId']").value);
+        formData.append("ExecutionDate", document.querySelector("input[name='ExecutionDate']").value);
+        formData.append("ExecutionTime", document.querySelector("input[name='ExecutionTime']").value);
+        formData.append("Description", document.querySelector("textarea[name='Description']").value);
+        formData.append("BasePrice", document.querySelector("input[name='BasePrice']").value);
+
+        // اضافه کردن تصاویر از حافظه پنهان به FormData
+        picturesList.forEach((file) => {
+            formData.append('Pictures', file);
+        });
+
+        // ارسال فرم به سرور با استفاده از fetch
+        fetch('/Order/CreateOrder', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            // عملیات بعد از موفقیت ارسال
+        })
+        .catch(error => console.error('Error:', error));
+    });
+</script>

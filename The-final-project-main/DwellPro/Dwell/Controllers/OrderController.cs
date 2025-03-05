@@ -1,8 +1,10 @@
 ﻿using App.Domain.Core.Home.Contract.AppServices.Categories;
 using App.Domain.Core.Home.Contract.AppServices.ListOrder;
+using App.Domain.Core.Home.Contract.AppServices.Other;
 using App.Domain.Core.Home.Contract.AppServices.Users;
 using App.Domain.Core.Home.Entities.Categories;
 using App.Domain.Core.Home.Entities.ListOrder;
+using App.Domain.Core.Home.Entities.Other;
 using App.Domain.Core.Home.Entities.Users;
 using App.Domain.Core.Home.Enum;
 using DwellMVC.Models;
@@ -18,13 +20,15 @@ namespace DwellMVC.Controllers
         private readonly IAdminUserAppService _adminUserAppService;
         private readonly IExpertProposalAppService _expertProposalAppService;
         private readonly IUserAppService _userAppService;
-        public OrderController(IOrderAppService orderAppService, IHomeServiceAppService homeServiceAppService, IAdminUserAppService adminUserAppService, IExpertProposalAppService expertProposalAppService, IUserAppService userAppService)
+        private readonly IPictureAppService _pictureAppService;
+        public OrderController(IOrderAppService orderAppService, IHomeServiceAppService homeServiceAppService, IAdminUserAppService adminUserAppService, IExpertProposalAppService expertProposalAppService, IUserAppService userAppService , IPictureAppService pictureAppService)
         {
             _orderAppService = orderAppService;
             _homeServiceAppService = homeServiceAppService;
             _adminUserAppService = adminUserAppService;
             _expertProposalAppService = expertProposalAppService;
             _userAppService = userAppService;
+            _pictureAppService = pictureAppService;
         }
 
         [HttpGet]
@@ -109,6 +113,27 @@ namespace DwellMVC.Controllers
 
                 if (result)
                 {
+                    if (model.Pictures != null && model.Pictures.Any())
+                    {
+                        foreach (var pictureFile in model.Pictures)
+                        {
+                            var picture = new Pictures
+                            {
+                                OrdersId = order.Id,
+                                ImageUrl = await _pictureAppService.SaveImageAsync(pictureFile, cancellationToken),
+                                UploadedAt = DateTime.UtcNow
+                            };
+
+                            var pictureResult = await _pictureAppService.AddPictureAsync(picture, cancellationToken);
+
+                            if (!pictureResult)
+                            {
+                                ModelState.AddModelError("", "خطا در ذخیره عکس‌ها.");
+                                return View(model);
+                            }
+                        }
+                    }
+
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -184,7 +209,6 @@ namespace DwellMVC.Controllers
                 }
                 catch (Exception)
                 {
-                    // Expert not found or inactive, skipping
                 }
             }
 

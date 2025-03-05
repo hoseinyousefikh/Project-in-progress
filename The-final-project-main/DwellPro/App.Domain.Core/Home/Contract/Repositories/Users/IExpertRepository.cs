@@ -12,5 +12,6 @@ namespace App.Domain.Core.Home.Contract.Repositories.Users
         Task<bool> AddAsync(Experts expert, CancellationToken cancellationToken);
         Task<bool> UpdateAsync(Experts expert, CancellationToken cancellationToken);
         Task<bool> DeleteAsync(int id, CancellationToken cancellationToken);
+        Task<Experts> GetByEepertIdAsync(int id, CancellationToken cancellationToken);
     }
 }

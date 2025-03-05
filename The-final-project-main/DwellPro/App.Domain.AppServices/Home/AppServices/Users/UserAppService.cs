@@ -110,5 +110,10 @@ namespace App.Domain.AppServices.Home.AppServices.Users
         {
             return _userService.GetCustomerByIdAsync(id, cancellationToken);
         }
+
+        public Task<bool> UpdateExpertAsync(Experts expert, CancellationToken cancellationToken)
+        {
+            return _userService.UpdateExpertAsync(expert ,cancellationToken);
+        }
     }
 }

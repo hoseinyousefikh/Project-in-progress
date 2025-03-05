@@ -20,6 +20,7 @@ namespace DwellMVC.Controllers
         private readonly IAdminUserAppService _adminUserAppService;
         private readonly ILogger<AdminUserAppService> _logger;
         private readonly UserManager<User> _userManager;
+        
 
         public AuthenticationController(IUserAppService userAppService, ICityAppService cityAppService, IAdminUserAppService adminUserAppService, UserManager<User> userManager, ILogger<AdminUserAppService> logger)
         {
@@ -283,6 +284,7 @@ namespace DwellMVC.Controllers
             }
 
             var cityName = user?.City?.Name ?? "نامشخص";
+          
 
             var model = new
             {
@@ -295,6 +297,7 @@ namespace DwellMVC.Controllers
                 Address = user.Address,
                 ShebaNumber = user.ShebaNumber,
                 CardNumber = user.CardNumber,
+                Balance = user.Balance, 
                 RoleStatus = user.RoleType == RoleEnum.Customer
                     ? (user.CustomerDetails?.RoleStatus ?? UserStatus.inActive)
                     : (user.ExpertDetails?.RoleStatus ?? UserStatus.inActive)

@@ -85,6 +85,10 @@ builder.Services.AddScoped<ICityService, CityService>();
 
 builder.Services.AddScoped<IAdminUserService, AdminUserService>();
 builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddScoped<ICommentService, CommentService>();
+
+builder.Services.AddScoped<IPictureService, PictureService>();
 //************************************************************************************************
 builder.Services.AddScoped<ICategoryAppService, CategoryAppService>();
 builder.Services.AddScoped<IHomeServiceAppService, HomeServiceAppService>();
@@ -97,7 +101,8 @@ builder.Services.AddScoped<IAdminCommentAppService, AdminCommentAppService>();
 builder.Services.AddScoped<ICityAppService, CityAppService>();
 builder.Services.AddScoped<IAdminUserAppService, AdminUserAppService>();
 builder.Services.AddScoped<IUserAppService, UserAppService>();
-
+builder.Services.AddScoped<ICommentAppService, CommentAppService>();
+builder.Services.AddScoped<IPictureAppService, PictureAppService>();
 
 
 builder.Logging.ClearProviders();

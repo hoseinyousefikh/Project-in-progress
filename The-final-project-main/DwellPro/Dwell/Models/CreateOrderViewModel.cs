@@ -27,5 +27,6 @@ namespace DwellMVC.Models
 
         public List<Customers>? Users { get; set; }
         public HomeService? SelectedHomeService { get; set; }
+        public List<IFormFile>? Pictures { get; set; }
     }
 }

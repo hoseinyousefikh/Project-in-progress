@@ -356,7 +356,7 @@ namespace App.Domain.Services.Home.Services.Users
 
         public async Task<Experts> GetExpertByIdAsync(int id, CancellationToken cancellationToken)
         {
-            return await _expertRepository.GetByIdAsync(id, cancellationToken);
+            return await _expertRepository.GetByEepertIdAsync(id, cancellationToken);
         }
         public async Task<Customers> GetCustomerByIdAsync(int id, CancellationToken cancellationToken)
         {
@@ -367,6 +367,15 @@ namespace App.Domain.Services.Home.Services.Users
             return await _userManager.UpdateAsync(user);
         }
 
+        public async Task<bool> UpdateExpertAsync(Experts expert, CancellationToken cancellationToken)
+        {
+            if (expert == null)
+            {
+                throw new ArgumentNullException(nameof(expert), "اکسپرت نمی‌تواند مقدار null داشته باشد.");
+            }
+
+            return await _expertRepository.UpdateAsync(expert, cancellationToken);
+        }
 
     }
 }

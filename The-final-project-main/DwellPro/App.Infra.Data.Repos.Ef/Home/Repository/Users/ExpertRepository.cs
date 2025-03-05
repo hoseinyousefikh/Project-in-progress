@@ -49,7 +49,24 @@ namespace App.Infra.Data.Repos.Ef.Home.Repository.Users
 
             throw new Exception("Expert not found");
         }
+        public async Task<Experts> GetByEepertIdAsync(int id, CancellationToken cancellationToken)
+        {
+            var result = await _context.Experts
+                .Include(e => e.User)
+                .Include(e => e.ExpertProposals)
+                .Include(e => e.ExpertHomeServices)
+                .Include(e => e.Orders)
+                .Include(e => e.HomeServices)
+                .Where(e => e.Id == id && !e.IsDeleted)
+                .FirstOrDefaultAsync(cancellationToken);
 
+            if (result != null)
+            {
+                return result;
+            }
+
+            throw new Exception("Expert not found");
+        }
         public async Task<bool> AddAsync(Experts expert, CancellationToken cancellationToken)
         {
             await _context.Experts.AddAsync(expert, cancellationToken);

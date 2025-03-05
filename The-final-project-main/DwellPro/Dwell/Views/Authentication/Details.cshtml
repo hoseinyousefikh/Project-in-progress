@@ -20,15 +20,13 @@
             <p><strong>شماره شبا:</strong> @Model.ShebaNumber</p>
             <p><strong>شماره کارت:</strong> @Model.CardNumber</p>
             <p><strong>وضعیت:</strong> @(Model.RoleStatus == UserStatus.Active ? "فعال" : "غیرفعال")</p>
+            <p class="balance-text"><strong>موجودی حساب:</strong> @Model.Balance تومان</p>
         </div>
         <div class="user-actions">
-
             <a href="@Url.Action("UpdateEmail", "Authentication")" class="btn btn-update">آپدیت ایمیل</a>
             <a href="@Url.Action("UpdatePassword", "Authentication")" class="btn btn-update">آپدیت پسورد</a>
             <a href="@Url.Action("EditUser", "Authentication")" class="btn btn-update">آپدیت جزئیات</a>
         </div>
-
-
     </div>
 </div>
 
@@ -77,6 +75,12 @@
         color: #333;
         margin: 10px 0;
         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    .balance-text {
+        font-size: 18px;
+        font-weight: bold;
+        color: #28a745;
     }
 
     .user-actions {

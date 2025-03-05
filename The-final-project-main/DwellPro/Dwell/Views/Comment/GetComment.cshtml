@@ -1,0 +1,101 @@
+﻿@model DwellMVC.Models.CommentViewModel
+
+@{
+    ViewData["Title"] = "ثبت یا ویرایش نظر";
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <p>@error.ErrorMessage</p>
+        }
+    </div>
+}
+
+<div class="comment-container">
+    <h2>ثبت یا ویرایش نظر</h2>
+
+    <form method="post" asp-action="SubmitComment" asp-route-expertProposalId="@Model.ExpertProposalId">
+        <div class="form-group">
+            <label for="text">متن نظر</label>
+            <textarea id="text" name="text" class="form-control" rows="4">@Model.Text</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="rating">امتیاز</label>
+            <input type="number" id="rating" name="rating" class="form-control" min="1" max="5" value="@Model.Rating" />
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-submit">ارسال نظر</button>
+        </div>
+    </form>
+</div>
+
+
+    <style>
+        .comment-container {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            padding: 20px;
+            border-radius: 10px;
+            width: 50%;
+            margin: 0 auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+            .comment-container h2 {
+                text-align: center;
+                color: #721c24;
+            }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+            .form-group label {
+                font-weight: bold;
+                color: #721c24;
+            }
+
+            .form-group textarea,
+            .form-group input {
+                width: 100%;
+                padding: 10px;
+                border-radius: 5px;
+                border: 1px solid #e2a8b1;
+                background-color: #f8d7da;
+                color: #721c24;
+                font-size: 16px;
+            }
+
+                .form-group input[type="number"] {
+                    width: 60%;
+                }
+
+            .form-group button {
+                background-color: #f5c6cb;
+                color: #721c24;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 5px;
+                font-size: 16px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+                .form-group button:hover {
+                    background-color: #e2a8b1;
+                }
+
+                .form-group button:focus {
+                    outline: none;
+                }
+    </style>

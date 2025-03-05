@@ -32,5 +32,6 @@ namespace App.Domain.Core.Home.Contract.Services.Users
         Task<Customers> GetCustomerByIdAsync(int id, CancellationToken cancellationToken);
 
         Task<IdentityResult> UpdateUser(User user, CancellationToken cancellationToken);
+        Task<bool> UpdateExpertAsync(Experts expert, CancellationToken cancellationToken);
     }
 }

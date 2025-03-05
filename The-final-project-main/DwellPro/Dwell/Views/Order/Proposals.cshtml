@@ -18,6 +18,7 @@
                     <th>قیمت پیشنهادی</th>
                     <th>تاریخ اتمام کار</th>
                     <th>وضعیت</th>
+                    <th>امتیاز</th>
                     <th>عملیات</th>
                 </tr>
             </thead>
@@ -29,7 +30,8 @@
                         <td>
                             @if (item.Expert?.User != null)
                             {
-                                @item.Expert.User.FirstName@item.Expert.User.LastName
+                                @item.Expert.User.FirstName
+                                @item.Expert.User.LastName
                             }
                             else
                             {
@@ -60,7 +62,14 @@
                             }
                         </td>
                         <td>
-                            <a href="@Url.Action("AddComment", "Order", new { orderId = Model.OrderId })" class="btn btn-dark">ثبت نظر و امتیاز</a>
+                            <span class="badge badge-info">@item.Expert.Rating از 5</span>
+
+                        </td>
+                        <td>
+                            @if (item.Proposal.IsSelectedByCustomer)
+                            {
+                                <a href="@Url.Action("GetComment", "Comment", new { proposalId = item.Proposal.Id })" class="btn btn-dark">ثبت نظر و امتیاز</a>
+                            }
                         </td>
                     </tr>
                 }
@@ -70,9 +79,8 @@
 </div>
 
 <style>
-    /* کل کادر اصلی */
     .proposal-container {
-        background-color: #ffe6e6; /* پس‌زمینه قرمز کمرنگ */
+        background-color: #ffe6e6;
         padding: 20px;
         border-radius: 15px;
         border: 2px solid #ff9999;
@@ -82,14 +90,12 @@
         text-align: center;
     }
 
-    /* پیام در صورت نبود پیشنهاد */
     .no-proposals {
         font-size: 18px;
         color: #ff6666;
         font-weight: bold;
     }
 
-    /* جدول استایل */
     .proposal-table {
         width: 100%;
         border-collapse: collapse;
@@ -99,26 +105,22 @@
         text-align: center;
     }
 
-        /* استایل برای سرصفحه جدول */
         .proposal-table th {
             background: #ff6666;
             color: white;
             padding: 12px;
         }
 
-        /* استایل برای سلول‌های جدول */
         .proposal-table td {
             padding: 10px;
             border-bottom: 1px solid #ddd;
         }
 
-        /* هاور برای سطرها */
         .proposal-table tbody tr:hover {
             background-color: #ffcccc;
             transition: 0.3s;
         }
 
-    /* وضعیت‌ها */
     .badge-success {
         background-color: #28a745;
         color: white;
@@ -133,7 +135,20 @@
         border-radius: 6px;
     }
 
-    /* دکمه‌ها */
+    .badge-warning {
+        background-color: #ffc107;
+        color: black;
+        padding: 6px 12px;
+        border-radius: 6px;
+    }
+
+    .badge-info {
+        background-color: #17a2b8;
+        color: white;
+        padding: 6px 12px;
+        border-radius: 6px;
+    }
+
     .btn-dark {
         background-color: #343a40;
         color: white;
