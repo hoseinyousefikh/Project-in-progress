@@ -7,11 +7,13 @@ using App.Domain.Core.Home.Entities.Users;
 using App.Domain.Core.Home.Enum;
 using App.Domain.Services.Home.Services.Users;
 using DwellMVC.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace DwellMVC.Controllers
 {
+    [Authorize]
     public class OrderPaymentController : Controller
     {
         private readonly IOrderAppService _orderAppService;

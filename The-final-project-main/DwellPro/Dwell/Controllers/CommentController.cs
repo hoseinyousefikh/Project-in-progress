@@ -7,11 +7,13 @@ using App.Domain.Core.Home.Contract.Services.Other;
 using App.Domain.Core.Home.Entities.Other;
 using App.Domain.Core.Home.Entities.Users;
 using DwellMVC.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace DwellMVC.Controllers
 {
+    [Authorize]
     public class CommentController : Controller
     {
         private readonly ICommentAppService _commentAppService;

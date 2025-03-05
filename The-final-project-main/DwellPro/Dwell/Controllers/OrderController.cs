@@ -8,11 +8,13 @@ using App.Domain.Core.Home.Entities.Other;
 using App.Domain.Core.Home.Entities.Users;
 using App.Domain.Core.Home.Enum;
 using DwellMVC.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace DwellMVC.Controllers
 {
+    [Authorize]
     public class OrderController : Controller
     {
         private readonly IOrderAppService _orderAppService;
