@@ -85,7 +85,7 @@ namespace DwellMVC.Controllers
 
             if (!result.Succeeded)
             {
-                ModelState.AddModelError("", "Invalid username or password.");
+                ModelState.AddModelError("", "یوزرنیم یا پسورد غلط است .");
                 return View(model);
             }
 
@@ -168,7 +168,7 @@ namespace DwellMVC.Controllers
             var user = await _adminUserAppService.GetByIdAsync(userId, cancellationToken);
             if (user == null)
             {
-                return NotFound("User not found.");
+                return NotFound("کاربر پیدا نشد.");
             }
 
             var cities = await _cityAppService.GetAllCitiesAsync(cancellationToken);
@@ -259,7 +259,7 @@ namespace DwellMVC.Controllers
 
             if (!result.Succeeded)
             {
-                ModelState.AddModelError("", "Error updating user details.");
+                ModelState.AddModelError("", "ارور برای جزییات کاربر.");
                 return View(model);
             }
 
@@ -284,7 +284,7 @@ namespace DwellMVC.Controllers
             {
                 return NotFound();
             }
-
+            
             if (user.CityId.HasValue)
             {
                 user.City = await _cityAppService.GetCityByIdAsync(user.CityId.Value, cancellationToken);
@@ -321,13 +321,13 @@ namespace DwellMVC.Controllers
             {
                 await _userAppService.SignOutCustomerAsync();
 
-                _logger.LogInformation("Customer signed out and redirected to profile details.");
+                _logger.LogInformation("مشتری از سیستم خارج شد و به جزئیات نمایه هدایت شد.");
 
                 var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
 
                 if (string.IsNullOrEmpty(userId))
                 {
-                    _logger.LogWarning("User ID not found in claims. Redirecting to login.");
+                    _logger.LogWarning("شناسه کاربری در ادعاها یافت نشد. تغییر مسیر به ورود.");
                     return RedirectToAction("Login", "Authentication");
                 }
 
@@ -335,7 +335,7 @@ namespace DwellMVC.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred during the sign out process.");
+                _logger.LogError(ex, "هنگام خروج از سیستم خطایی روی داد.");
                 return RedirectToAction("Error", "Home");
             }
         }

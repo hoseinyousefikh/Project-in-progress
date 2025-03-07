@@ -1,4 +1,10 @@
 ﻿@model DwellMVC.Models.ProposalViewModel
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
 
 <div class="proposal-container">
     <h2>پیشنهادات برای سفارش @Model.OrderId</h2>

@@ -61,9 +61,6 @@ namespace DwellMVC.Controllers
             return View(model);
         }
 
-
-
-
         [HttpPost]
         public async Task<IActionResult> CreateOrder(CreateOrderViewModel model, CancellationToken cancellationToken)
         {
@@ -132,7 +129,6 @@ namespace DwellMVC.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-
         [HttpGet]
         public async Task<IActionResult> GetOrdersForUser(CancellationToken cancellationToken)
         {
@@ -164,7 +160,6 @@ namespace DwellMVC.Controllers
             ModelState.AddModelError("", "شناسه کاربر معتبر نیست.");
             return View("Error");
         }
-
 
         [HttpGet]
         public async Task<IActionResult> Proposals(int orderId, CancellationToken cancellationToken)
@@ -241,7 +236,6 @@ namespace DwellMVC.Controllers
             return RedirectToAction("GetOrdersForUser");
         }
 
-
         [HttpPost]
         public async Task<IActionResult> AcceptProposal(int proposalId, CancellationToken cancellationToken)
         {
@@ -257,7 +251,8 @@ namespace DwellMVC.Controllers
 
             if (existingAcceptedProposal != null && existingAcceptedProposal.Id != proposalId)
             {
-                return Json(new { success = false, message = "یک پیشنهاد قبلاً تأیید شده است و امکان تغییر وجود ندارد." });
+                TempData["ErrorMessage"] = "یک پیشنهاد قبلاً تأیید شده است و امکان تغییر وجود ندارد.";
+                return RedirectToAction("Proposals", new { orderId = order.Id });
             }
 
             proposal.IsSelectedByCustomer = true;
@@ -274,14 +269,16 @@ namespace DwellMVC.Controllers
                 var updateResult = await _expertProposalAppService.UpdateExpertProposalAsync(updatedProposal, cancellationToken);
                 if (!updateResult)
                 {
-                    return Json(new { success = false, message = "خطا در به‌روزرسانی پیشنهادات." });
+                    TempData["ErrorMessage"] = "خطا در به‌روزرسانی پیشنهادات.";
+                    return RedirectToAction("Proposals", new { orderId = order.Id });
                 }
             }
 
             var orderUpdateResult = await _orderAppService.UpdateOrderAsync(order, cancellationToken);
             if (!orderUpdateResult)
             {
-                return Json(new { success = false, message = "خطا در به‌روزرسانی وضعیت سفارش." });
+                TempData["ErrorMessage"] = "خطا در به‌روزرسانی وضعیت سفارش.";
+                return RedirectToAction("Proposals", new { orderId = order.Id });
             }
 
             return RedirectToAction("Proposals", new { orderId = order.Id });

@@ -41,36 +41,36 @@ namespace Dwell.Controllers
 
             if (!_memoryCache.TryGetValue("Categories", out List<Category> categories))
             {
-                _logger.LogInformation("Fetching categories from service.");
+                _logger.LogInformation("دریافت دسته‌بندی‌ها از سرویس...");
                 categories = await _categoryAppService.GetAllCategoriesAsync(cancellationToken);
                 if (categories == null)
                 {
-                    _logger.LogWarning("Categories not found.");
+                    _logger.LogWarning("هیچ دسته‌بندی‌ای یافت نشد!");
                     return NotFound();
                 }
                 _memoryCache.Set("Categories", categories, cacheOptions);
             }
             else
             {
-                _logger.LogInformation("Categories loaded from cache.");
+                _logger.LogInformation("دسته‌بندی‌ها از کش بارگذاری شدند.");
             }
 
             ViewData["Categories"] = categories;
 
             if (!_memoryCache.TryGetValue("AllHomeServices", out List<HomeService> allHomeServices))
             {
-                _logger.LogInformation("Fetching home services from service.");
+                _logger.LogInformation("دریافت لیست خدمات از سرویس...");
                 allHomeServices = await _homeServiceAppService.GetAllHomeServicesAsync(cancellationToken);
                 if (allHomeServices == null)
                 {
-                    _logger.LogWarning("Home services not found.");
+                    _logger.LogWarning("هیچ خدمتی یافت نشد!");
                     return NotFound();
                 }
                 _memoryCache.Set("AllHomeServices", allHomeServices, cacheOptions);
             }
             else
             {
-                _logger.LogInformation("Home services loaded from cache.");
+                _logger.LogInformation("لیست خدمات از کش بارگذاری شد.");
             }
 
             var topHomeServices = allHomeServices
@@ -95,6 +95,7 @@ namespace Dwell.Controllers
 
             return View(viewModel);
         }
+
 
         public IActionResult Privacy()
         {
