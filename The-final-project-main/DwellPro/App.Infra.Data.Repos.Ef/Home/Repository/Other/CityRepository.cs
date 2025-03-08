@@ -1,12 +1,13 @@
 ﻿using App.Domain.Core.Home.Contract.Repositories.Other;
 using App.Domain.Core.Home.Entities.Other;
+using App.Domain.Core.Home.Entities.Users;
 using App.Infra.Data.Db.SqlServer.Ef.Home.DataDBContaxt;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace App.Infra.Data.Repos.Ef.Home.Repository.Other
 {
@@ -26,6 +27,30 @@ namespace App.Infra.Data.Repos.Ef.Home.Repository.Other
                 .Where(c => !c.IsDeleted)
                 .ToListAsync(cancellationToken);
         }
+        //public async Task<List<City>> GetAllAsync(CancellationToken cancellationToken)
+        //{
+        //    const string query = @"
+        //SELECT * 
+        //FROM Cities c
+        //LEFT JOIN Users u ON u.CityId = c.Id
+        //WHERE c.IsDeleted = 0"; 
+
+        //    using (var connection = _context) 
+        //    {
+        //        var cities = await connection.QueryAsync<City, User, City>(
+        //            query,
+        //            (city, user) =>
+        //            {
+        //                city.Users.Add(user);
+        //                return city;
+        //            },
+        //            splitOn: "Id",
+        //            cancellationToken: cancellationToken
+        //        );
+
+        //        return cities.ToList();
+        //    }
+        //}
 
         public async Task<City> GetByIdAsync(int id, CancellationToken cancellationToken)
         {
@@ -39,6 +64,37 @@ namespace App.Infra.Data.Repos.Ef.Home.Repository.Other
             }
             throw new Exception("City not found");
         }
+        //public async Task<City> GetByIdAsync(int id, CancellationToken cancellationToken)
+        //{
+        //    const string query = @"
+        //     SELECT * 
+        //     FROM Cities c
+        //     LEFT JOIN Users u ON u.CityId = c.Id
+        //     WHERE c.Id = @Id AND c.IsDeleted = 0"; 
+
+        //    using (var connection = _context) 
+        //    {
+        //        var city = await connection.QueryAsync<City, User, City>(
+        //            query,
+        //            (city, user) =>
+        //            {
+        //                city.Users.Add(user);
+        //                return city;
+        //            },
+        //            param: new { Id = id },
+        //            splitOn: "Id",
+        //            cancellationToken: cancellationToken
+        //        );
+
+        //        var resultCity = city.FirstOrDefault();
+        //        if (resultCity != null)
+        //        {
+        //            return resultCity;
+        //        }
+
+        //        throw new Exception("City not found");
+        //    }
+        //}
 
         public async Task<bool> AddAsync(City city, CancellationToken cancellationToken)
         {

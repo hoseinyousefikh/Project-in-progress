@@ -29,6 +29,9 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Home.DataDBContaxt
         public DbSet<Pictures> Pictures { get; set; }
         public DbSet<SubCategory> SubCategories { get; set; }
         public DbSet<User> Users { get; set; }
+
+     
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
