@@ -1,64 +1,75 @@
 ﻿@using App.Domain.Core.Home.Enum
+@model List<App.Domain.Core.Home.Entities.ListOrder.Orders> 
+
 <div class="order-table-container">
     <h2>سفارشات شما</h2>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>شناسه</th>
-                <th>اسم هوم سرویس</th>
-                <th>تاریخ ثبت</th>
-                <th>وضعیت</th>
-                <th>وضعیت پرداخت</th>
-                <th>جزئیات سفارش</th>
-                <th>پیشنهادها</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var order in Model)
-            {
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-warning text-center">
+            <strong>هیچ سفارشی یافت نشد!</strong>
+        </div>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@order.Id</td>
-                    <td>@order.HomeServiceName.Name</td>
-                    <td>@order.RequestDate.ToString("yyyy-MM-dd")</td>
-                    <td>
-                        @switch (order.OrderStatus)
-                        {
-                            case OrderStatus.WaitingForExpertSelection:
-                                @:منتظر انتخاب متخصص
-                                break;
-                            case OrderStatus.WaitingForExpertProposal:
-                                @:منتظر پیشنهاد متخصص
-                                break;
-                            case OrderStatus.WaitingForExpertArrival:
-                                @:منتظر آمدن متخصص
-                                break;
-                            case OrderStatus.Completed:
-                                @:اتمام کار
-                                break;
-                        }
-                    </td>
-                    <td>
-                        @switch (order.PaymentStatus)
-                        {
-                            case PaymentStatus.Pending:
-                                @:پرداخت نشده
-                                break;
-                            case PaymentStatus.Paid:
-                                @:پرداخت شده
-                                break;
-                        }
-                    </td>
-                    <td>
-                        <a href="@Url.Action("Details", "Order", new { id = order.Id })" class="btn btn-info">جزئیات سفارش</a>
-                    </td>
-                    <td>
-                        <a href="@Url.Action("Proposals", "Order", new { orderId = order.Id })" class="btn btn-primary">پیشنهادها</a>
-                    </td>
+                    <th>شناسه</th>
+                    <th>اسم هوم سرویس</th>
+                    <th>تاریخ ثبت</th>
+                    <th>وضعیت</th>
+                    <th>وضعیت پرداخت</th>
+                    <th>جزئیات سفارش</th>
+                    <th>پیشنهادها</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+                        <td>@order.Id</td>
+                        <td>@order.HomeServiceName.Name</td>
+                        <td>@order.RequestDate.ToString("yyyy-MM-dd")</td>
+                        <td>
+                            @switch (order.OrderStatus)
+                            {
+                                case OrderStatus.WaitingForExpertSelection:
+                                    @:منتظر انتخاب متخصص
+                                    break;
+                                case OrderStatus.WaitingForExpertProposal:
+                                    @:منتظر پیشنهاد متخصص
+                                    break;
+                                case OrderStatus.WaitingForExpertArrival:
+                                    @:منتظر آمدن متخصص
+                                    break;
+                                case OrderStatus.Completed:
+                                    @:اتمام کار
+                                    break;
+                            }
+                        </td>
+                        <td>
+                            @switch (order.PaymentStatus)
+                            {
+                                case PaymentStatus.Pending:
+                                    @:پرداخت نشده
+                                    break;
+                                case PaymentStatus.Paid:
+                                    @:پرداخت شده
+                                    break;
+                            }
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Details", "Order", new { id = order.Id })" class="btn btn-info">جزئیات سفارش</a>
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Proposals", "Order", new { orderId = order.Id })" class="btn btn-primary">پیشنهادها</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 </div>
 <style>
     .order-table-container {

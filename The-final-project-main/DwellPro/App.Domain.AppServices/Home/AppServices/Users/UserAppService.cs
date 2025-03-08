@@ -1,7 +1,10 @@
 ﻿using App.Domain.Core.Home.Contract.AppServices.Users;
+using App.Domain.Core.Home.Contract.Services.Other;
 using App.Domain.Core.Home.Contract.Services.Users;
+using App.Domain.Core.Home.DTO;
 using App.Domain.Core.Home.Entities.Users;
 using App.Domain.Core.Home.Enum;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using System;
@@ -17,12 +20,18 @@ namespace App.Domain.AppServices.Home.AppServices.Users
         private readonly IUserService _userService;
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<AdminUserAppService> _logger;
+        private readonly UserManager<User> _userManager;
+        private readonly IAdminUserAppService _adminUserAppService;
+        private readonly ICityService _cityService;
 
-        public UserAppService(IUserService userService, SignInManager<User> signInManager, ILogger<AdminUserAppService> logger)
+        public UserAppService(IUserService userService, SignInManager<User> signInManager, ILogger<AdminUserAppService> logger, UserManager<User> userManager , IAdminUserAppService adminUserAppService , ICityService cityService)
         {
             _userService = userService;
             _logger = logger;
             _signInManager = signInManager;
+            _userManager = userManager;
+            _adminUserAppService = adminUserAppService;
+            _cityService = cityService;
         }
 
         public Task<IdentityResult> RegisterAsync(
@@ -115,5 +124,111 @@ namespace App.Domain.AppServices.Home.AppServices.Users
         {
             return _userService.UpdateExpertAsync(expert ,cancellationToken);
         }
+
+        public async Task<ResultDto> EditUserAsync(int userId, EditUserDto model, IFormFile profilePicture, CancellationToken cancellationToken)
+        {
+            var result = new ResultDto();
+
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user == null)
+            {
+                result.Succeeded = false;
+                result.Message = "کاربر پیدا نشد.";
+                return result;
+            }
+
+            UserStatus currentStatus = model.RoleStatus;
+            if (currentStatus == null)
+            {
+                currentStatus = user.RoleType == RoleEnum.Customer && user.CustomerDetails != null
+                    ? user.CustomerDetails.RoleStatus
+                    : user.RoleType == RoleEnum.Expert && user.ExpertDetails != null
+                        ? user.ExpertDetails.RoleStatus
+                        : throw new Exception("نقش کاربر نامعتبر است.");
+            }
+
+            model.ProfilePicture = await _adminUserAppService.EditProfileAndUploadImage(
+                userId,
+                profilePicture,
+                user.ProfilePicture,
+                cancellationToken
+            );
+
+            var updateResult = await _userService.UpdateUserAsync(
+                userId,
+                model.FirstName,
+                model.LastName,
+                model.CityId,
+                model.ProfilePicture,
+                model.Description,
+                model.Address,
+                model.ShebaNumber,
+                model.CardNumber,
+                cancellationToken
+            );
+
+            result.Succeeded = updateResult.Succeeded;
+            result.Message = updateResult.Succeeded ? "ویرایش با موفقیت انجام شد." : "خطا در به‌روزرسانی اطلاعات کاربر.";
+
+            return result;
+        }
+        public async Task<UserDetailsDto> GetUserDetailsAsync(int userId, CancellationToken cancellationToken)
+        {
+            var user = await _adminUserAppService.GetByIdAsync(userId, cancellationToken);
+
+            if (user == null)
+            {
+                return null;
+            }
+
+            if (user.CityId.HasValue)
+            {
+                user.City = await _cityService.GetCityByIdAsync(user.CityId.Value, cancellationToken);
+            }
+
+            return new UserDetailsDto
+            {
+                UserId = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                CityName = user.City?.Name ?? "نامشخص",
+                ProfilePicture = user.ProfilePicture,
+                Description = user.Description,
+                Address = user.Address,
+                ShebaNumber = user.ShebaNumber,
+                CardNumber = user.CardNumber,
+                Balance = user.Balance,
+                RoleStatus = user.RoleType == RoleEnum.Customer
+                    ? (user.CustomerDetails?.RoleStatus ?? UserStatus.inActive)
+                    : (user.ExpertDetails?.RoleStatus ?? UserStatus.inActive)
+            };
+        }
+        public async Task<EditUserDto> GetEditUserDataAsync(int userId, CancellationToken cancellationToken)
+        {
+            var user = await _adminUserAppService.GetByIdAsync(userId, cancellationToken);
+            if (user == null)
+            {
+                return null;
+            }
+
+            var cities = await _cityService.GetAllCitiesAsync(cancellationToken);
+
+            return new EditUserDto
+            {
+                UserId = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                CityId = user.CityId,
+                ProfilePicture = user.ProfilePicture,
+                Description = user.Description,
+                Address = user.Address,
+                ShebaNumber = user.ShebaNumber,
+                CardNumber = user.CardNumber,
+                RoleStatus = user.RoleType == RoleEnum.Customer
+                    ? (user.CustomerDetails?.RoleStatus ?? UserStatus.inActive)
+                    : (user.ExpertDetails?.RoleStatus ?? UserStatus.inActive),
+            };
+        }
+
     }
 }

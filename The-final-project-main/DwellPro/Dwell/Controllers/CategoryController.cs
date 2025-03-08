@@ -16,42 +16,56 @@ namespace DwellMVC.Controllers
             _homeServiceAppService = homeServiceAppService;
         }
 
+        //[HttpGet]
+        //public async Task<IActionResult> GetSubCategoriesByCategoryId(int categoryId, CancellationToken cancellationToken)
+        //{
+        //    var subCategories = await _subCategoryAppService.GetAllSubCategoriesAsync(cancellationToken);
+        //    var filteredSubCategories = subCategories
+        //        .Where(sc => sc.CategoryId == categoryId && !sc.IsDeleted) 
+        //        .Select(sc => new SubCategoryViewModel
+        //        {
+        //            Id = sc.Id,
+        //            Name = sc.Name,
+        //            ImageUrl = sc.ImageUrl,
+        //            CategoryId = sc.CategoryId
+        //        })
+        //        .ToList();
+        //    return View(filteredSubCategories);
+        //}
+
         [HttpGet]
         public async Task<IActionResult> GetSubCategoriesByCategoryId(int categoryId, CancellationToken cancellationToken)
         {
-            var subCategories = await _subCategoryAppService.GetAllSubCategoriesAsync(cancellationToken);
-            var filteredSubCategories = subCategories
-                .Where(sc => sc.CategoryId == categoryId && !sc.IsDeleted) 
-                .Select(sc => new SubCategoryViewModel
-                {
-                    Id = sc.Id,
-                    Name = sc.Name,
-                    ImageUrl = sc.ImageUrl,
-                    CategoryId = sc.CategoryId
-                })
-                .ToList();
+            var filteredSubCategories = await _subCategoryAppService.GetFilteredSubCategoriesAsync(categoryId, cancellationToken);
             return View(filteredSubCategories);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetHomeServicesBySubCategoryId(int subCategoryId, CancellationToken cancellationToken)
         {
-            var allHomeServices = await _homeServiceAppService.GetAllHomeServicesAsync(cancellationToken);
-            var homeServices = allHomeServices
-                .Where(hs => hs.SubCategoryId == subCategoryId && !hs.IsDeleted) 
-                .Select(hs => new HomeServiceViewModel
-                {
-                    Id = hs.Id,
-                    Name = hs.Name,
-                    ImageUrl = hs.ImageUrl,
-                    Description = hs.Description,
-                    BasePrice = hs.BasePrice,
-                    ViewCount = hs.ViewCount,
-                    SubCategoryId = hs.SubCategoryId
-                })
-                .ToList();
+            var homeServices = await _homeServiceAppService.GetFilteredHomeServicesAsync(subCategoryId, cancellationToken);
             return View(homeServices);
         }
+
+        //[HttpGet]
+        //public async Task<IActionResult> GetHomeServicesBySubCategoryId(int subCategoryId, CancellationToken cancellationToken)
+        //{
+        //    var allHomeServices = await _homeServiceAppService.GetAllHomeServicesAsync(cancellationToken);
+        //    var homeServices = allHomeServices
+        //        .Where(hs => hs.SubCategoryId == subCategoryId && !hs.IsDeleted) 
+        //        .Select(hs => new HomeServiceViewModel
+        //        {
+        //            Id = hs.Id,
+        //            Name = hs.Name,
+        //            ImageUrl = hs.ImageUrl,
+        //            Description = hs.Description,
+        //            BasePrice = hs.BasePrice,
+        //            ViewCount = hs.ViewCount,
+        //            SubCategoryId = hs.SubCategoryId
+        //        })
+        //        .ToList();
+        //    return View(homeServices);
+        //}
 
         [HttpPost]
         public async Task<IActionResult> IncreaseViewCount(int serviceId, CancellationToken cancellationToken)

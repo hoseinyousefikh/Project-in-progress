@@ -156,43 +156,63 @@ namespace DwellMVC.Controllers
         }
 
 
+        //[HttpGet]
+        //public async Task<IActionResult> EditUser(CancellationToken cancellationToken)
+        //{
+        //    var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        //    if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
+        //    {
+        //        return Unauthorized(); 
+        //    }
+
+        //    var user = await _adminUserAppService.GetByIdAsync(userId, cancellationToken);
+        //    if (user == null)
+        //    {
+        //        return NotFound("کاربر پیدا نشد.");
+        //    }
+
+        //    var cities = await _cityAppService.GetAllCitiesAsync(cancellationToken);
+        //    ViewBag.Cities = new SelectList(cities, "Id", "Name");
+
+        //    var model = new EditUserDto
+        //    {
+        //        UserId = user.Id,
+        //        FirstName = user.FirstName,
+        //        LastName = user.LastName,
+        //        CityId = user.CityId,
+        //        ProfilePicture = user.ProfilePicture,
+        //        Description = user.Description,
+        //        Address = user.Address,
+        //        ShebaNumber = user.ShebaNumber,
+        //        CardNumber = user.CardNumber,
+        //        RoleStatus = user.RoleType == RoleEnum.Customer
+        //            ? (user.CustomerDetails?.RoleStatus ?? UserStatus.inActive)
+        //            : (user.ExpertDetails?.RoleStatus ?? UserStatus.inActive)
+        //    };
+
+        //    return View(model);
+        //}
+
         [HttpGet]
         public async Task<IActionResult> EditUser(CancellationToken cancellationToken)
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
             {
-                return Unauthorized(); 
+                return Unauthorized();
             }
 
-            var user = await _adminUserAppService.GetByIdAsync(userId, cancellationToken);
-            if (user == null)
+            var cities = await _cityAppService.GetAllCitiesAsync(cancellationToken);
+                ViewBag.Cities = new SelectList(cities, "Id", "Name");
+
+            var userModel = await _userAppService.GetEditUserDataAsync(userId, cancellationToken);
+            if (userModel == null)
             {
                 return NotFound("کاربر پیدا نشد.");
             }
 
-            var cities = await _cityAppService.GetAllCitiesAsync(cancellationToken);
-            ViewBag.Cities = new SelectList(cities, "Id", "Name");
-
-            var model = new EditUserDto
-            {
-                UserId = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                CityId = user.CityId,
-                ProfilePicture = user.ProfilePicture,
-                Description = user.Description,
-                Address = user.Address,
-                ShebaNumber = user.ShebaNumber,
-                CardNumber = user.CardNumber,
-                RoleStatus = user.RoleType == RoleEnum.Customer
-                    ? (user.CustomerDetails?.RoleStatus ?? UserStatus.inActive)
-                    : (user.ExpertDetails?.RoleStatus ?? UserStatus.inActive)
-            };
-
-            return View(model);
+            return View(userModel);
         }
-
 
         [HttpPost]
         public async Task<IActionResult> EditUser(EditUserDto model, IFormFile profilePicture, CancellationToken cancellationToken)
@@ -203,63 +223,11 @@ namespace DwellMVC.Controllers
                 return Unauthorized();
             }
 
-            UserStatus currentStatus = model.RoleStatus;
-
-            if (currentStatus == null)
-            {
-                var currentUser = await _userManager.FindByIdAsync(userId.ToString());
-                if (currentUser == null)
-                {
-                    ModelState.AddModelError("", "کاربر پیدا نشد.");
-                    return View(model);
-                }
-
-                if (currentUser.RoleType == RoleEnum.Customer && currentUser.CustomerDetails != null)
-                {
-                    currentStatus = currentUser.CustomerDetails.RoleStatus;
-                }
-                else if (currentUser.RoleType == RoleEnum.Expert && currentUser.ExpertDetails != null)
-                {
-                    currentStatus = currentUser.ExpertDetails.RoleStatus;
-                }
-                else
-                {
-                    _logger.LogError("نقش کاربر نامعتبر است.");
-                    TempData["ErrorMessage"] = "نقش کاربر نامعتبر است.";
-                    return RedirectToAction(nameof(Index));
-                }
-            }
-
-            var current = await _userManager.FindByIdAsync(userId.ToString());
-            if (current == null)
-            {
-                ModelState.AddModelError("", "کاربر پیدا نشد.");
-                return View(model);
-            }
-
-            model.ProfilePicture = await _adminUserAppService.EditProfileAndUploadImage(
-                userId,
-                profilePicture,
-                current.ProfilePicture,
-                cancellationToken
-            );
-
-            var result = await _userAppService.UpdateUserAsync(
-                userId,
-                model.FirstName,
-                model.LastName,
-                model.CityId,
-                model.ProfilePicture,
-                model.Description,
-                model.Address,
-                model.ShebaNumber,
-                model.CardNumber,
-                cancellationToken
-            );
+            var result = await _userAppService.EditUserAsync(userId, model, profilePicture, cancellationToken);
 
             if (!result.Succeeded)
             {
-                ModelState.AddModelError("", "ارور برای جزییات کاربر.");
+                ModelState.AddModelError("", "خطا در به‌روزرسانی اطلاعات کاربر.");
                 return View(model);
             }
 
@@ -267,6 +235,122 @@ namespace DwellMVC.Controllers
         }
 
 
+        //[HttpPost]
+        //public async Task<IActionResult> EditUser(EditUserDto model, IFormFile profilePicture, CancellationToken cancellationToken)
+        //{
+        //    var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        //    if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
+        //    {
+        //        return Unauthorized();
+        //    }
+
+        //    UserStatus currentStatus = model.RoleStatus;
+
+        //    if (currentStatus == null)
+        //    {
+        //        var currentUser = await _userManager.FindByIdAsync(userId.ToString());
+        //        if (currentUser == null)
+        //        {
+        //            ModelState.AddModelError("", "کاربر پیدا نشد.");
+        //            return View(model);
+        //        }
+
+        //        if (currentUser.RoleType == RoleEnum.Customer && currentUser.CustomerDetails != null)
+        //        {
+        //            currentStatus = currentUser.CustomerDetails.RoleStatus;
+        //        }
+        //        else if (currentUser.RoleType == RoleEnum.Expert && currentUser.ExpertDetails != null)
+        //        {
+        //            currentStatus = currentUser.ExpertDetails.RoleStatus;
+        //        }
+        //        else
+        //        {
+        //            _logger.LogError("نقش کاربر نامعتبر است.");
+        //            TempData["ErrorMessage"] = "نقش کاربر نامعتبر است.";
+        //            return RedirectToAction(nameof(Index));
+        //        }
+        //    }
+
+        //    var current = await _userManager.FindByIdAsync(userId.ToString());
+        //    if (current == null)
+        //    {
+        //        ModelState.AddModelError("", "کاربر پیدا نشد.");
+        //        return View(model);
+        //    }
+
+        //    model.ProfilePicture = await _adminUserAppService.EditProfileAndUploadImage(
+        //        userId,
+        //        profilePicture,
+        //        current.ProfilePicture,
+        //        cancellationToken
+        //    );
+
+        //    var result = await _userAppService.UpdateUserAsync(
+        //        userId,
+        //        model.FirstName,
+        //        model.LastName,
+        //        model.CityId,
+        //        model.ProfilePicture,
+        //        model.Description,
+        //        model.Address,
+        //        model.ShebaNumber,
+        //        model.CardNumber,
+        //        cancellationToken
+        //    );
+
+        //    if (!result.Succeeded)
+        //    {
+        //        ModelState.AddModelError("", "ارور برای جزییات کاربر.");
+        //        return View(model);
+        //    }
+
+        //    return RedirectToAction("Details", "Authentication");
+        //}
+
+        //[HttpGet]
+        //public async Task<IActionResult> Details(CancellationToken cancellationToken)
+        //{
+        //    var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        //    if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
+        //    {
+        //        return Unauthorized();
+        //    }
+
+        //    var user = await _adminUserAppService.GetByIdAsync(userId, cancellationToken);
+
+        //    if (user == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    if (user.CityId.HasValue)
+        //    {
+        //        user.City = await _cityAppService.GetCityByIdAsync(user.CityId.Value, cancellationToken);
+        //    }
+
+        //    var cityName = user?.City?.Name ?? "نامشخص";
+
+
+        //    var model = new
+        //    {
+        //        UserId = user.Id,
+        //        FirstName = user.FirstName,
+        //        LastName = user.LastName,
+        //        CityName = cityName,
+        //        ProfilePicture = user.ProfilePicture,
+        //        Description = user.Description,
+        //        Address = user.Address,
+        //        ShebaNumber = user.ShebaNumber,
+        //        CardNumber = user.CardNumber,
+        //        Balance = user.Balance, 
+        //        RoleStatus = user.RoleType == RoleEnum.Customer
+        //            ? (user.CustomerDetails?.RoleStatus ?? UserStatus.inActive)
+        //            : (user.ExpertDetails?.RoleStatus ?? UserStatus.inActive)
+        //    };
+
+        //    return View(model);
+        //}
 
         [HttpGet]
         public async Task<IActionResult> Details(CancellationToken cancellationToken)
@@ -278,40 +362,16 @@ namespace DwellMVC.Controllers
                 return Unauthorized();
             }
 
-            var user = await _adminUserAppService.GetByIdAsync(userId, cancellationToken);
+            var userModel = await _userAppService.GetUserDetailsAsync(userId, cancellationToken);
 
-            if (user == null)
+            if (userModel == null)
             {
                 return NotFound();
             }
-            
-            if (user.CityId.HasValue)
-            {
-                user.City = await _cityAppService.GetCityByIdAsync(user.CityId.Value, cancellationToken);
-            }
 
-            var cityName = user?.City?.Name ?? "نامشخص";
-          
-
-            var model = new
-            {
-                UserId = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                CityName = cityName,
-                ProfilePicture = user.ProfilePicture,
-                Description = user.Description,
-                Address = user.Address,
-                ShebaNumber = user.ShebaNumber,
-                CardNumber = user.CardNumber,
-                Balance = user.Balance, 
-                RoleStatus = user.RoleType == RoleEnum.Customer
-                    ? (user.CustomerDetails?.RoleStatus ?? UserStatus.inActive)
-                    : (user.ExpertDetails?.RoleStatus ?? UserStatus.inActive)
-            };
-
-            return View(model);
+            return View(userModel);
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]

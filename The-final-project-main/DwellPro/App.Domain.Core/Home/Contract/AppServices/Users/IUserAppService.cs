@@ -1,5 +1,7 @@
-﻿using App.Domain.Core.Home.Entities.Users;
+﻿using App.Domain.Core.Home.DTO;
+using App.Domain.Core.Home.Entities.Users;
 using App.Domain.Core.Home.Enum;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -42,6 +44,8 @@ namespace App.Domain.Core.Home.Contract.AppServices.Users
         Task<Customers> GetCustomerByIdAsync(int id, CancellationToken cancellationToken);
         Task<IdentityResult> UpdateUser(User user, CancellationToken cancellationToken);
         Task<bool> UpdateExpertAsync(Experts expert, CancellationToken cancellationToken);
-
+        Task<ResultDto> EditUserAsync(int userId, EditUserDto model, IFormFile profilePicture, CancellationToken cancellationToken);
+        Task<UserDetailsDto> GetUserDetailsAsync(int userId, CancellationToken cancellationToken);
+        Task<EditUserDto> GetEditUserDataAsync(int userId, CancellationToken cancellationToken);
     }
 }

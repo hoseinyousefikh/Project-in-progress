@@ -1,5 +1,6 @@
 ﻿using App.Domain.Core.Home.Contract.AppServices.Categories;
 using App.Domain.Core.Home.Contract.Services.Categories;
+using App.Domain.Core.Home.DTO;
 using App.Domain.Core.Home.Entities.Categories;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -92,6 +93,25 @@ namespace App.Domain.AppServices.Home.AppServices.Categories
 
             return existingImageUrl;
         }
+        public async Task<List<HomeServiceDto>> GetFilteredHomeServicesAsync(int subCategoryId, CancellationToken cancellationToken)
+        {
+            var allHomeServices = await GetAllHomeServicesAsync(cancellationToken);
+
+            return allHomeServices
+                .Where(hs => hs.SubCategoryId == subCategoryId && !hs.IsDeleted)
+                .Select(hs => new HomeServiceDto
+                {
+                    Id = hs.Id,
+                    Name = hs.Name,
+                    ImageUrl = hs.ImageUrl,
+                    Description = hs.Description,
+                    BasePrice = hs.BasePrice,
+                    ViewCount = hs.ViewCount,
+                    SubCategoryId = hs.SubCategoryId
+                })
+                .ToList();
+        }
+
 
     }
 }

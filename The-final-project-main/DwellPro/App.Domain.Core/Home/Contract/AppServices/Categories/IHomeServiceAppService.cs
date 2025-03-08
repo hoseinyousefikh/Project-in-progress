@@ -1,4 +1,5 @@
-﻿using App.Domain.Core.Home.Entities.Categories;
+﻿using App.Domain.Core.Home.DTO;
+using App.Domain.Core.Home.Entities.Categories;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -17,5 +18,6 @@ namespace App.Domain.Core.Home.Contract.AppServices.Categories
         Task<bool> DeleteHomeServiceAsync(int id, CancellationToken cancellationToken);
         Task<string> AddImageToFileSystem(IFormFile imageFile, string folderName, CancellationToken cancellationToken);
         Task<string> EditHomeServiceImage(IFormFile imageFile, string existingImageUrl, CancellationToken cancellationToken);
+        Task<List<HomeServiceDto>> GetFilteredHomeServicesAsync(int subCategoryId, CancellationToken cancellationToken);
     }
 }

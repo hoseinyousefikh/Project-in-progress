@@ -1,19 +1,16 @@
 ﻿using App.Domain.Core.Home.Entities.ListOrder;
 using App.Domain.Core.Home.Entities.Users;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace DwellMVC.Models
+namespace App.Domain.Core.Home.DTO
 {
-    public class ProposalViewModel
-    {
-        public int OrderId { get; set; }
-        public List<ProposalViewItem> Proposals { get; set; }
-    }
-
     public class ProposalViewItem
     {
         public ExpertProposal Proposal { get; set; }
         public Experts Expert { get; set; }
     }
-
-
 }
