@@ -18,7 +18,7 @@ namespace DwellMVC.Controllers
     {
         private readonly ICommentAppService _commentAppService;
         private readonly IAdminUserAppService _adminUserAppService;
-        private readonly IExpertProposalAppService _expertProposalAppService;
+        private readonly IExpertProposalAppService _expertProposalAppService;//
         private readonly IUserAppService _userAppService;
          
         public CommentController(ICommentAppService commentAppService, IAdminUserAppService adminUserAppService , IExpertProposalAppService expertProposalAppService, IUserAppService userAppService)
