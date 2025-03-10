@@ -33,6 +33,10 @@ namespace App.Domain.Core.Home.DTO
         public string? ShebaNumber { get; set; }
 
         public string? CardNumber { get; set; }
+        public List<int>? SelectedHomeServiceIds { get; set; }
+
+        public List<string>? ExistingHomeServices { get; set; }
+        public List<int>? RemovedHomeServiceIds { get; set; }
 
         [Required]
         public UserStatus RoleStatus { get; set; }

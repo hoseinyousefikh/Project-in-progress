@@ -2482,86 +2482,86 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         {
                             Id = 1,
                             CommentId = 1,
-                            CustomerSelectionDate = new DateTime(2025, 2, 21, 4, 27, 5, 271, DateTimeKind.Local).AddTicks(6643),
+                            CustomerSelectionDate = new DateTime(2025, 3, 11, 7, 59, 31, 735, DateTimeKind.Local).AddTicks(5522),
                             ExpertId = 1,
                             IsApproved = true,
                             IsDeleted = false,
                             IsSelectedByCustomer = false,
                             OrderId = 1,
-                            ProposalDate = new DateTime(2025, 2, 15, 4, 27, 5, 271, DateTimeKind.Local).AddTicks(6607),
+                            ProposalDate = new DateTime(2025, 3, 5, 7, 59, 31, 735, DateTimeKind.Local).AddTicks(5488),
                             ProposalDescription = "پیشنهاد انجام پروژه طراحی وب سایت",
                             ProposalStatus = 1,
                             ProposedExecutionTime = new TimeSpan(60, 0, 0, 0, 0),
                             ProposedPrice = 2000.00m,
-                            WorkCompletionDate = new DateTime(2025, 4, 20, 4, 27, 5, 271, DateTimeKind.Local).AddTicks(6630)
+                            WorkCompletionDate = new DateTime(2025, 5, 10, 7, 59, 31, 735, DateTimeKind.Local).AddTicks(5511)
                         },
                         new
                         {
                             Id = 2,
                             CommentId = 2,
-                            CustomerSelectionDate = new DateTime(2025, 2, 22, 4, 27, 5, 271, DateTimeKind.Local).AddTicks(6658),
+                            CustomerSelectionDate = new DateTime(2025, 3, 12, 7, 59, 31, 735, DateTimeKind.Local).AddTicks(5536),
                             ExpertId = 2,
                             IsApproved = false,
                             IsDeleted = false,
                             IsSelectedByCustomer = false,
                             OrderId = 2,
-                            ProposalDate = new DateTime(2025, 2, 16, 4, 27, 5, 271, DateTimeKind.Local).AddTicks(6651),
+                            ProposalDate = new DateTime(2025, 3, 6, 7, 59, 31, 735, DateTimeKind.Local).AddTicks(5529),
                             ProposalDescription = "پیشنهاد انجام پروژه طراحی اپلیکیشن موبایل",
                             ProposalStatus = 3,
                             ProposedExecutionTime = new TimeSpan(30, 0, 0, 0, 0),
                             ProposedPrice = 1500.00m,
-                            WorkCompletionDate = new DateTime(2025, 3, 20, 4, 27, 5, 271, DateTimeKind.Local).AddTicks(6654)
+                            WorkCompletionDate = new DateTime(2025, 4, 10, 7, 59, 31, 735, DateTimeKind.Local).AddTicks(5532)
                         },
                         new
                         {
                             Id = 3,
                             CommentId = 3,
-                            CustomerSelectionDate = new DateTime(2025, 2, 23, 4, 27, 5, 271, DateTimeKind.Local).AddTicks(6671),
+                            CustomerSelectionDate = new DateTime(2025, 3, 13, 7, 59, 31, 735, DateTimeKind.Local).AddTicks(5548),
                             ExpertId = 3,
                             IsApproved = true,
                             IsDeleted = false,
                             IsSelectedByCustomer = true,
                             OrderId = 3,
-                            ProposalDate = new DateTime(2025, 2, 17, 4, 27, 5, 271, DateTimeKind.Local).AddTicks(6664),
+                            ProposalDate = new DateTime(2025, 3, 7, 7, 59, 31, 735, DateTimeKind.Local).AddTicks(5541),
                             ProposalDescription = "پیشنهاد انجام پروژه ساخت وب سایت فروشگاهی",
                             ProposalStatus = 1,
                             ProposedExecutionTime = new TimeSpan(90, 0, 0, 0, 0),
                             ProposedPrice = 2500.00m,
-                            WorkCompletionDate = new DateTime(2025, 5, 20, 4, 27, 5, 271, DateTimeKind.Local).AddTicks(6667)
+                            WorkCompletionDate = new DateTime(2025, 6, 10, 7, 59, 31, 735, DateTimeKind.Local).AddTicks(5544)
                         },
                         new
                         {
                             Id = 4,
                             CommentId = 4,
-                            CustomerSelectionDate = new DateTime(2025, 2, 25, 4, 27, 5, 271, DateTimeKind.Local).AddTicks(6683),
+                            CustomerSelectionDate = new DateTime(2025, 3, 15, 7, 59, 31, 735, DateTimeKind.Local).AddTicks(5561),
                             ExpertId = 2,
                             IsApproved = false,
                             IsDeleted = false,
                             IsSelectedByCustomer = false,
                             OrderId = 4,
-                            ProposalDate = new DateTime(2025, 2, 18, 4, 27, 5, 271, DateTimeKind.Local).AddTicks(6676),
+                            ProposalDate = new DateTime(2025, 3, 8, 7, 59, 31, 735, DateTimeKind.Local).AddTicks(5554),
                             ProposalDescription = "پیشنهاد انجام پروژه طراحی لوگو",
                             ProposalStatus = 1,
                             ProposedExecutionTime = new TimeSpan(15, 0, 0, 0, 0),
                             ProposedPrice = 1800.00m,
-                            WorkCompletionDate = new DateTime(2025, 3, 20, 4, 27, 5, 271, DateTimeKind.Local).AddTicks(6679)
+                            WorkCompletionDate = new DateTime(2025, 4, 10, 7, 59, 31, 735, DateTimeKind.Local).AddTicks(5557)
                         },
                         new
                         {
                             Id = 5,
                             CommentId = 5,
-                            CustomerSelectionDate = new DateTime(2025, 2, 24, 4, 27, 5, 271, DateTimeKind.Local).AddTicks(6695),
+                            CustomerSelectionDate = new DateTime(2025, 3, 14, 7, 59, 31, 735, DateTimeKind.Local).AddTicks(5572),
                             ExpertId = 3,
                             IsApproved = true,
                             IsDeleted = false,
                             IsSelectedByCustomer = false,
                             OrderId = 5,
-                            ProposalDate = new DateTime(2025, 2, 19, 4, 27, 5, 271, DateTimeKind.Local).AddTicks(6688),
+                            ProposalDate = new DateTime(2025, 3, 9, 7, 59, 31, 735, DateTimeKind.Local).AddTicks(5566),
                             ProposalDescription = "پیشنهاد انجام پروژه طراحی گرافیکی",
                             ProposalStatus = 1,
                             ProposedExecutionTime = new TimeSpan(45, 0, 0, 0, 0),
                             ProposedPrice = 2200.00m,
-                            WorkCompletionDate = new DateTime(2025, 3, 20, 4, 27, 5, 271, DateTimeKind.Local).AddTicks(6691)
+                            WorkCompletionDate = new DateTime(2025, 4, 10, 7, 59, 31, 735, DateTimeKind.Local).AddTicks(5569)
                         });
                 });
 
@@ -2626,14 +2626,14 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                             BasePrice = 1500.00m,
                             CustomerId = 1,
                             Description = "پروژه برای طراحی و توسعه وب سایت",
-                            ExecutionDate = new DateTime(2025, 2, 27, 4, 27, 5, 269, DateTimeKind.Local).AddTicks(756),
+                            ExecutionDate = new DateTime(2025, 3, 17, 7, 59, 31, 733, DateTimeKind.Local).AddTicks(275),
                             ExecutionTime = new TimeSpan(5, 0, 0, 0, 0),
                             HomeServiceId = 1,
                             IsApproved = true,
                             IsDeleted = false,
                             OrderStatus = 1,
                             PaymentStatus = 1,
-                            RequestDate = new DateTime(2025, 2, 17, 4, 27, 5, 269, DateTimeKind.Local).AddTicks(726)
+                            RequestDate = new DateTime(2025, 3, 7, 7, 59, 31, 733, DateTimeKind.Local).AddTicks(250)
                         },
                         new
                         {
@@ -2641,14 +2641,14 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                             BasePrice = 2000.00m,
                             CustomerId = 2,
                             Description = "پروژه طراحی اپلیکیشن موبایل",
-                            ExecutionDate = new DateTime(2025, 3, 2, 4, 27, 5, 269, DateTimeKind.Local).AddTicks(779),
+                            ExecutionDate = new DateTime(2025, 3, 20, 7, 59, 31, 733, DateTimeKind.Local).AddTicks(306),
                             ExecutionTime = new TimeSpan(7, 0, 0, 0, 0),
                             HomeServiceId = 2,
                             IsApproved = true,
                             IsDeleted = false,
                             OrderStatus = 2,
                             PaymentStatus = 2,
-                            RequestDate = new DateTime(2025, 2, 18, 4, 27, 5, 269, DateTimeKind.Local).AddTicks(775)
+                            RequestDate = new DateTime(2025, 3, 8, 7, 59, 31, 733, DateTimeKind.Local).AddTicks(302)
                         },
                         new
                         {
@@ -2656,14 +2656,14 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                             BasePrice = 2500.00m,
                             CustomerId = 3,
                             Description = "پروژه طراحی سیستم مدیریت محتوا",
-                            ExecutionDate = new DateTime(2025, 3, 7, 4, 27, 5, 269, DateTimeKind.Local).AddTicks(795),
+                            ExecutionDate = new DateTime(2025, 3, 25, 7, 59, 31, 733, DateTimeKind.Local).AddTicks(314),
                             ExecutionTime = new TimeSpan(10, 0, 0, 0, 0),
                             HomeServiceId = 3,
                             IsApproved = false,
                             IsDeleted = false,
                             OrderStatus = 3,
                             PaymentStatus = 1,
-                            RequestDate = new DateTime(2025, 2, 19, 4, 27, 5, 269, DateTimeKind.Local).AddTicks(785)
+                            RequestDate = new DateTime(2025, 3, 9, 7, 59, 31, 733, DateTimeKind.Local).AddTicks(311)
                         },
                         new
                         {
@@ -2671,14 +2671,14 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                             BasePrice = 3000.00m,
                             CustomerId = 2,
                             Description = "پروژه طراحی و توسعه فروشگاه آنلاین",
-                            ExecutionDate = new DateTime(2025, 2, 23, 4, 27, 5, 269, DateTimeKind.Local).AddTicks(804),
+                            ExecutionDate = new DateTime(2025, 3, 13, 7, 59, 31, 733, DateTimeKind.Local).AddTicks(324),
                             ExecutionTime = new TimeSpan(3, 0, 0, 0, 0),
                             HomeServiceId = 4,
                             IsApproved = true,
                             IsDeleted = false,
                             OrderStatus = 4,
                             PaymentStatus = 1,
-                            RequestDate = new DateTime(2025, 2, 15, 4, 27, 5, 269, DateTimeKind.Local).AddTicks(801)
+                            RequestDate = new DateTime(2025, 3, 5, 7, 59, 31, 733, DateTimeKind.Local).AddTicks(321)
                         },
                         new
                         {
@@ -2686,14 +2686,14 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                             BasePrice = 1000.00m,
                             CustomerId = 3,
                             Description = "پروژه مشاوره و آموزش آنلاین",
-                            ExecutionDate = new DateTime(2025, 3, 12, 4, 27, 5, 269, DateTimeKind.Local).AddTicks(812),
+                            ExecutionDate = new DateTime(2025, 3, 30, 7, 59, 31, 733, DateTimeKind.Local).AddTicks(331),
                             ExecutionTime = new TimeSpan(15, 0, 0, 0, 0),
                             HomeServiceId = 5,
                             IsApproved = true,
                             IsDeleted = false,
                             OrderStatus = 1,
                             PaymentStatus = 2,
-                            RequestDate = new DateTime(2025, 2, 10, 4, 27, 5, 269, DateTimeKind.Local).AddTicks(809)
+                            RequestDate = new DateTime(2025, 2, 28, 7, 59, 31, 733, DateTimeKind.Local).AddTicks(328)
                         });
                 });
 
@@ -2952,7 +2952,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 2, 18, 4, 27, 5, 276, DateTimeKind.Local).AddTicks(1425),
+                            CreatedAt = new DateTime(2025, 3, 8, 7, 59, 31, 739, DateTimeKind.Local).AddTicks(7948),
                             CustomerId = 1,
                             ExpertId = 1,
                             ExpertProposalId = 1,
@@ -2964,7 +2964,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 2, 19, 4, 27, 5, 276, DateTimeKind.Local).AddTicks(1475),
+                            CreatedAt = new DateTime(2025, 3, 9, 7, 59, 31, 739, DateTimeKind.Local).AddTicks(7966),
                             CustomerId = 2,
                             ExpertId = 2,
                             ExpertProposalId = 2,
@@ -2976,7 +2976,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2025, 2, 17, 4, 27, 5, 276, DateTimeKind.Local).AddTicks(1481),
+                            CreatedAt = new DateTime(2025, 3, 7, 7, 59, 31, 739, DateTimeKind.Local).AddTicks(7990),
                             CustomerId = 3,
                             ExpertId = 3,
                             ExpertProposalId = 3,
@@ -2988,7 +2988,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2025, 2, 15, 4, 27, 5, 276, DateTimeKind.Local).AddTicks(1489),
+                            CreatedAt = new DateTime(2025, 3, 5, 7, 59, 31, 739, DateTimeKind.Local).AddTicks(7994),
                             CustomerId = 2,
                             ExpertId = 2,
                             ExpertProposalId = 4,
@@ -3000,7 +3000,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2025, 2, 16, 4, 27, 5, 276, DateTimeKind.Local).AddTicks(1494),
+                            CreatedAt = new DateTime(2025, 3, 6, 7, 59, 31, 739, DateTimeKind.Local).AddTicks(8001),
                             CustomerId = 3,
                             ExpertId = 3,
                             ExpertProposalId = 5,
@@ -3013,19 +3013,24 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
 
             modelBuilder.Entity("App.Domain.Core.Home.Entities.Other.ExpertHomeService", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<int>("ExpertId")
                         .HasColumnType("int");
 
                     b.Property<int>("HomeServiceId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.HasKey("ExpertId", "HomeServiceId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExpertId");
 
                     b.HasIndex("HomeServiceId");
 
@@ -3287,7 +3292,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                             Id = 7,
                             AccessFailedCount = 0,
                             Balance = 400000m,
-                            ConcurrencyStamp = "36243570-d657-4107-afd9-bd0ec2685aee",
+                            ConcurrencyStamp = "0417a288-b9df-43bb-ace3-bba13ba0b7b2",
                             Email = "customer3@example.com",
                             EmailConfirmed = true,
                             FirstName = "مشتری",
@@ -3296,12 +3301,12 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "CUSTOMER3@EXAMPLE.COM",
                             NormalizedUserName = "CUSTOMER3",
-                            PasswordHash = "AQAAAAIAAYagAAAAELfBd8au14FOEHHpiD1mq/M4Zi8beAapYBf5Dp6U3vwevXecAgmwVmqKXv2BRb98lw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJTyn07FhZAGwSsKlvlcZpNjCLhuCV3h51PYl7orL5lAlUoZqDydwYwa5NEKGX6Ovg==",
                             PhoneNumberConfirmed = false,
-                            RegisterAt = new DateTime(2025, 2, 20, 4, 27, 5, 174, DateTimeKind.Local).AddTicks(284),
+                            RegisterAt = new DateTime(2025, 3, 10, 7, 59, 31, 634, DateTimeKind.Local).AddTicks(5870),
                             RoleId = 2,
                             RoleType = 2,
-                            SecurityStamp = "fd1ff610-0601-462e-9f45-e743f0cf134c",
+                            SecurityStamp = "69a2420b-6b71-4438-badd-f75714e4ad2f",
                             TwoFactorEnabled = false,
                             UserName = "customer3"
                         },
@@ -3310,7 +3315,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                             Id = 1,
                             AccessFailedCount = 0,
                             Balance = 1000000m,
-                            ConcurrencyStamp = "1e5c4a7a-2b0c-41df-94fb-9ce4233080da",
+                            ConcurrencyStamp = "16293623-2faa-4780-8528-0ae75989ec69",
                             Email = "admin@example.com",
                             EmailConfirmed = true,
                             FirstName = "حسین",
@@ -3319,12 +3324,12 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@EXAMPLE.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEM8bFykOkM6psRNzCTIo0TKxvS2IN8Ya95r4iDMaR79x8sCpqZiZM0iW43lsH1wOjQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDONgP98N91UL5YMEmJE0ZG+UKwp2A5UydXI2VwgRvE/1jUZOJvvHIbSMJHAySADtA==",
                             PhoneNumberConfirmed = false,
-                            RegisterAt = new DateTime(2025, 2, 20, 4, 27, 4, 605, DateTimeKind.Local).AddTicks(4209),
+                            RegisterAt = new DateTime(2025, 3, 10, 7, 59, 31, 22, DateTimeKind.Local).AddTicks(4593),
                             RoleId = 1,
                             RoleType = 1,
-                            SecurityStamp = "689a53b3-5e0f-4ca7-bd1b-efb29490f8d1",
+                            SecurityStamp = "e720c964-a5ab-4052-81d4-0b1b4264346c",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         },
@@ -3333,7 +3338,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                             Id = 2,
                             AccessFailedCount = 0,
                             Balance = 500000m,
-                            ConcurrencyStamp = "83f38459-f6f7-4f82-8e63-529d3d92fb8a",
+                            ConcurrencyStamp = "f19f3637-460f-40ac-a94b-c75226c8cbc8",
                             Email = "expert1@example.com",
                             EmailConfirmed = true,
                             FirstName = "کارشناس",
@@ -3342,12 +3347,12 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "EXPERT1@EXAMPLE.COM",
                             NormalizedUserName = "EXPERT1",
-                            PasswordHash = "AQAAAAIAAYagAAAAEC4PyUyXh2fRDoHM8eGZAvJqIvDWtyzE0UHfhjwIJDgz+ok/52W/tgsRKaALkmmh+Q==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEARzzPcHJAUUgFm8pmtF0QvxLM+Sxs5jggrUU1J7tcoRhDlU+ftcpwhbZGQCuyK+yg==",
                             PhoneNumberConfirmed = false,
-                            RegisterAt = new DateTime(2025, 2, 20, 4, 27, 4, 704, DateTimeKind.Local).AddTicks(1846),
+                            RegisterAt = new DateTime(2025, 3, 10, 7, 59, 31, 109, DateTimeKind.Local).AddTicks(2224),
                             RoleId = 3,
                             RoleType = 3,
-                            SecurityStamp = "6206489c-0329-4140-a75c-6472210da31c",
+                            SecurityStamp = "2ed90266-b384-4d08-9b82-f82410b88e78",
                             TwoFactorEnabled = false,
                             UserName = "expert1"
                         },
@@ -3356,7 +3361,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                             Id = 3,
                             AccessFailedCount = 0,
                             Balance = 600000m,
-                            ConcurrencyStamp = "c8c63dc1-84da-44a7-ad73-3a9f020b2983",
+                            ConcurrencyStamp = "375755e4-e8e1-477e-86f7-f0f20e6f1ae2",
                             Email = "expert2@example.com",
                             EmailConfirmed = true,
                             FirstName = "کارشناس",
@@ -3365,12 +3370,12 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "EXPERT2@EXAMPLE.COM",
                             NormalizedUserName = "EXPERT2",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEgi7e2iICJgOltm+VbPilaKFno57AIXvtB75TyfXgnw3wcvXi6mVF1Ub8c3jGiuKA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEH30HpwRJdJ0au8QHFVU2Wgxs3aAwW69uUcvbgP19M6mAbW5nFyemn7U1JE7SWld9A==",
                             PhoneNumberConfirmed = false,
-                            RegisterAt = new DateTime(2025, 2, 20, 4, 27, 4, 799, DateTimeKind.Local).AddTicks(9722),
+                            RegisterAt = new DateTime(2025, 3, 10, 7, 59, 31, 245, DateTimeKind.Local).AddTicks(9321),
                             RoleId = 3,
                             RoleType = 3,
-                            SecurityStamp = "09229ff4-626c-4552-b73f-608f8c987376",
+                            SecurityStamp = "b4a2dfe3-8fef-4690-b221-279a24668b6c",
                             TwoFactorEnabled = false,
                             UserName = "expert2"
                         },
@@ -3379,7 +3384,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                             Id = 4,
                             AccessFailedCount = 0,
                             Balance = 700000m,
-                            ConcurrencyStamp = "5ba5672c-7b06-446f-82d9-38a3b46b58a9",
+                            ConcurrencyStamp = "4e2da07c-8220-4030-a48c-2aaf3d75d3c5",
                             Email = "expert3@example.com",
                             EmailConfirmed = true,
                             FirstName = "کارشناس",
@@ -3388,12 +3393,12 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "EXPERT3@EXAMPLE.COM",
                             NormalizedUserName = "EXPERT3",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHIHaOgZS1CyRrIHPW7rbRGRY2gj3F5lsMRDh68jEJeBW71i69Qq2x1MBEkZF5yj8w==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAILsayBxxwdJHJRXi4Plw0Q6diCUFfS1KgnFPfPp6IqrfSgOGjQP8hw1W3WrQta2A==",
                             PhoneNumberConfirmed = false,
-                            RegisterAt = new DateTime(2025, 2, 20, 4, 27, 4, 893, DateTimeKind.Local).AddTicks(2819),
+                            RegisterAt = new DateTime(2025, 3, 10, 7, 59, 31, 344, DateTimeKind.Local).AddTicks(2479),
                             RoleId = 3,
                             RoleType = 3,
-                            SecurityStamp = "4bd0a4c4-e293-403a-b673-b68dd11ebfa4",
+                            SecurityStamp = "c05035e9-fcb6-426e-ac50-b262208d9146",
                             TwoFactorEnabled = false,
                             UserName = "expert3"
                         },
@@ -3402,7 +3407,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                             Id = 5,
                             AccessFailedCount = 0,
                             Balance = 200000m,
-                            ConcurrencyStamp = "3df25198-1d0a-45cd-b5da-a369bd97d02e",
+                            ConcurrencyStamp = "0f91ad9f-fba5-4160-bdf9-a2c97d49b5d3",
                             Email = "customer1@example.com",
                             EmailConfirmed = true,
                             FirstName = "مشتری",
@@ -3411,12 +3416,12 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "CUSTOMER1@EXAMPLE.COM",
                             NormalizedUserName = "CUSTOMER1",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDYFg7Q5Ti+4ZgcTz1M0JNBCahCl0AkBLfif01cvBpOnncFSlgG9g9bWhefyuwxG+g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAitaJBUzaS94KtC6/1B0AZKl16hATWfBxOgX8zQBSzkgL/gV86MNAwuzp59q5b7OA==",
                             PhoneNumberConfirmed = false,
-                            RegisterAt = new DateTime(2025, 2, 20, 4, 27, 4, 982, DateTimeKind.Local).AddTicks(2454),
+                            RegisterAt = new DateTime(2025, 3, 10, 7, 59, 31, 455, DateTimeKind.Local).AddTicks(3487),
                             RoleId = 2,
                             RoleType = 2,
-                            SecurityStamp = "d9939873-2258-44fc-83cb-c2490a51bc66",
+                            SecurityStamp = "3d4a7823-9313-46a5-877f-314cc63c18d4",
                             TwoFactorEnabled = false,
                             UserName = "customer1"
                         },
@@ -3425,7 +3430,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                             Id = 6,
                             AccessFailedCount = 0,
                             Balance = 300000m,
-                            ConcurrencyStamp = "1f3c5531-5cf1-47b6-ba58-3cce7269e508",
+                            ConcurrencyStamp = "a8f57a12-35bd-49c0-8e1e-2b4682f53c54",
                             Email = "customer2@example.com",
                             EmailConfirmed = true,
                             FirstName = "مشتری",
@@ -3434,12 +3439,12 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "CUSTOMER2@EXAMPLE.COM",
                             NormalizedUserName = "CUSTOMER2",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBiJn9NSwM7HJm0RztgRSoI0kjr+OIX47NlmuGgHJqFnOKoneE8us8CCSVoa9PdV3Q==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOsdkie4h1fSJSIrJhOJFZqNsCb/z4B54lIigHSLNB8EuGmV711xBbIRKgYmsUvo6Q==",
                             PhoneNumberConfirmed = false,
-                            RegisterAt = new DateTime(2025, 2, 20, 4, 27, 5, 80, DateTimeKind.Local).AddTicks(7632),
+                            RegisterAt = new DateTime(2025, 3, 10, 7, 59, 31, 542, DateTimeKind.Local).AddTicks(7641),
                             RoleId = 2,
                             RoleType = 2,
-                            SecurityStamp = "f0cc62c4-4747-4c38-b15b-2fa146e2261a",
+                            SecurityStamp = "a5bb9bf3-eecc-43c3-9d23-757c5a16da89",
                             TwoFactorEnabled = false,
                             UserName = "customer2"
                         });

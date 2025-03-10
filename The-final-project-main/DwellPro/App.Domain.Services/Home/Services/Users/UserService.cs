@@ -1,5 +1,7 @@
-﻿using App.Domain.Core.Home.Contract.Repositories.Users;
+﻿using App.Domain.Core.Home.Contract.Repositories.Other;
+using App.Domain.Core.Home.Contract.Repositories.Users;
 using App.Domain.Core.Home.Contract.Services.Users;
+using App.Domain.Core.Home.Entities.Other;
 using App.Domain.Core.Home.Entities.Users;
 using App.Domain.Core.Home.Enum;
 using Microsoft.AspNetCore.Identity;
@@ -20,14 +22,15 @@ namespace App.Domain.Services.Home.Services.Users
         private readonly ICustomersRepository _customersRepository;
         private readonly IExpertRepository _expertRepository;
         private readonly SignInManager<User> _signInManager;
-
-
+        private readonly IAdminUserService _adminUserService;
+        private readonly IExpertHomeServiceRepository _expertHomeServiceRepository;
         public UserService(UserManager<User> userManager,
                             RoleManager<IdentityRole<int>> roleManager,
                             IPasswordHasher<User> passwordHasher,
                             ICustomersRepository customersRepository,
                             IExpertRepository expertRepository,
-                            SignInManager<User> signInManager)
+                            SignInManager<User> signInManager,
+                            IAdminUserService adminUserService, IExpertHomeServiceRepository expertHomeServiceRepository)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -35,7 +38,8 @@ namespace App.Domain.Services.Home.Services.Users
             _customersRepository = customersRepository;
             _expertRepository = expertRepository;
             _signInManager = signInManager;
-
+            _adminUserService = adminUserService;
+            _expertHomeServiceRepository = expertHomeServiceRepository;
         }
 
 
@@ -365,6 +369,14 @@ namespace App.Domain.Services.Home.Services.Users
         public async Task<IdentityResult> UpdateUser(User user, CancellationToken cancellationToken)
         {
             return await _userManager.UpdateAsync(user);
+        }
+        public async Task<List<ExpertHomeService>> GetByExpertIdAsync(int expertId, CancellationToken cancellationToken)
+        {
+            var allExpertHomeServices = await _expertHomeServiceRepository.GetAllAsync(cancellationToken);
+
+            return allExpertHomeServices
+                .Where(ehs => ehs.ExpertId == expertId && !ehs.IsDeleted) 
+                .ToList(); 
         }
 
         public async Task<bool> UpdateExpertAsync(Experts expert, CancellationToken cancellationToken)

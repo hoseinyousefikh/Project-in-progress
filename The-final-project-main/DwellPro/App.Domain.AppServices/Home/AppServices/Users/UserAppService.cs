@@ -1,7 +1,10 @@
 ﻿using App.Domain.Core.Home.Contract.AppServices.Users;
+using App.Domain.Core.Home.Contract.Services.ListOrder;
 using App.Domain.Core.Home.Contract.Services.Other;
 using App.Domain.Core.Home.Contract.Services.Users;
 using App.Domain.Core.Home.DTO;
+using App.Domain.Core.Home.Entities.Categories;
+using App.Domain.Core.Home.Entities.Other;
 using App.Domain.Core.Home.Entities.Users;
 using App.Domain.Core.Home.Enum;
 using Microsoft.AspNetCore.Http;
@@ -23,8 +26,8 @@ namespace App.Domain.AppServices.Home.AppServices.Users
         private readonly UserManager<User> _userManager;
         private readonly IAdminUserAppService _adminUserAppService;
         private readonly ICityService _cityService;
-
-        public UserAppService(IUserService userService, SignInManager<User> signInManager, ILogger<AdminUserAppService> logger, UserManager<User> userManager , IAdminUserAppService adminUserAppService , ICityService cityService)
+        private readonly IExpertProposalService _expertProposalService;
+        public UserAppService(IUserService userService, SignInManager<User> signInManager, ILogger<AdminUserAppService> logger, UserManager<User> userManager , IAdminUserAppService adminUserAppService , ICityService cityService, IExpertProposalService expertProposalService)
         {
             _userService = userService;
             _logger = logger;
@@ -32,6 +35,7 @@ namespace App.Domain.AppServices.Home.AppServices.Users
             _userManager = userManager;
             _adminUserAppService = adminUserAppService;
             _cityService = cityService;
+            _expertProposalService = expertProposalService;
         }
 
         public Task<IdentityResult> RegisterAsync(
@@ -203,6 +207,59 @@ namespace App.Domain.AppServices.Home.AppServices.Users
                     : (user.ExpertDetails?.RoleStatus ?? UserStatus.inActive)
             };
         }
+
+
+        public async Task<ExpertDetailsDto> GetExpertDetailsAsync(int expertId, CancellationToken cancellationToken)
+        {
+            var expert = await _adminUserAppService.GetByIdAsync(expertId, cancellationToken);
+
+            if (expert == null)
+            {
+                return null;
+            }
+
+            var user = await _adminUserAppService.GetByIdAsync(expert.Id, cancellationToken);
+
+            if (user == null)
+            {
+                return null;
+            }
+
+            if (user.CityId.HasValue)
+            {
+                user.City = await _cityService.GetCityByIdAsync(user.CityId.Value, cancellationToken);
+            }
+
+            var expertHomeServices = await _userService.GetByExpertIdAsync(expertId, cancellationToken);
+
+            return new ExpertDetailsDto
+            {
+                ExpertId = expert.Id,
+                UserId = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                CityName = user.City?.Name ?? "نامشخص",
+                ProfilePicture = user.ProfilePicture,
+                Description = user.Description,
+                Address = user.Address,
+                ShebaNumber = user.ShebaNumber,
+                CardNumber = user.CardNumber,
+                Balance = user.Balance,
+                Rating = expert.ExpertDetails.Rating,
+                Biography = expert.ExpertDetails.Biography,
+                RoleStatus = expert.ExpertDetails.RoleStatus,
+                ExpertHomeServices = expertHomeServices.Select(ehs => new ExpertHomeService
+                {
+                    HomeServiceId = ehs.HomeServiceId,
+                    HomeService = new HomeService
+                    {
+                        Name = ehs.HomeService.Name 
+                    }
+                }).ToList()
+
+            };
+        }
+
         public async Task<EditUserDto> GetEditUserDataAsync(int userId, CancellationToken cancellationToken)
         {
             var user = await _adminUserAppService.GetByIdAsync(userId, cancellationToken);
@@ -230,5 +287,9 @@ namespace App.Domain.AppServices.Home.AppServices.Users
             };
         }
 
+        public Task<List<ExpertHomeService>> GetHomeServiceByExpertIdAsync(int expertId, CancellationToken cancellationToken)
+        {
+            return _userService.GetByExpertIdAsync(expertId, cancellationToken);
+        }
     }
 }

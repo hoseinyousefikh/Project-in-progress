@@ -307,14 +307,15 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                 name: "ExpertSkills",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     ExpertId = table.Column<int>(type: "int", nullable: false),
-                    HomeServiceId = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    HomeServiceId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ExpertSkills", x => new { x.ExpertId, x.HomeServiceId });
+                    table.PrimaryKey("PK_ExpertSkills", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ExpertSkills_Experts_ExpertId",
                         column: x => x.ExpertId,
@@ -481,13 +482,13 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "Address", "Balance", "CardNumber", "CityId", "ConcurrencyStamp", "Description", "Email", "EmailConfirmed", "FirstName", "IsDeleted", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "ProfilePicture", "RegisterAt", "RoleId", "RoleType", "SecurityStamp", "ShebaNumber", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { 1, 0, null, 1000000m, null, null, "1e5c4a7a-2b0c-41df-94fb-9ce4233080da", null, "admin@example.com", true, "حسین", false, "یوسفی", false, null, "ADMIN@EXAMPLE.COM", "ADMIN", "AQAAAAIAAYagAAAAEM8bFykOkM6psRNzCTIo0TKxvS2IN8Ya95r4iDMaR79x8sCpqZiZM0iW43lsH1wOjQ==", null, false, null, new DateTime(2025, 2, 20, 4, 27, 4, 605, DateTimeKind.Local).AddTicks(4209), 1, 1, "689a53b3-5e0f-4ca7-bd1b-efb29490f8d1", null, false, "admin" },
-                    { 2, 0, null, 500000m, null, null, "83f38459-f6f7-4f82-8e63-529d3d92fb8a", null, "expert1@example.com", true, "کارشناس", false, "یک", false, null, "EXPERT1@EXAMPLE.COM", "EXPERT1", "AQAAAAIAAYagAAAAEC4PyUyXh2fRDoHM8eGZAvJqIvDWtyzE0UHfhjwIJDgz+ok/52W/tgsRKaALkmmh+Q==", null, false, null, new DateTime(2025, 2, 20, 4, 27, 4, 704, DateTimeKind.Local).AddTicks(1846), 3, 3, "6206489c-0329-4140-a75c-6472210da31c", null, false, "expert1" },
-                    { 3, 0, null, 600000m, null, null, "c8c63dc1-84da-44a7-ad73-3a9f020b2983", null, "expert2@example.com", true, "کارشناس", false, "دو", false, null, "EXPERT2@EXAMPLE.COM", "EXPERT2", "AQAAAAIAAYagAAAAEEgi7e2iICJgOltm+VbPilaKFno57AIXvtB75TyfXgnw3wcvXi6mVF1Ub8c3jGiuKA==", null, false, null, new DateTime(2025, 2, 20, 4, 27, 4, 799, DateTimeKind.Local).AddTicks(9722), 3, 3, "09229ff4-626c-4552-b73f-608f8c987376", null, false, "expert2" },
-                    { 4, 0, null, 700000m, null, null, "5ba5672c-7b06-446f-82d9-38a3b46b58a9", null, "expert3@example.com", true, "کارشناس", false, "سه", false, null, "EXPERT3@EXAMPLE.COM", "EXPERT3", "AQAAAAIAAYagAAAAEHIHaOgZS1CyRrIHPW7rbRGRY2gj3F5lsMRDh68jEJeBW71i69Qq2x1MBEkZF5yj8w==", null, false, null, new DateTime(2025, 2, 20, 4, 27, 4, 893, DateTimeKind.Local).AddTicks(2819), 3, 3, "4bd0a4c4-e293-403a-b673-b68dd11ebfa4", null, false, "expert3" },
-                    { 5, 0, null, 200000m, null, null, "3df25198-1d0a-45cd-b5da-a369bd97d02e", null, "customer1@example.com", true, "مشتری", false, "یک", false, null, "CUSTOMER1@EXAMPLE.COM", "CUSTOMER1", "AQAAAAIAAYagAAAAEDYFg7Q5Ti+4ZgcTz1M0JNBCahCl0AkBLfif01cvBpOnncFSlgG9g9bWhefyuwxG+g==", null, false, null, new DateTime(2025, 2, 20, 4, 27, 4, 982, DateTimeKind.Local).AddTicks(2454), 2, 2, "d9939873-2258-44fc-83cb-c2490a51bc66", null, false, "customer1" },
-                    { 6, 0, null, 300000m, null, null, "1f3c5531-5cf1-47b6-ba58-3cce7269e508", null, "customer2@example.com", true, "مشتری", false, "دو", false, null, "CUSTOMER2@EXAMPLE.COM", "CUSTOMER2", "AQAAAAIAAYagAAAAEBiJn9NSwM7HJm0RztgRSoI0kjr+OIX47NlmuGgHJqFnOKoneE8us8CCSVoa9PdV3Q==", null, false, null, new DateTime(2025, 2, 20, 4, 27, 5, 80, DateTimeKind.Local).AddTicks(7632), 2, 2, "f0cc62c4-4747-4c38-b15b-2fa146e2261a", null, false, "customer2" },
-                    { 7, 0, null, 400000m, null, null, "36243570-d657-4107-afd9-bd0ec2685aee", null, "customer3@example.com", true, "مشتری", false, "سه", false, null, "CUSTOMER3@EXAMPLE.COM", "CUSTOMER3", "AQAAAAIAAYagAAAAELfBd8au14FOEHHpiD1mq/M4Zi8beAapYBf5Dp6U3vwevXecAgmwVmqKXv2BRb98lw==", null, false, null, new DateTime(2025, 2, 20, 4, 27, 5, 174, DateTimeKind.Local).AddTicks(284), 2, 2, "fd1ff610-0601-462e-9f45-e743f0cf134c", null, false, "customer3" }
+                    { 1, 0, null, 1000000m, null, null, "16293623-2faa-4780-8528-0ae75989ec69", null, "admin@example.com", true, "حسین", false, "یوسفی", false, null, "ADMIN@EXAMPLE.COM", "ADMIN", "AQAAAAIAAYagAAAAEDONgP98N91UL5YMEmJE0ZG+UKwp2A5UydXI2VwgRvE/1jUZOJvvHIbSMJHAySADtA==", null, false, null, new DateTime(2025, 3, 10, 7, 59, 31, 22, DateTimeKind.Local).AddTicks(4593), 1, 1, "e720c964-a5ab-4052-81d4-0b1b4264346c", null, false, "admin" },
+                    { 2, 0, null, 500000m, null, null, "f19f3637-460f-40ac-a94b-c75226c8cbc8", null, "expert1@example.com", true, "کارشناس", false, "یک", false, null, "EXPERT1@EXAMPLE.COM", "EXPERT1", "AQAAAAIAAYagAAAAEARzzPcHJAUUgFm8pmtF0QvxLM+Sxs5jggrUU1J7tcoRhDlU+ftcpwhbZGQCuyK+yg==", null, false, null, new DateTime(2025, 3, 10, 7, 59, 31, 109, DateTimeKind.Local).AddTicks(2224), 3, 3, "2ed90266-b384-4d08-9b82-f82410b88e78", null, false, "expert1" },
+                    { 3, 0, null, 600000m, null, null, "375755e4-e8e1-477e-86f7-f0f20e6f1ae2", null, "expert2@example.com", true, "کارشناس", false, "دو", false, null, "EXPERT2@EXAMPLE.COM", "EXPERT2", "AQAAAAIAAYagAAAAEH30HpwRJdJ0au8QHFVU2Wgxs3aAwW69uUcvbgP19M6mAbW5nFyemn7U1JE7SWld9A==", null, false, null, new DateTime(2025, 3, 10, 7, 59, 31, 245, DateTimeKind.Local).AddTicks(9321), 3, 3, "b4a2dfe3-8fef-4690-b221-279a24668b6c", null, false, "expert2" },
+                    { 4, 0, null, 700000m, null, null, "4e2da07c-8220-4030-a48c-2aaf3d75d3c5", null, "expert3@example.com", true, "کارشناس", false, "سه", false, null, "EXPERT3@EXAMPLE.COM", "EXPERT3", "AQAAAAIAAYagAAAAEAILsayBxxwdJHJRXi4Plw0Q6diCUFfS1KgnFPfPp6IqrfSgOGjQP8hw1W3WrQta2A==", null, false, null, new DateTime(2025, 3, 10, 7, 59, 31, 344, DateTimeKind.Local).AddTicks(2479), 3, 3, "c05035e9-fcb6-426e-ac50-b262208d9146", null, false, "expert3" },
+                    { 5, 0, null, 200000m, null, null, "0f91ad9f-fba5-4160-bdf9-a2c97d49b5d3", null, "customer1@example.com", true, "مشتری", false, "یک", false, null, "CUSTOMER1@EXAMPLE.COM", "CUSTOMER1", "AQAAAAIAAYagAAAAEAitaJBUzaS94KtC6/1B0AZKl16hATWfBxOgX8zQBSzkgL/gV86MNAwuzp59q5b7OA==", null, false, null, new DateTime(2025, 3, 10, 7, 59, 31, 455, DateTimeKind.Local).AddTicks(3487), 2, 2, "3d4a7823-9313-46a5-877f-314cc63c18d4", null, false, "customer1" },
+                    { 6, 0, null, 300000m, null, null, "a8f57a12-35bd-49c0-8e1e-2b4682f53c54", null, "customer2@example.com", true, "مشتری", false, "دو", false, null, "CUSTOMER2@EXAMPLE.COM", "CUSTOMER2", "AQAAAAIAAYagAAAAEOsdkie4h1fSJSIrJhOJFZqNsCb/z4B54lIigHSLNB8EuGmV711xBbIRKgYmsUvo6Q==", null, false, null, new DateTime(2025, 3, 10, 7, 59, 31, 542, DateTimeKind.Local).AddTicks(7641), 2, 2, "a5bb9bf3-eecc-43c3-9d23-757c5a16da89", null, false, "customer2" },
+                    { 7, 0, null, 400000m, null, null, "0417a288-b9df-43bb-ace3-bba13ba0b7b2", null, "customer3@example.com", true, "مشتری", false, "سه", false, null, "CUSTOMER3@EXAMPLE.COM", "CUSTOMER3", "AQAAAAIAAYagAAAAEJTyn07FhZAGwSsKlvlcZpNjCLhuCV3h51PYl7orL5lAlUoZqDydwYwa5NEKGX6Ovg==", null, false, null, new DateTime(2025, 3, 10, 7, 59, 31, 634, DateTimeKind.Local).AddTicks(5870), 2, 2, "69a2420b-6b71-4438-badd-f75714e4ad2f", null, false, "customer3" }
                 });
 
             migrationBuilder.InsertData(
@@ -802,11 +803,11 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                 columns: new[] { "Id", "BasePrice", "CustomerId", "Description", "ExecutionDate", "ExecutionTime", "ExpertsId", "HomeServiceId", "IsApproved", "IsDeleted", "OrderStatus", "PaymentStatus", "RequestDate" },
                 values: new object[,]
                 {
-                    { 1, 1500.00m, 1, "پروژه برای طراحی و توسعه وب سایت", new DateTime(2025, 2, 27, 4, 27, 5, 269, DateTimeKind.Local).AddTicks(756), new TimeSpan(5, 0, 0, 0, 0), null, 1, true, false, 1, 1, new DateTime(2025, 2, 17, 4, 27, 5, 269, DateTimeKind.Local).AddTicks(726) },
-                    { 2, 2000.00m, 2, "پروژه طراحی اپلیکیشن موبایل", new DateTime(2025, 3, 2, 4, 27, 5, 269, DateTimeKind.Local).AddTicks(779), new TimeSpan(7, 0, 0, 0, 0), null, 2, true, false, 2, 2, new DateTime(2025, 2, 18, 4, 27, 5, 269, DateTimeKind.Local).AddTicks(775) },
-                    { 3, 2500.00m, 3, "پروژه طراحی سیستم مدیریت محتوا", new DateTime(2025, 3, 7, 4, 27, 5, 269, DateTimeKind.Local).AddTicks(795), new TimeSpan(10, 0, 0, 0, 0), null, 3, false, false, 3, 1, new DateTime(2025, 2, 19, 4, 27, 5, 269, DateTimeKind.Local).AddTicks(785) },
-                    { 4, 3000.00m, 2, "پروژه طراحی و توسعه فروشگاه آنلاین", new DateTime(2025, 2, 23, 4, 27, 5, 269, DateTimeKind.Local).AddTicks(804), new TimeSpan(3, 0, 0, 0, 0), null, 4, true, false, 4, 1, new DateTime(2025, 2, 15, 4, 27, 5, 269, DateTimeKind.Local).AddTicks(801) },
-                    { 5, 1000.00m, 3, "پروژه مشاوره و آموزش آنلاین", new DateTime(2025, 3, 12, 4, 27, 5, 269, DateTimeKind.Local).AddTicks(812), new TimeSpan(15, 0, 0, 0, 0), null, 5, true, false, 1, 2, new DateTime(2025, 2, 10, 4, 27, 5, 269, DateTimeKind.Local).AddTicks(809) }
+                    { 1, 1500.00m, 1, "پروژه برای طراحی و توسعه وب سایت", new DateTime(2025, 3, 17, 7, 59, 31, 733, DateTimeKind.Local).AddTicks(275), new TimeSpan(5, 0, 0, 0, 0), null, 1, true, false, 1, 1, new DateTime(2025, 3, 7, 7, 59, 31, 733, DateTimeKind.Local).AddTicks(250) },
+                    { 2, 2000.00m, 2, "پروژه طراحی اپلیکیشن موبایل", new DateTime(2025, 3, 20, 7, 59, 31, 733, DateTimeKind.Local).AddTicks(306), new TimeSpan(7, 0, 0, 0, 0), null, 2, true, false, 2, 2, new DateTime(2025, 3, 8, 7, 59, 31, 733, DateTimeKind.Local).AddTicks(302) },
+                    { 3, 2500.00m, 3, "پروژه طراحی سیستم مدیریت محتوا", new DateTime(2025, 3, 25, 7, 59, 31, 733, DateTimeKind.Local).AddTicks(314), new TimeSpan(10, 0, 0, 0, 0), null, 3, false, false, 3, 1, new DateTime(2025, 3, 9, 7, 59, 31, 733, DateTimeKind.Local).AddTicks(311) },
+                    { 4, 3000.00m, 2, "پروژه طراحی و توسعه فروشگاه آنلاین", new DateTime(2025, 3, 13, 7, 59, 31, 733, DateTimeKind.Local).AddTicks(324), new TimeSpan(3, 0, 0, 0, 0), null, 4, true, false, 4, 1, new DateTime(2025, 3, 5, 7, 59, 31, 733, DateTimeKind.Local).AddTicks(321) },
+                    { 5, 1000.00m, 3, "پروژه مشاوره و آموزش آنلاین", new DateTime(2025, 3, 30, 7, 59, 31, 733, DateTimeKind.Local).AddTicks(331), new TimeSpan(15, 0, 0, 0, 0), null, 5, true, false, 1, 2, new DateTime(2025, 2, 28, 7, 59, 31, 733, DateTimeKind.Local).AddTicks(328) }
                 });
 
             migrationBuilder.InsertData(
@@ -814,11 +815,11 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                 columns: new[] { "Id", "CommentId", "CustomerSelectionDate", "ExpertId", "IsApproved", "IsDeleted", "IsSelectedByCustomer", "OrderId", "ProposalDate", "ProposalDescription", "ProposalStatus", "ProposedExecutionTime", "ProposedPrice", "WorkCompletionDate" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTime(2025, 2, 21, 4, 27, 5, 271, DateTimeKind.Local).AddTicks(6643), 1, true, false, false, 1, new DateTime(2025, 2, 15, 4, 27, 5, 271, DateTimeKind.Local).AddTicks(6607), "پیشنهاد انجام پروژه طراحی وب سایت", 1, new TimeSpan(60, 0, 0, 0, 0), 2000.00m, new DateTime(2025, 4, 20, 4, 27, 5, 271, DateTimeKind.Local).AddTicks(6630) },
-                    { 2, 2, new DateTime(2025, 2, 22, 4, 27, 5, 271, DateTimeKind.Local).AddTicks(6658), 2, false, false, false, 2, new DateTime(2025, 2, 16, 4, 27, 5, 271, DateTimeKind.Local).AddTicks(6651), "پیشنهاد انجام پروژه طراحی اپلیکیشن موبایل", 3, new TimeSpan(30, 0, 0, 0, 0), 1500.00m, new DateTime(2025, 3, 20, 4, 27, 5, 271, DateTimeKind.Local).AddTicks(6654) },
-                    { 3, 3, new DateTime(2025, 2, 23, 4, 27, 5, 271, DateTimeKind.Local).AddTicks(6671), 3, true, false, true, 3, new DateTime(2025, 2, 17, 4, 27, 5, 271, DateTimeKind.Local).AddTicks(6664), "پیشنهاد انجام پروژه ساخت وب سایت فروشگاهی", 1, new TimeSpan(90, 0, 0, 0, 0), 2500.00m, new DateTime(2025, 5, 20, 4, 27, 5, 271, DateTimeKind.Local).AddTicks(6667) },
-                    { 4, 4, new DateTime(2025, 2, 25, 4, 27, 5, 271, DateTimeKind.Local).AddTicks(6683), 2, false, false, false, 4, new DateTime(2025, 2, 18, 4, 27, 5, 271, DateTimeKind.Local).AddTicks(6676), "پیشنهاد انجام پروژه طراحی لوگو", 1, new TimeSpan(15, 0, 0, 0, 0), 1800.00m, new DateTime(2025, 3, 20, 4, 27, 5, 271, DateTimeKind.Local).AddTicks(6679) },
-                    { 5, 5, new DateTime(2025, 2, 24, 4, 27, 5, 271, DateTimeKind.Local).AddTicks(6695), 3, true, false, false, 5, new DateTime(2025, 2, 19, 4, 27, 5, 271, DateTimeKind.Local).AddTicks(6688), "پیشنهاد انجام پروژه طراحی گرافیکی", 1, new TimeSpan(45, 0, 0, 0, 0), 2200.00m, new DateTime(2025, 3, 20, 4, 27, 5, 271, DateTimeKind.Local).AddTicks(6691) }
+                    { 1, 1, new DateTime(2025, 3, 11, 7, 59, 31, 735, DateTimeKind.Local).AddTicks(5522), 1, true, false, false, 1, new DateTime(2025, 3, 5, 7, 59, 31, 735, DateTimeKind.Local).AddTicks(5488), "پیشنهاد انجام پروژه طراحی وب سایت", 1, new TimeSpan(60, 0, 0, 0, 0), 2000.00m, new DateTime(2025, 5, 10, 7, 59, 31, 735, DateTimeKind.Local).AddTicks(5511) },
+                    { 2, 2, new DateTime(2025, 3, 12, 7, 59, 31, 735, DateTimeKind.Local).AddTicks(5536), 2, false, false, false, 2, new DateTime(2025, 3, 6, 7, 59, 31, 735, DateTimeKind.Local).AddTicks(5529), "پیشنهاد انجام پروژه طراحی اپلیکیشن موبایل", 3, new TimeSpan(30, 0, 0, 0, 0), 1500.00m, new DateTime(2025, 4, 10, 7, 59, 31, 735, DateTimeKind.Local).AddTicks(5532) },
+                    { 3, 3, new DateTime(2025, 3, 13, 7, 59, 31, 735, DateTimeKind.Local).AddTicks(5548), 3, true, false, true, 3, new DateTime(2025, 3, 7, 7, 59, 31, 735, DateTimeKind.Local).AddTicks(5541), "پیشنهاد انجام پروژه ساخت وب سایت فروشگاهی", 1, new TimeSpan(90, 0, 0, 0, 0), 2500.00m, new DateTime(2025, 6, 10, 7, 59, 31, 735, DateTimeKind.Local).AddTicks(5544) },
+                    { 4, 4, new DateTime(2025, 3, 15, 7, 59, 31, 735, DateTimeKind.Local).AddTicks(5561), 2, false, false, false, 4, new DateTime(2025, 3, 8, 7, 59, 31, 735, DateTimeKind.Local).AddTicks(5554), "پیشنهاد انجام پروژه طراحی لوگو", 1, new TimeSpan(15, 0, 0, 0, 0), 1800.00m, new DateTime(2025, 4, 10, 7, 59, 31, 735, DateTimeKind.Local).AddTicks(5557) },
+                    { 5, 5, new DateTime(2025, 3, 14, 7, 59, 31, 735, DateTimeKind.Local).AddTicks(5572), 3, true, false, false, 5, new DateTime(2025, 3, 9, 7, 59, 31, 735, DateTimeKind.Local).AddTicks(5566), "پیشنهاد انجام پروژه طراحی گرافیکی", 1, new TimeSpan(45, 0, 0, 0, 0), 2200.00m, new DateTime(2025, 4, 10, 7, 59, 31, 735, DateTimeKind.Local).AddTicks(5569) }
                 });
 
             migrationBuilder.InsertData(
@@ -826,11 +827,11 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                 columns: new[] { "Id", "CreatedAt", "CustomerId", "ExpertId", "ExpertProposalId", "IsApproved", "IsDeleted", "Rating", "Text" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 2, 18, 4, 27, 5, 276, DateTimeKind.Local).AddTicks(1425), 1, 1, 1, true, false, 4.5, "پیشنهاد خوبی است ولی نیاز به اصلاحاتی دارد." },
-                    { 2, new DateTime(2025, 2, 19, 4, 27, 5, 276, DateTimeKind.Local).AddTicks(1475), 2, 2, 2, true, false, 5.0, "عالی بود، همه چیز به درستی انجام شد." },
-                    { 3, new DateTime(2025, 2, 17, 4, 27, 5, 276, DateTimeKind.Local).AddTicks(1481), 3, 3, 3, false, false, 3.5, "کار شما خوب است ولی زمان تحویل کمی دیر بود." },
-                    { 4, new DateTime(2025, 2, 15, 4, 27, 5, 276, DateTimeKind.Local).AddTicks(1489), 2, 2, 4, true, false, 4.0, "پیشنهادها عالی بودند، فقط نیاز به هماهنگی بیشتر با تیم داشتیم." },
-                    { 5, new DateTime(2025, 2, 16, 4, 27, 5, 276, DateTimeKind.Local).AddTicks(1494), 3, 3, 5, true, false, 5.0, "کار خیلی خوب و سریع انجام شد، از همکاری با شما راضی هستم." }
+                    { 1, new DateTime(2025, 3, 8, 7, 59, 31, 739, DateTimeKind.Local).AddTicks(7948), 1, 1, 1, true, false, 4.5, "پیشنهاد خوبی است ولی نیاز به اصلاحاتی دارد." },
+                    { 2, new DateTime(2025, 3, 9, 7, 59, 31, 739, DateTimeKind.Local).AddTicks(7966), 2, 2, 2, true, false, 5.0, "عالی بود، همه چیز به درستی انجام شد." },
+                    { 3, new DateTime(2025, 3, 7, 7, 59, 31, 739, DateTimeKind.Local).AddTicks(7990), 3, 3, 3, false, false, 3.5, "کار شما خوب است ولی زمان تحویل کمی دیر بود." },
+                    { 4, new DateTime(2025, 3, 5, 7, 59, 31, 739, DateTimeKind.Local).AddTicks(7994), 2, 2, 4, true, false, 4.0, "پیشنهادها عالی بودند، فقط نیاز به هماهنگی بیشتر با تیم داشتیم." },
+                    { 5, new DateTime(2025, 3, 6, 7, 59, 31, 739, DateTimeKind.Local).AddTicks(8001), 3, 3, 5, true, false, 5.0, "کار خیلی خوب و سریع انجام شد، از همکاری با شما راضی هستم." }
                 });
 
             migrationBuilder.CreateIndex(
@@ -914,6 +915,11 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                 table: "Experts",
                 column: "UserId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ExpertSkills_ExpertId",
+                table: "ExpertSkills",
+                column: "ExpertId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ExpertSkills_HomeServiceId",

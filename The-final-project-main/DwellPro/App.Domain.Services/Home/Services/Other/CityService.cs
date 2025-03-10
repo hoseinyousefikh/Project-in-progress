@@ -23,7 +23,7 @@ namespace App.Domain.Services.Home.Services.Other
 
         public async Task<List<City>> GetAllCitiesAsync(CancellationToken cancellationToken)
         {
-            return await _cityRepository.GetAllAsync(cancellationToken);
+                return await _cityRepository.GetAllAsync(cancellationToken);
         }
 
         public async Task<City> GetCityByIdAsync(int id, CancellationToken cancellationToken)

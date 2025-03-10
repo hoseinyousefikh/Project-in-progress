@@ -1,4 +1,5 @@
-﻿using App.Domain.Core.Home.Entities.Users;
+﻿using App.Domain.Core.Home.Entities.Other;
+using App.Domain.Core.Home.Entities.Users;
 using App.Domain.Core.Home.Enum;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -33,5 +34,6 @@ namespace App.Domain.Core.Home.Contract.Services.Users
 
         Task<IdentityResult> UpdateUser(User user, CancellationToken cancellationToken);
         Task<bool> UpdateExpertAsync(Experts expert, CancellationToken cancellationToken);
+        Task<List<ExpertHomeService>> GetByExpertIdAsync(int expertId, CancellationToken cancellationToken);
     }
 }

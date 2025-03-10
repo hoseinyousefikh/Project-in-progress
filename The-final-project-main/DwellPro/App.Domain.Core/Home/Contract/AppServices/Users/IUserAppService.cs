@@ -1,4 +1,5 @@
 ﻿using App.Domain.Core.Home.DTO;
+using App.Domain.Core.Home.Entities.Other;
 using App.Domain.Core.Home.Entities.Users;
 using App.Domain.Core.Home.Enum;
 using Microsoft.AspNetCore.Http;
@@ -47,5 +48,7 @@ namespace App.Domain.Core.Home.Contract.AppServices.Users
         Task<ResultDto> EditUserAsync(int userId, EditUserDto model, IFormFile profilePicture, CancellationToken cancellationToken);
         Task<UserDetailsDto> GetUserDetailsAsync(int userId, CancellationToken cancellationToken);
         Task<EditUserDto> GetEditUserDataAsync(int userId, CancellationToken cancellationToken);
+        Task<ExpertDetailsDto> GetExpertDetailsAsync(int expertId, CancellationToken cancellationToken);
+        Task<List<ExpertHomeService>> GetHomeServiceByExpertIdAsync(int expertId, CancellationToken cancellationToken);
     }
 }

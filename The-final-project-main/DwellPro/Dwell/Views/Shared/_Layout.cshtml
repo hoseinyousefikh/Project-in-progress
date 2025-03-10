@@ -65,13 +65,29 @@
                         <a href="contact-us.html" class="d-lg-show">تماس با ما </a>
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <a href="@Url.Action("GetOrdersForUser", "Order")" class="d-lg-show">سفارشات من</a>
+                            if (User.IsInRole("Customer"))
+                            {
+                                <a href="@Url.Action("GetOrdersForUser", "Order")" class="d-lg-show">سفارشات من</a>
+                            }
+                            else if (User.IsInRole("Expert"))
+                            {
+                                <a href="@Url.Action("GetSuggestionsForExpert", "Order")" class="d-lg-show">پیشنهادات ارایه شده</a>
+                            }
                         }
+
 
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <a href="@Url.Action("Details", "Authentication")" class="d-lg-show">حساب من</a>
+                            if (User.IsInRole("Customer"))
+                            {
+                                <a href="@Url.Action("Details", "Authentication")" class="d-lg-show">حساب مشتری</a>
+                            }
+                            else if (User.IsInRole("Expert"))
+                            {
+                                <a href="@Url.Action("ExpertDetails", "ExpertAuthentication")" class="d-lg-show">حساب کارشناس</a>
+                            }
                         }
+
                         <a href="@Url.Action("Login", "Authentication")" class="d-lg-show login sign-in" onclick="event.stopPropagation();">
                             <i class="w-icon-account"></i> ورود
                         </a>
@@ -104,12 +120,23 @@
                     @if (User.Identity.IsAuthenticated)
                     {
                         <div class="header-right ml-4">
-                            <a href="@Url.Action("GetAllOrderByStatus", "OrderPayment")" class="cart-toggle label-down link" style="display: flex; flex-direction: column; align-items: center;">
-                                <i class="w-icon-cart" style="font-size: 2rem;"></i>
-                                <span class="cart-label" style="margin-top: 8px;">سبد سفارشات</span>
-                            </a>
+                            @if (User.IsInRole("Customer"))
+                            {
+                                <a href="@Url.Action("GetAllOrderByStatus", "OrderPayment")" class="cart-toggle label-down link" style="display: flex; flex-direction: column; align-items: center;">
+                                    <i class="w-icon-cart" style="font-size: 2rem;"></i>
+                                    <span class="cart-label" style="margin-top: 8px;">سبد سفارشات</span>
+                                </a>
+                            }
+                            else if (User.IsInRole("Expert"))
+                            {
+                                <a href="@Url.Action("GetSuggestionsForExpert", "OrderPayment")" class="cart-toggle label-down link" style="display: flex; flex-direction: column; align-items: center;">
+                                    <i class="w-icon-cart" style="font-size: 2rem;"></i>
+                                    <span class="cart-label" style="margin-top: 8px;"> پیشنهادات من </span>
+                                </a>
+                            }
                         </div>
                     }
+
                 </div>
             </div>
             <!-- End of Header Middle -->

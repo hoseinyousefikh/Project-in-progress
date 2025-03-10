@@ -13,7 +13,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Home.Configoration.Other
     {
         public void Configure(EntityTypeBuilder<ExpertHomeService> builder)
         {
-            builder.HasKey(eh => new { eh.ExpertId, eh.HomeServiceId });
+            builder.HasKey(eh => eh.Id);
 
             builder.HasOne(eh => eh.Expert)
                    .WithMany(e => e.ExpertHomeServices)

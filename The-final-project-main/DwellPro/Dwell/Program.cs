@@ -93,6 +93,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 
 builder.Services.AddScoped<IPictureService, PictureService>();
+builder.Services.AddScoped<IExpertHomeServiceService, ExpertHomeServiceService>();
 //************************************************************************************************
 builder.Services.AddScoped<ICategoryAppService, CategoryAppService>();
 builder.Services.AddScoped<IHomeServiceAppService, HomeServiceAppService>();
@@ -107,6 +108,7 @@ builder.Services.AddScoped<IAdminUserAppService, AdminUserAppService>();
 builder.Services.AddScoped<IUserAppService, UserAppService>();
 builder.Services.AddScoped<ICommentAppService, CommentAppService>();
 builder.Services.AddScoped<IPictureAppService, PictureAppService>();
+builder.Services.AddScoped<IExpertHomeServiceAppService, ExpertHomeServiceAppService>();
 
 
 builder.Logging.ClearProviders();
