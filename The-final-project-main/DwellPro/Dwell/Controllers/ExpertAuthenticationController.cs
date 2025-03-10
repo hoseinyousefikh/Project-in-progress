@@ -163,7 +163,7 @@ namespace DwellMVC.Controllers
             {
                 return NotFound();
             }
-
+             
             var experts = await _adminUserAppService.GetExpertsListAsync(cancellationToken);
 
             var currentUserExpert = experts.FirstOrDefault(expert => expert.User.Id == userId);
@@ -171,7 +171,7 @@ namespace DwellMVC.Controllers
             {
                 return NotFound("اکسپرت مربوط به کاربر پیدا نشد.");
             }
-
+            ViewBag.Rating = currentUserExpert.Rating;
             var expertHomeServices = await _userAppService.GetHomeServiceByExpertIdAsync(currentUserExpert.Id, cancellationToken);
             if (expertHomeServices == null || !expertHomeServices.Any())
             {
@@ -183,6 +183,23 @@ namespace DwellMVC.Controllers
 
             return View(userModel);
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> ExpertDetailsByCustomer(int expertId, CancellationToken cancellationToken)
+        {
+            var expertDetails = await _userAppService.GetExpertDetailsAsync(expertId, cancellationToken);
+
+            if (expertDetails == null)
+            {
+                return NotFound("اکسپرت مورد نظر یافت نشد.");
+            }
+
+            ViewBag.Rating = expertDetails.Rating;
+
+            return View(expertDetails);
+        }
+
 
     }
 }

@@ -4,13 +4,14 @@
 <div class="user-details-container">
     <div class="user-card">
         <div class="sign-out-btn">
-            <form asp-action="SignOutCustomer" method="post" style="margin: 0;">
+            <form asp-controller="Authentication" asp-action="SignOutCustomer" method="post" style="margin: 0;">
                 @Html.AntiForgeryToken()
                 <button type="submit" class="btn btn-sign-out">
                     <i class="fa fa-sign-out-alt"></i> خروج
                 </button>
             </form>
         </div>
+
 
         <div class="user-profile">
             <img src="@Model.ProfilePicture" alt="Profile" class="profile-img">
@@ -22,6 +23,8 @@
             <p><strong>شماره شبا:</strong> @Model.ShebaNumber</p>
             <p><strong>شماره کارت:</strong> @Model.CardNumber</p>
             <p><strong>وضعیت:</strong> @(Model.RoleStatus == UserStatus.Active ? "فعال" : "غیرفعال")</p>
+            <p class="rating-text"><strong>امتیاز:</strong> @(ViewBag.Rating.ToString("0.0"))</p>
+
             <p class="balance-text"><strong>موجودی حساب:</strong> @Model.Balance تومان</p>
         </div>
         <div class="user-actions">
@@ -181,5 +184,10 @@
             text-align: right;
         }
 
+    .rating-text {
+        font-size: 18px;
+        font-weight: bold;
+        color: #ff9800;
+    }
 
 </style>

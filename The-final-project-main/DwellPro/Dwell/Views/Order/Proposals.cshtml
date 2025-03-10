@@ -1,5 +1,6 @@
 ﻿@using App.Domain.Core.Home.DTO
 @model ProposalDto
+
 @if (TempData["ErrorMessage"] != null)
 {
     <div class="alert alert-danger">
@@ -37,8 +38,16 @@
                         <td>
                             @if (item.Expert?.User != null)
                             {
-                                @item.Expert.User.FirstName
-                                @item.Expert.User.LastName
+                                <span>
+                                    @item.Expert.User.FirstName @item.Expert.User.LastName
+                                </span>
+
+                                <div class="dropdown">
+                                    <button class="dropbtn">⋮</button>
+                                    <div class="dropdown-content">
+                                        <a href="@Url.Action("ExpertDetailsByCustomer", "ExpertAuthentication", new { expertId = item.Expert.User.Id })">نمایش پروفایل</a>
+                                    </div>
+                                </div>
                             }
                             else
                             {
@@ -70,7 +79,6 @@
                         </td>
                         <td>
                             <span class="badge badge-info">@item.Expert.Rating از 5</span>
-
                         </td>
                         <td>
                             @if (item.Proposal.IsSelectedByCustomer)
@@ -101,6 +109,57 @@
         font-size: 18px;
         color: #ff6666;
         font-weight: bold;
+    }
+
+    .dropbtn {
+        background: none;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+        padding: 5px;
+        margin-left: 5px;
+        position: relative;
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #fff;
+        min-width: 120px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        border-radius: 6px;
+        z-index: 10;
+        right: 0;
+        top: -45px;
+        transform: translateY(-5px);
+        transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+        opacity: 0;
+        visibility: hidden;
+    }
+
+        .dropdown-content a {
+            color: #333;
+            padding: 10px;
+            text-decoration: none;
+            display: block;
+            font-size: 14px;
+            text-align: right;
+        }
+
+            .dropdown-content a:hover {
+                background-color: #f1f1f1;
+            }
+
+    .dropdown.active .dropdown-content {
+        display: block;
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
     }
 
     .proposal-table {
@@ -163,9 +222,40 @@
         border-radius: 6px;
         text-decoration: none;
         display: inline-block;
+        transition: background 0.3s ease-in-out;
     }
 
         .btn-dark:hover {
             background-color: #23272b;
         }
 </style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".dropbtn").forEach(button => {
+            button.addEventListener("click", function (event) {
+                event.stopPropagation();
+                let dropdown = this.closest(".dropdown");
+                dropdown.classList.toggle("active");
+
+                document.querySelectorAll(".dropdown").forEach(d => {
+                    if (d !== dropdown) {
+                        d.classList.remove("active");
+                    }
+                });
+            });
+        });
+
+        document.addEventListener("click", function () {
+            document.querySelectorAll(".dropdown").forEach(dropdown => {
+                dropdown.classList.remove("active");
+            });
+        });
+
+        document.querySelectorAll(".dropdown-content").forEach(menu => {
+            menu.addEventListener("click", function (event) {
+                event.stopPropagation();
+            });
+        });
+    });
+</script>

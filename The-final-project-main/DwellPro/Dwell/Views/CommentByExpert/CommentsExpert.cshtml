@@ -1,0 +1,125 @@
+﻿@using App.Domain.Core.Home.Entities.Other
+@model IEnumerable<Comments>
+
+@{
+    ViewBag.Title = "نظرات";
+}
+
+<div class="container">
+    <div class="col-md-8 mx-auto mt-5">
+
+=        @if (ViewBag.ErrorMessage != null)
+        {
+            <div class="alert alert-danger">
+                @ViewBag.ErrorMessage
+            </div>
+        }
+
+        @if (ViewBag.Message != null)
+        {
+            <div class="alert alert-success">
+                @ViewBag.Message
+            </div>
+        }
+
+        @if (Model != null && Model.Any())
+        {
+            <div class="comment-container">
+                <h3 class="text-center">نظرات کاربران</h3>
+                <div class="dropdown">
+                    <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        انتخاب نظر
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        @foreach (var comment in Model)
+                        {
+                            <li class="dropdown-item">
+                                <strong>آیدی نظر:</strong> @comment.Id <br />
+                                <strong>متن نظر:</strong> @comment.Text <br />
+                                <strong>امتیاز:</strong> @comment.Rating <br />
+                                <strong>نام مشتری:</strong> @comment.Customers?.User.FirstName @comment.Customers?.User.LastName <br />
+                                <strong>آیدی پروپوزال:</strong> @comment.ExpertProposalId <br />
+                                <strong>تاریخ ایجاد:</strong> @comment.CreatedAt.ToString("yyyy/MM/dd HH:mm:ss") <br />
+                                <strong>وضعیت تایید:</strong> @(comment.IsApproved ? "تایید شده" : "تایید نشده") <br />
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="comment-container">
+                <p class="text-center">هیچ نظری برای این کارشناس یافت نشد.</p>
+            </div>
+        }
+    </div>
+</div>
+<style>
+    body {
+        background-color: #ffe6e6;
+        font-family: 'Arial', sans-serif;
+    }
+
+    .comment-container {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+        width: 80%;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .dropdown-menu {
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+        color: #721c24;
+    }
+
+    .dropdown-toggle {
+        background-color: #f44336;
+        border-color: #f44336;
+        color: white;
+    }
+
+    .dropdown-item {
+        background-color: white;
+        color: #721c24;
+    }
+
+        .dropdown-item:hover {
+            background-color: #f5c6cb;
+            color: #721c24;
+        }
+
+    .alert {
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    .alert-danger {
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        color: #721c24;
+    }
+
+    .alert-success {
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+        color: #155724;
+    }
+
+    .btn-danger {
+        background-color: #f44336;
+        border-color: #f44336;
+        color: white;
+    }
+
+    h3 {
+        color: #721c24;
+    }
+</style>
