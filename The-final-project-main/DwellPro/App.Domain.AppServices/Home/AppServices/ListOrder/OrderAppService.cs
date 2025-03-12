@@ -1,4 +1,5 @@
-﻿using App.Domain.Core.Home.Contract.AppServices.Categories;
+﻿using App.Domain.AppServices.Home.AppServices.Users;
+using App.Domain.Core.Home.Contract.AppServices.Categories;
 using App.Domain.Core.Home.Contract.AppServices.ListOrder;
 using App.Domain.Core.Home.Contract.AppServices.Other;
 using App.Domain.Core.Home.Contract.AppServices.Users;
@@ -33,8 +34,10 @@ namespace App.Domain.AppServices.Home.AppServices.ListOrder
         private readonly IUserService _userService;
         private readonly IViewOrderService _viewOrderService;
         private readonly IAdminUserAppService _adminUserAppService;
+        private readonly IUserAppService _userAppService;
 
-        public OrderAppService(IOrderService orderService, IHomeServiceService homeServiceService, IAdminUserService adminUserService, IPictureService pictureService, IPictureAppService pictureAppService, IUserService userService, IViewOrderService viewOrderService, IAdminUserAppService adminUserAppService)
+
+        public OrderAppService(IOrderService orderService, IHomeServiceService homeServiceService, IAdminUserService adminUserService, IPictureService pictureService, IPictureAppService pictureAppService, IUserService userService, IViewOrderService viewOrderService, IAdminUserAppService adminUserAppService, IUserAppService userAppService)
         {
             _orderService = orderService;
             _homeServiceService = homeServiceService;
@@ -44,6 +47,8 @@ namespace App.Domain.AppServices.Home.AppServices.ListOrder
             _userService = userService;
             _viewOrderService = viewOrderService;
             _adminUserAppService = adminUserAppService;
+            _userAppService = userAppService;
+
         }
 
         public Task<bool> AddOrderAsync(Orders order, CancellationToken cancellationToken)
@@ -166,7 +171,7 @@ namespace App.Domain.AppServices.Home.AppServices.ListOrder
 
             if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
             {
-                return new List<Orders>(); 
+                return new List<Orders>();
             }
 
             var userInfo = await _adminUserService.GetByIdAsync(userId, cancellationToken);
@@ -191,7 +196,7 @@ namespace App.Domain.AppServices.Home.AppServices.ListOrder
                 return null;
             }
 
-            var proposals = order.ExpertProposals;
+            var proposals = order.ExpertProposals.Where(p => !p.IsDeleted).ToList();
 
             var model = new ProposalDto
             {
@@ -217,6 +222,7 @@ namespace App.Domain.AppServices.Home.AppServices.ListOrder
 
             return model;
         }
+
         public async Task<OrderResultDto> GetAllOrderByStatusAsync(int userId, CancellationToken cancellationToken)
         {
             var user = await _adminUserService.GetByIdAsync(userId, cancellationToken);
@@ -302,6 +308,73 @@ namespace App.Domain.AppServices.Home.AppServices.ListOrder
             await _orderService.UpdateOrderAsync(order, cancellationToken);
 
             return new ResultDto { Succeeded = true, Message = "سفارش با موفقیت تکمیل شد." };
+        }
+        public async Task<OrderResultDto> GetFilteredOrdersForExpertAsync(int userId, CancellationToken cancellationToken)
+        {
+            var experts = await _adminUserAppService.GetExpertsListAsync(cancellationToken);
+            var currentUserExpert = experts.FirstOrDefault(expert => expert.User.Id == userId);
+
+            if (currentUserExpert == null)
+            {
+                return new OrderResultDto
+                {
+                    Succeeded = false,
+                    Message = "اکسپرت مربوط به کاربر پیدا نشد.",
+                    Orders = null
+                };
+            }
+
+            var user = await _adminUserService.GetByIdAsync(currentUserExpert.Id, cancellationToken);
+            if (user == null || user.ExpertDetails == null || user.ExpertDetails.UserId != user.Id)
+            {
+                return new OrderResultDto
+                {
+                    Succeeded = false,
+                    Message = "کاربر یافت نشد یا معتبر نیست.",
+                    Orders = null
+                };
+            }
+
+            var customer = user.ExpertDetails;
+            var expertHomeServices = await _userAppService.GetHomeServiceByExpertIdAsync(currentUserExpert.Id, cancellationToken);
+            if (expertHomeServices == null || !expertHomeServices.Any())
+            {
+                return new OrderResultDto
+                {
+                    Succeeded = false,
+                    Message = "اکسپرت هیچ خدمتی را انتخاب نکرده است.",
+                    Orders = null
+                };
+            }
+
+            var expertHomeServiceIds = expertHomeServices.Select(hs => hs.HomeService.Id).ToList();
+
+            var allOrders = await _orderService.GetAllOrdersAsync(cancellationToken);
+
+            var filteredOrders = allOrders
+               .Where(o => o.HomeServiceName != null
+                           && expertHomeServiceIds.Contains(o.HomeServiceName.Id)
+                           && o.OrderStatus == OrderStatus.WaitingForExpertSelection
+                           && o.Customer?.User?.CityId == currentUserExpert.User.CityId) 
+               .ToList();
+
+
+            var orderDtos = filteredOrders.Select(o => new OrderDto
+            {
+                Id = o.Id,
+                ServiceTitle = o.HomeServiceName?.Name,
+                Price = o.BasePrice ?? 0,
+                ImageUrl = o.HomeServiceName?.ImageUrl,
+                Status = o.OrderStatus.ToString(),
+                OrderDate = o.RequestDate
+            }).ToList();
+
+            return new OrderResultDto
+            {
+                Succeeded = true,
+                Message = "لیست سفارش‌های فیلتر شده با موفقیت دریافت شد.",
+                Orders = orderDtos
+            };
         }
 
     }

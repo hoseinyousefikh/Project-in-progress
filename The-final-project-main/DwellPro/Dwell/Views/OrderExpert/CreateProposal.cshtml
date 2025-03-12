@@ -1,0 +1,162 @@
+﻿@using App.Domain.Core.Home.DTO
+@model ExpertProposalDto
+
+@{
+    ViewBag.Title = "ثبت پیشنهاد";
+}
+
+<h2>ثبت پیشنهاد برای سفارش شماره @Model.OrderId</h2>
+
+<div class="dropdown-container">
+    <button class="dropdown-btn">باز کردن فرم ثبت پیشنهاد</button>
+    <div class="proposal-form-container">
+        <form asp-action="SubmitProposal" method="post" class="proposal-form">
+            <input type="hidden" asp-for="OrderId" />
+
+            <div class="form-group">
+                <label>نام هوم سرویس:</label>
+                <input type="text" value="@Model.ServiceTitle" disabled />
+            </div>
+
+            <div class="form-group">
+                <label>تاریخ درخواست:</label>
+                <input type="text" value="@Model.OrderDate.ToString("yyyy/MM/dd")" disabled />
+            </div>
+
+            <div class="form-group">
+                <label>مبلغ پیشنهادی:</label>
+                <input type="number" asp-for="ProposedPrice" step="0.01" />
+            </div>
+
+            <div class="form-group">
+                <label>توضیحات پیشنهاد:</label>
+                <textarea asp-for="ProposalDescription"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>تاریخ پیشنهاد:</label>
+                <input type="text" value="@Model.ProposalDate?.ToString("yyyy/MM/dd")" disabled />
+            </div>
+
+            <div class="form-group">
+                <label>زمان پیشنهادی اجرا (ساعت):</label>
+                <input type="time" asp-for="ProposedExecutionTime" />
+            </div>
+
+            <div class="form-group">
+                <label>تاریخ اتمام کار:</label>
+                <input type="date" asp-for="WorkCompletionDate" />
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="submit-btn">ثبت پیشنهاد</button>
+            </div>
+        </form>
+
+        <button class="back-btn" onclick="window.history.back()">بازگشت</button>
+    </div>
+</div>
+
+<style>
+    .dropdown-container {
+        width: 100%;
+        text-align: center;
+    }
+
+    .dropdown-btn {
+        background-color: #f44336;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s;
+    }
+
+        .dropdown-btn:hover {
+            background-color: #e53935;
+        }
+
+    .proposal-form-container {
+        display: none;
+        margin-top: 20px;
+        background-color: #f9f4f4;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        width: 400px; /* کاهش عرض فرم */
+        margin: 0 auto;
+    }
+
+    .proposal-form label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+        color: #d32f2f;
+    }
+
+    .proposal-form input,
+    .proposal-form textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ffcccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        font-size: 14px;
+        background-color: #fff;
+        transition: border-color 0.3s;
+    }
+
+        .proposal-form input:focus,
+        .proposal-form textarea:focus {
+            border-color: #d32f2f;
+            outline: none;
+        }
+
+    .submit-btn {
+        background-color: #f44336;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s;
+    }
+
+        .submit-btn:hover {
+            background-color: #e53935;
+        }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+        .form-group input[disabled] {
+            background-color: #e0e0e0;
+        }
+
+    .back-btn {
+        background-color: #ccc;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 15px;
+    }
+
+        .back-btn:hover {
+            background-color: #b0b0b0;
+        }
+</style>
+
+<script>
+    document.querySelector(".dropdown-btn").addEventListener("click", function() {
+        const formContainer = document.querySelector(".proposal-form-container");
+        formContainer.style.display = formContainer.style.display === "block" ? "none" : "block";
+    });
+</script>

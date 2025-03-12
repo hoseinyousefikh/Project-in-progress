@@ -24,5 +24,6 @@ namespace App.Domain.Core.Home.Contract.AppServices.ListOrder
         Task<ProposalDto> GetProposalsForOrderAsync(int orderId, CancellationToken cancellationToken);
         Task<OrderResultDto> GetAllOrderByStatusAsync(int userId, CancellationToken cancellationToken);
         Task<ResultDto> CompleteOrderAsync(int orderId, CancellationToken cancellationToken);
+        Task<OrderResultDto> GetFilteredOrdersForExpertAsync(int userId, CancellationToken cancellationToken);
     }
 }

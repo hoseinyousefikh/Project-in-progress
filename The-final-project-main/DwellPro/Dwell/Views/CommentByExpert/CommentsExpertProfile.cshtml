@@ -40,13 +40,9 @@
                         @foreach (var comment in Model)
                         {
                             <li class="dropdown-item">
-                                <strong>آیدی نظر:</strong> @comment.Id <br />
                                 <strong>متن نظر:</strong> @comment.Text <br />
                                 <strong>امتیاز:</strong> @comment.Rating <br />
                                 <strong>نام مشتری:</strong> @comment.Customers?.User.FirstName @comment.Customers?.User.LastName <br />
-                                <strong>آیدی پروپوزال:</strong> @comment.ExpertProposalId <br />
-                                <strong>تاریخ ایجاد:</strong> @comment.CreatedAt.ToString("yyyy/MM/dd HH:mm:ss") <br />
-                                <strong>وضعیت تایید:</strong> @(comment.IsApproved ? "تایید شده" : "تایید نشده")
                                 <hr class="comment-separator" />
                             </li>
                         }
@@ -60,6 +56,10 @@
                 <p class="text-center">هیچ نظری برای این کارشناس یافت نشد.</p>
             </div>
         }
+
+        <div class="text-center mt-4">
+            <a href="@Url.Action("GetOrdersForUser", "Order")" class="btn btn-secondary">بازگشت</a>
+        </div>
     </div>
 </div>
 
@@ -86,8 +86,8 @@
         border: 1px solid #f5c6cb;
         color: #721c24;
         max-height: 300px;
-        overflow-y: auto; 
-        width: 100%; 
+        overflow-y: auto;
+        width: 100%;
     }
 
     .dropdown-toggle {
@@ -139,4 +139,17 @@
     h3 {
         color: #721c24;
     }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 5px;
+        margin-top: 20px;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
 </style>

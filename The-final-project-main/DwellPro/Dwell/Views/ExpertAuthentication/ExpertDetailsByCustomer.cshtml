@@ -11,6 +11,11 @@
             <p><strong>شماره کارت:</strong> @Model.CardNumber</p>
             <p class="rating-text"><strong>امتیاز:</strong> @(ViewBag.Rating?.ToString("0.0") ?? "نامشخص")</p>
         </div>
+        <div class="user-actions">
+            <a href="@Url.Action("CommentsExpertProfile", "CommentByExpert", new { expertId = Model.ExpertId })" class="btn-view-reviews">
+                مشاهده نظرات
+            </a>
+        </div>
     </div>
 </div>
 
@@ -60,4 +65,20 @@
         font-weight: bold;
         color: #ff9800;
     }
+
+    .btn-view-reviews {
+        display: inline-block;
+        background-color: #ff4444;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+        margin-top: 15px;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-view-reviews:hover {
+            background-color: #e53935;
+        }
 </style>

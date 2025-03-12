@@ -16,5 +16,7 @@ namespace App.Domain.Core.Home.Contract.AppServices.ListOrder
         Task<bool> UpdateExpertProposalAsync(ExpertProposal expertProposal, CancellationToken cancellationToken);
         Task<bool> DeleteExpertProposalAsync(int id, CancellationToken cancellationToken);
         Task<ResultDto> AcceptProposalAsync(int proposalId, CancellationToken cancellationToken);
+        Task<ResultDto> SubmitProposalAsync(ExpertProposalDto model, CancellationToken cancellationToken);
+        Task<bool> IsProposalSubmittedForOrderAsync(int orderId, int userId, CancellationToken cancellationToken);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using App.Domain.Core.Home.Contract.AppServices.Other;
 using App.Domain.Core.Home.Contract.AppServices.Users;
 using App.Domain.Core.Home.Entities.Other;
+using App.Domain.Core.Home.Entities.Users;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -38,14 +39,40 @@ namespace DwellMVC.Controllers
             }
 
             var comments = await _commentAppService.GetCommentsByExpertIdAsync(currentUserExpert.Id, cancellationToken);
+            var approvedComments = comments?.Where(c => c.IsApproved).ToList();
 
-            if (comments == null || !comments.Any())
+            if (approvedComments == null || !approvedComments.Any())
             {
                 ViewBag.Message = "هیچ نظری برای این کارشناس یافت نشد.";
-                return View(new List<Comments>()); 
+                return View(new List<Comments>());
             }
 
-            return View(comments); 
+            return View(approvedComments);
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> CommentsExpertProfile(int expertId, CancellationToken cancellationToken)
+        {
+            var experts = await _adminUserAppService.GetExpertsListAsync(cancellationToken);
+            var currentUserExpert = experts.FirstOrDefault(expert => expert.User.Id == expertId);
+
+            if (currentUserExpert == null)
+            {
+                ViewBag.ErrorMessage = "اکسپرت مربوط به کاربر پیدا نشد.";
+                return View("Error");
+            }
+            var comments = await _commentAppService.GetCommentsByExpertIdAsync(currentUserExpert.Id, cancellationToken);
+            var approvedComments = comments?.Where(c => c.IsApproved).ToList();
+
+            if (approvedComments == null || !approvedComments.Any())
+            {
+                ViewBag.Message = "هیچ نظری برای این کارشناس یافت نشد.";
+                return View(new List<Comments>());
+            }
+
+            return View(approvedComments);
         }
     }
 }
+
