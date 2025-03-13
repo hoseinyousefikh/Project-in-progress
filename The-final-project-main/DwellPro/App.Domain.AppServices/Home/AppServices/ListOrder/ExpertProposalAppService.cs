@@ -4,6 +4,7 @@ using App.Domain.Core.Home.Contract.Services.ListOrder;
 using App.Domain.Core.Home.Contract.Services.Users;
 using App.Domain.Core.Home.DTO;
 using App.Domain.Core.Home.Entities.ListOrder;
+using App.Domain.Core.Home.Entities.Users;
 using App.Domain.Core.Home.Enum;
 using System;
 using System.Collections.Generic;
@@ -69,11 +70,13 @@ namespace App.Domain.AppServices.Home.AppServices.ListOrder
 
             proposal.IsSelectedByCustomer = true;
             proposal.CustomerSelectionDate = DateTime.Now;
+            proposal.ProposalStatus = ProposalStatus.Accepted;
+            var allProposals = await _expertProposalService.GetAllExpertProposalsAsync(cancellationToken);
 
-
-            foreach (var otherProposal in order.ExpertProposals.Where(p => p.Id != proposalId))
+            foreach (var otherProposal in allProposals.Where(p => p.OrderId == proposal.OrderId && p.Id != proposal.Id))
             {
                 otherProposal.IsSelectedByCustomer = false;
+                otherProposal.ProposalStatus = ProposalStatus.Rejected;
             }
 
             order.OrderStatus = OrderStatus.WaitingForExpertArrival;
@@ -95,6 +98,7 @@ namespace App.Domain.AppServices.Home.AppServices.ListOrder
 
             return new ResultDto { Succeeded = true, Message = "پیشنهاد با موفقیت پذیرفته شد.", OrderId = order.Id };
         }
+
         public async Task<ResultDto> SubmitProposalAsync(ExpertProposalDto model, CancellationToken cancellationToken)
         {
             var experts = await _adminUserAppService.GetExpertsListAsync(cancellationToken);
@@ -109,13 +113,34 @@ namespace App.Domain.AppServices.Home.AppServices.ListOrder
                 };
             }
 
-            var user = await _adminUserService.GetByIdAsync(currentUserExpert.Id, cancellationToken);
+            var user = await _adminUserService.GetByIdAsync(model.ExpertId, cancellationToken);
             if (user == null || user.ExpertDetails == null || user.ExpertDetails.UserId != user.Id)
             {
                 return new ResultDto
                 {
                     Succeeded = false,
                     Message = "کاربر یافت نشد یا معتبر نیست."
+                };
+            }
+            var order = await _orderService.GetOrderByIdAsync(model.OrderId, cancellationToken);
+            if (order == null)
+            {
+                return new ResultDto
+                {
+                    Succeeded = false,
+                    Message = "سفارش یافت نشد."
+                };
+            }
+
+            order.OrderStatus = OrderStatus.WaitingForExpertProposal;
+
+            var updateResult = await _orderService.UpdateOrderAsync(order, cancellationToken);
+            if (!updateResult)
+            {
+                return new ResultDto
+                {
+                    Succeeded = false,
+                    Message = "به روز رسانی وضعیت سفارش با خطا مواجه شد."
                 };
             }
 
@@ -169,6 +194,23 @@ namespace App.Domain.AppServices.Home.AppServices.ListOrder
             var isProposalSubmitted = proposalsForOrder.Any();
 
             return isProposalSubmitted;
+        }
+        public async Task<List<ExpertProposal>> GetExpertProposalsByExpertIdAsync(int expertId, CancellationToken cancellationToken)
+        {
+            var allProposals = await _expertProposalService.GetAllExpertProposalsAsync(cancellationToken);
+            var experts = await _adminUserAppService.GetExpertsListAsync(cancellationToken);
+
+            var currentUserExpert = experts.FirstOrDefault(expert => expert.User.Id == expertId);
+
+            if (currentUserExpert == null)
+            {
+                throw new InvalidOperationException("اکسپرت مربوط به کاربر پیدا نشد.");
+            }
+            var expertProposals = allProposals
+                .Where(proposal => proposal.ExpertId == currentUserExpert.Id)
+                .ToList();
+
+            return expertProposals;
         }
 
     }

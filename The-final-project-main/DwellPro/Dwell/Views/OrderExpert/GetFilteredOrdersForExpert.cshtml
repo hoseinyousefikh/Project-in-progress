@@ -27,6 +27,11 @@
         text-align: center;
     }
 
+    .btn-details {
+        background-color: #cc0000; 
+        margin-left: 10px;
+    }
+
     table {
         width: 100%;
         border-collapse: collapse;
@@ -102,6 +107,9 @@
                             <td>
                                 <a href="@Url.Action("CreateProposal", "OrderExpert", new { orderId = order.Id })" class="btn-submit">
                                     ثبت پیشنهاد
+                                </a>
+                                <a href="@Url.Action("DetailsForExpert", "OrderExpert", new { Id = order.Id })" class="btn-submit btn-details">
+                                    مشاهده جزئیات
                                 </a>
 
                             </td>

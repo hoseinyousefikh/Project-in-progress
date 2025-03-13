@@ -1,4 +1,5 @@
 ﻿using App.Domain.AppServices.Home.AppServices.ListOrder;
+using App.Domain.Core.Home.Contract.AppServices.Categories;
 using App.Domain.Core.Home.Contract.AppServices.ListOrder;
 using App.Domain.Core.Home.DTO;
 using App.Domain.Core.Home.Entities.ListOrder;
@@ -12,10 +13,12 @@ namespace DwellMVC.Controllers
     {
         private readonly IOrderAppService _orderAppService;
         private readonly IExpertProposalAppService _expertProposalAppService;
-        public OrderExpertController(IOrderAppService orderAppService, IExpertProposalAppService expertProposalAppService)
+        private readonly IHomeServiceAppService _homeServiceAppService;
+        public OrderExpertController(IOrderAppService orderAppService, IExpertProposalAppService expertProposalAppService , IHomeServiceAppService homeServiceAppService)
         {
             _orderAppService = orderAppService;
             _expertProposalAppService = expertProposalAppService;
+            _homeServiceAppService = homeServiceAppService;
         }
 
         [HttpGet]
@@ -34,7 +37,6 @@ namespace DwellMVC.Controllers
             if (!result.Succeeded)
             {
                 ViewBag.ErrorMessage = result.Message;
-                return View("Error");
             }
 
             return View("GetFilteredOrdersForExpert", result.Orders);
@@ -106,6 +108,148 @@ namespace DwellMVC.Controllers
             return RedirectToAction("GetFilteredOrdersForExpert", "OrderExpert");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ExpertProposalsPending(CancellationToken cancellationToken)
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
+            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
+            {
+                return Unauthorized("شناسه کاربر معتبر نیست.");
+            }
+
+            try
+            {
+                var expertProposals = await _expertProposalAppService
+                    .GetExpertProposalsByExpertIdAsync(userId, cancellationToken);
+
+                var pendingProposals = expertProposals
+                    .Where(proposal => proposal.ProposalStatus == ProposalStatus.Pending)
+                    .ToList();
+
+                ViewBag.HomeServiceNames = await Task.WhenAll(
+                    pendingProposals
+                        .Select(async proposal =>
+                        {
+                            var homeService = await _homeServiceAppService
+                                .GetHomeServiceByIdAsync(proposal.Order.HomeServiceId, cancellationToken);
+                            return homeService?.Name ?? "نامشخص";
+                        })
+                );
+
+                if (!pendingProposals.Any())
+                {
+                    ViewBag.Message = "هیچ پیشنهاد در انتظار تأییدی یافت نشد.";
+                }
+
+                return View(pendingProposals);
+            }
+            catch (InvalidOperationException ex)
+            {
+                ViewBag.Message = ex.Message;
+                return View(new List<ExpertProposal>());
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ExpertProposalsAccepted(CancellationToken cancellationToken)
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
+            {
+                return Unauthorized("شناسه کاربر معتبر نیست.");
+            }
+
+            try
+            {
+                var expertProposals = await _expertProposalAppService
+                    .GetExpertProposalsByExpertIdAsync(userId, cancellationToken);
+
+                var acceptedProposals = expertProposals
+                    .Where(proposal => proposal.ProposalStatus == ProposalStatus.Accepted)
+                    .ToList();
+
+                var homeServiceNames = new List<string>();
+                var paymentStatuses = new List<string>();
+
+                foreach (var proposal in acceptedProposals)
+                {
+                    var homeService = await _homeServiceAppService
+                        .GetHomeServiceByIdAsync(proposal.Order.HomeServiceId, cancellationToken);
+
+                    var order = await _orderAppService
+                        .GetOrderByIdAsync(proposal.OrderId, cancellationToken);
+
+                    homeServiceNames.Add(homeService?.Name ?? "نامشخص");
+                    paymentStatuses.Add(order?.PaymentStatus.ToString() ?? "وضعیت نامشخص");
+                }
+
+                ViewBag.HomeServiceNames = homeServiceNames;
+                ViewBag.PaymentStatuses = paymentStatuses;
+
+                return View(acceptedProposals);
+            }
+            catch (InvalidOperationException ex)
+            {
+                ViewBag.Message = ex.Message;
+                return View(new List<ExpertProposal>());
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ExpertProposalsRejected(CancellationToken cancellationToken)
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
+            {
+                return Unauthorized("شناسه کاربر معتبر نیست.");
+            }
+
+            try
+            {
+                var expertProposals = await _expertProposalAppService.GetExpertProposalsByExpertIdAsync(userId, cancellationToken);
+
+                var pendingProposals = expertProposals
+                    .Where(proposal => proposal.ProposalStatus == ProposalStatus.Rejected)
+                    .ToList();
+                ViewBag.HomeServiceNames = await Task.WhenAll(
+                  pendingProposals
+                      .Select(async proposal =>
+                      {
+                          var homeService = await _homeServiceAppService
+                              .GetHomeServiceByIdAsync(proposal.Order.HomeServiceId, cancellationToken);
+                          return homeService?.Name ?? "نامشخص";
+                      })
+              );
+
+               
+
+                return View(pendingProposals);
+            }
+            catch (InvalidOperationException ex)
+            {
+                ViewBag.Message = ex.Message;
+                return View(new List<ExpertProposal>());
+            }
+        }
+        public IActionResult ProposalStatusOptions()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DetailsForExpert(int id, CancellationToken cancellationToken)
+        {
+            var order = await _orderAppService.GetOrderByIdAsync(id, cancellationToken);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            return View(order);
+        }
     }
 }

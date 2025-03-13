@@ -26,7 +26,7 @@
                                     data-animation-options="{'name': 'fadeInRightShorter', 'duration': '.5s', 'delay': '.4s'}">
                                         نمایش مد 1401
                                     </span>
-                                    @if (User.Identity.IsAuthenticated)
+                                    @if (User.Identity.IsAuthenticated && User.IsInRole("Customer"))
                                     {
                                         <a href="@Url.Action("CreateOrder", "Order", new { homeServiceId = homeService.Id })"
                                         class="btn btn-white btn-outline btn-rounded btn-icon-right br-xs slide-animate"
@@ -56,7 +56,7 @@
                             <div class="banner-content">
                                 <h4 class="banner-subtitle text-capitalize text-default font-secondary font-weight-normal">سرویس جدید</h4>
                                 <h3 class="banner-title text-dark text-uppercase ls-25">@homeService.Name</h3>
-                                @if (User.Identity.IsAuthenticated)
+                                @if (User.Identity.IsAuthenticated && User.IsInRole("Customer"))
                                 {
 
                                     <a href="@Url.Action("CreateOrder", "Order", new { homeServiceId = homeService.Id })" class="btn btn-dark btn-link btn-underline btn-icon-right">
@@ -223,7 +223,7 @@
                     <div class="swiper-slide product-wrap">
                         <div class="product text-center">
                             <figure class="product-media">
-                                @if (User.Identity.IsAuthenticated)
+                                @if (User.Identity.IsAuthenticated && User.IsInRole("Customer"))
                                 {
                                     <a href="@Url.Action("CreateOrder", "Order", new { homeServiceId = homeService.Id })">
                                         <img src="@homeService.ImageUrl" alt="@homeService.Name" width="300" height="337">
@@ -238,7 +238,7 @@
                                     </a>
                                 }
                                 <div class="product-action-horizontal">
-                                    @if (User.Identity.IsAuthenticated)
+                                    @if (User.Identity.IsAuthenticated && User.IsInRole("Customer"))
                                     {
                                         <a href="#" class="btn-product-icon btn-cart w-icon-cart" title="Add to Cart"></a>
                                         <a href="#" class="btn-product-icon btn-wishlist w-icon-heart" title="Wishlist"></a>
@@ -256,7 +256,14 @@
                             </figure>
                             <div class="product-details">
                                 <h4 class="product-name">
-                                    <a href="@Url.Action("CreateOrder", "Order", new { homeServiceId = homeService.Id })">@homeService.Name</a>
+                                    @if (User.Identity.IsAuthenticated && User.IsInRole("Customer"))
+                                    {
+                                        <a href="@Url.Action("CreateOrder", "Order", new { homeServiceId = homeService.Id })">@homeService.Name</a>
+                                    }
+                                    else
+                                    {
+                                        <span>@homeService.Name</span> 
+                                    }
                                 </h4>
                                 <div class="ratings-container">
                                     <div class="ratings-full">
@@ -269,6 +276,7 @@
                                     <ins class="new-price">@homeService.BasePrice.ToString("C")</ins>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 }

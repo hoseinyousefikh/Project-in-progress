@@ -129,12 +129,20 @@
                             }
                             else if (User.IsInRole("Expert"))
                             {
-                                <a href="@Url.Action("GetSuggestionsForExpert", "OrderPayment")" class="cart-toggle label-down link" style="display: flex; flex-direction: column; align-items: center;">
+                                <a href="@Url.Action("ProposalStatusOptions", "OrderExpert")" class="cart-toggle label-down link" style="display: flex; flex-direction: column; align-items: center;">
                                     <i class="w-icon-cart" style="font-size: 2rem;"></i>
-                                    <span class="cart-label" style="margin-top: 8px;"> پیشنهادات من </span>
+                                    <span class="cart-label" style="margin-top: 8px;">پیشنهادات من</span>
+                                </a>
+
+                                <div class="separator" style="border-left: 1px solid #ccc; height: 40px; margin: 0 10px;"></div>
+
+                                <a href="@Url.Action("CommentsExpert", "CommentByExpert")" class="cart-toggle label-down link" style="display: flex; flex-direction: column; align-items: center;">
+                                    <i class="w-icon-comment" style="font-size: 2rem;"></i>
+                                    <span class="cart-label" style="margin-top: 8px;">کامنت ها</span>
                                 </a>
                             }
                         </div>
+
                     }
 
                 </div>

@@ -1,0 +1,112 @@
+﻿<div class="proposal-container">
+    @model List<App.Domain.Core.Home.Entities.ListOrder.ExpertProposal>
+
+    @{
+        ViewData["Title"] = "پیشنهادات در انتظار تأیید";
+    }
+
+    <h2>@ViewData["Title"]</h2>
+
+    @if (ViewBag.Message != null)
+    {
+        <div class="alert alert-info">
+            @ViewBag.Message
+        </div>
+    }
+
+    @if (Model != null && Model.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>نام هوم سرویس</th>
+                    <th>تاریخ درخواست</th>
+                    <th>مبلغ پیشنهادی</th>
+                    <th>توضیحات پیشنهاد</th>
+                    <th>تاریخ ثبت پیشنهاد شما</th>
+                    <th>تاریخ اتمام کار پیشنهادی</th>
+                </tr>
+            </thead>
+            @{
+                var homeServiceNames = ViewBag.HomeServiceNames as string[];
+                var index = 0; 
+            }
+
+            <tbody>
+                @foreach (var proposal in Model)
+                {
+                    <tr>
+                        <td>@homeServiceNames?[index]</td> 
+                        <td>@proposal.Order?.RequestDate.ToString("yyyy/MM/dd")</td>
+                        <td>@proposal.ProposedPrice.ToString("C2")</td>
+                        <td>@proposal.ProposalDescription</td>
+                        <td>@proposal.ProposalDate?.ToString("yyyy/MM/dd")</td>
+                        <td>@proposal.WorkCompletionDate.ToString("yyyy/MM/dd")</td>
+                    </tr>
+
+                    index++;
+                }
+            </tbody>
+
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            هیچ پیشنهاد در انتظار تأییدی یافت نشد.
+        </div>
+    }
+</div>
+
+
+
+
+
+
+
+<style>
+    .proposal-container {
+        background-color: #ffe5e5;
+        border: 2px solid #ff9999;
+        border-radius: 15px;
+        padding: 20px;
+        margin: 30px auto; 
+        max-width: 90%;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
+        text-align: center;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+        .table th,
+        .table td {
+            border: 1px solid #ff9999;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .table th {
+            background-color: #ffcccc;
+            color: #b30000;
+        }
+
+        .table tbody tr:hover {
+            background-color: #ffd6d6; 
+            cursor: pointer;
+        }
+
+    .alert-info {
+        background-color: #ffcccc;
+        color: #b30000;
+        border: 1px solid #ff9999;
+        border-radius: 8px;
+        padding: 10px;
+        text-align: center;
+        margin-top: 15px;
+    }
+</style>
+

@@ -12,9 +12,9 @@
             <p>@homeService.Description</p>
             <p>قیمت پایه: @homeService.BasePrice تومان</p>
             <p>تعداد بازدید: <span id="viewCount-@homeService.Id">@homeService.ViewCount</span></p>
-            
-            @if (User.Identity.IsAuthenticated) 
-            {
+
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Customer"))
+                    {
                 <a href="@Url.Action("CreateOrder", "Order", new { homeServiceId = homeService.Id })" class="btn btn-primary">ثبت سفارش</a>
             }
             else

@@ -129,7 +129,7 @@ namespace App.Domain.AppServices.Home.AppServices.ListOrder
                 ExecutionTime = orderDto.ExecutionTime,
                 Description = orderDto.Description,
                 BasePrice = orderDto.BasePrice,
-                OrderStatus = OrderStatus.WaitingForExpertProposal,
+                OrderStatus = OrderStatus.WaitingForExpertSelection,
                 PaymentStatus = PaymentStatus.Pending,
                 IsApproved = false,
                 IsDeleted = false,
@@ -324,7 +324,7 @@ namespace App.Domain.AppServices.Home.AppServices.ListOrder
                 };
             }
 
-            var user = await _adminUserService.GetByIdAsync(currentUserExpert.Id, cancellationToken);
+            var user = await _adminUserService.GetByIdAsync(userId, cancellationToken);
             if (user == null || user.ExpertDetails == null || user.ExpertDetails.UserId != user.Id)
             {
                 return new OrderResultDto
@@ -354,7 +354,7 @@ namespace App.Domain.AppServices.Home.AppServices.ListOrder
             var filteredOrders = allOrders
                .Where(o => o.HomeServiceName != null
                            && expertHomeServiceIds.Contains(o.HomeServiceName.Id)
-                           && o.OrderStatus == OrderStatus.WaitingForExpertSelection
+                           && o.OrderStatus == OrderStatus.WaitingForExpertSelection || o.OrderStatus == OrderStatus.WaitingForExpertProposal
                            && o.Customer?.User?.CityId == currentUserExpert.User.CityId) 
                .ToList();
 

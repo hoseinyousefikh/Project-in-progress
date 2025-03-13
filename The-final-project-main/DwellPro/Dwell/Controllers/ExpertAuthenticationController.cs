@@ -184,7 +184,6 @@ namespace DwellMVC.Controllers
             return View(userModel);
         }
 
-
         [HttpGet]
         public async Task<IActionResult> ExpertDetailsByCustomer(int expertId, CancellationToken cancellationToken)
         {

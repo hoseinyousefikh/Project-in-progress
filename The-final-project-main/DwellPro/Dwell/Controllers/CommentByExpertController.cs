@@ -50,7 +50,6 @@ namespace DwellMVC.Controllers
             return View(approvedComments);
         }
 
-
         [HttpGet]
         public async Task<IActionResult> CommentsExpertProfile(int expertId, CancellationToken cancellationToken)
         {
