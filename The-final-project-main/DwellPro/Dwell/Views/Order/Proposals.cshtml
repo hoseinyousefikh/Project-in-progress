@@ -27,6 +27,7 @@
                     <th>تاریخ اتمام کار</th>
                     <th>وضعیت</th>
                     <th>امتیاز</th>
+                    <th>توضیحات</th>
                     <th>عملیات</th>
                 </tr>
             </thead>
@@ -79,6 +80,17 @@
                         </td>
                         <td>
                             <span class="badge badge-info">@item.Expert.Rating از 5</span>
+                        </td>
+                        <td>
+                            <div class="description-container">
+                                <div class="description-content">
+                                    @item.Proposal.ProposalDescription
+                                </div>
+                                @if (!string.IsNullOrEmpty(item.Proposal.ProposalDescription) && item.Proposal.ProposalDescription.Length > 100)
+                                {
+                                    <button class="btn btn-info toggle-description">مشاهده بیشتر</button>
+                                }
+                            </div>
                         </td>
                         <td>
                             @if (item.Proposal.IsSelectedByCustomer)
@@ -187,33 +199,39 @@
             transition: 0.3s;
         }
 
-    .badge-success {
-        background-color: #28a745;
-        color: white;
-        padding: 6px 12px;
-        border-radius: 6px;
+    .description-container {
+        position: relative;
+        max-width: 200px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
-    .badge-danger {
-        background-color: #dc3545;
-        color: white;
-        padding: 6px 12px;
+    .description-content {
+        display: inline-block;
+        max-width: 100%;
+        overflow-x: auto;
+        white-space: nowrap;
+        border: 1px solid #ddd;
+        padding: 5px;
         border-radius: 6px;
+        background-color: #f9f9f9;
     }
 
-    .badge-warning {
-        background-color: #ffc107;
-        color: black;
-        padding: 6px 12px;
-        border-radius: 6px;
-    }
-
-    .badge-info {
+    .toggle-description {
+        margin-top: 5px;
+        padding: 4px 8px;
+        font-size: 12px;
         background-color: #17a2b8;
         color: white;
-        padding: 6px 12px;
-        border-radius: 6px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
     }
+
+        .toggle-description:hover {
+            background-color: #138496;
+        }
 
     .btn-dark {
         background-color: #343a40;
@@ -232,6 +250,19 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".toggle-description").forEach(button => {
+            button.addEventListener("click", function () {
+                const description = this.previousElementSibling;
+                if (description.style.whiteSpace === "nowrap") {
+                    description.style.whiteSpace = "normal";
+                    this.innerText = "نمایش کمتر";
+                } else {
+                    description.style.whiteSpace = "nowrap";
+                    this.innerText = "مشاهده بیشتر";
+                }
+            });
+        });
+
         document.querySelectorAll(".dropbtn").forEach(button => {
             button.addEventListener("click", function (event) {
                 event.stopPropagation();
@@ -249,12 +280,6 @@
         document.addEventListener("click", function () {
             document.querySelectorAll(".dropdown").forEach(dropdown => {
                 dropdown.classList.remove("active");
-            });
-        });
-
-        document.querySelectorAll(".dropdown-content").forEach(menu => {
-            menu.addEventListener("click", function (event) {
-                event.stopPropagation();
             });
         });
     });
