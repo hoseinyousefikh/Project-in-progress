@@ -71,7 +71,9 @@ namespace App.Domain.Services.Home.Services.Users
                 CityId = cityId,
                 RegisterAt = DateTime.UtcNow,
                 IsDeleted = false,
-                RoleId = roleId
+                RoleId = roleId,
+                Balance = 00,
+                
             };
 
             user.PasswordHash = _passwordHasher.HashPassword(user, password);

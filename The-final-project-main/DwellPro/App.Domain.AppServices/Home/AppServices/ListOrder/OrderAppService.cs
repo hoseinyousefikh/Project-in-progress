@@ -280,7 +280,6 @@ namespace App.Domain.AppServices.Home.AppServices.ListOrder
             {
                 return new ResultDto { Succeeded = false, Message = "کاربر اکسپرت پیدا نشد." };
             }
-
             decimal transactionAmount = approvedProposal.ProposedPrice;
             decimal platformFee = transactionAmount * 0.05m;
             decimal customerAmount = transactionAmount + (transactionAmount * 0.025m);
@@ -293,8 +292,15 @@ namespace App.Domain.AppServices.Home.AppServices.ListOrder
             }
             await _userService.UpdateUser(userCustomer, cancellationToken);
 
-            expertUser.Balance += expertAmount;
-            await _userService.UpdateUser(expertUser, cancellationToken);
+            if (expertUser != null)
+            {
+                expertUser.Balance += expertAmount;
+                await _userService.UpdateUser(expertUser, cancellationToken);
+            }
+            else
+            {
+                return new ResultDto { Succeeded = false, Message = "کاربر اکسپرت یافت نشد." };
+            }
 
             var adminUser = await _adminUserService.GetByIdAsync(1, cancellationToken);
             if (adminUser != null)
@@ -302,6 +308,11 @@ namespace App.Domain.AppServices.Home.AppServices.ListOrder
                 adminUser.Balance += platformFee;
                 await _userService.UpdateUser(adminUser, cancellationToken);
             }
+            else
+            {
+                return new ResultDto { Succeeded = false, Message = "کاربر ادمین یافت نشد." };
+            }
+
 
             order.OrderStatus = OrderStatus.Completed;
             order.PaymentStatus = PaymentStatus.Paid;
