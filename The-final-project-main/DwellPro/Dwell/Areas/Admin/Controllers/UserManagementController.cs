@@ -1,10 +1,7 @@
 ﻿using App.Domain.Core.Home.Contract.AppServices.Other;
 using App.Domain.Core.Home.Contract.AppServices.Users;
-using App.Domain.Core.Home.Contract.Services.Other;
-using App.Domain.Core.Home.Contract.Services.Users;
 using App.Domain.Core.Home.Entities.Users;
 using App.Domain.Core.Home.Enum;
-using DwellMVC.Areas.Admin.CustomAuthorize;
 using DwellMVC.Areas.Admin.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -48,7 +45,7 @@ namespace DwellMVC.Areas.Admin.Controllers
 
         public async Task<IActionResult> Create(CancellationToken cancellationToken)
         {
-            var model = new UserCreateViewModel(); 
+            var model = new UserCreateViewModel();
 
             var cities = await _cityAppService.GetAllCitiesAsync(cancellationToken);
 
@@ -331,7 +328,7 @@ namespace DwellMVC.Areas.Admin.Controllers
                     user.Address,
                     user.ShebaNumber,
                     user.CardNumber,
-                    newStatus, 
+                    newStatus,
                     CancellationToken.None
                 );
 
